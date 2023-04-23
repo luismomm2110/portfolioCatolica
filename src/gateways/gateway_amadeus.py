@@ -4,8 +4,8 @@ from typing import List
 
 from amadeus import Client
 
+from settings import get_api_key_amadeus, get_api_secret_amadeus
 from src.models.model import Airport
-from settings import API_KEY_AMADEUS, API_SECRET_AMADEUS
 
 
 class AbstractGateway(abc.ABC):
@@ -18,8 +18,8 @@ class AmadeusGateway(AbstractGateway):
     def get(self, origin: Airport, destinations: List[Airport], departure_date: datetime, return_date: datetime,
             adults: int = 1):
         amadeus = Client(
-            client_id=API_KEY_AMADEUS,
-            client_secret=API_SECRET_AMADEUS
+            client_id=get_api_key_amadeus(),
+            client_secret=get_api_secret_amadeus(),
         )
         result = []
 
