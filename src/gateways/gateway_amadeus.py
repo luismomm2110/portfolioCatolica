@@ -4,7 +4,7 @@ from typing import List
 
 from amadeus import Client
 
-from models.model import Airport
+from src.models.model import Airport
 from settings import API_KEY_AMADEUS, API_SECRET_AMADEUS
 
 
