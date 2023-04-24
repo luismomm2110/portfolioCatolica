@@ -1,3 +1,2 @@
 amadeus==8.0.0
-pytest~=7.1.2
-python-decouple~=3.8
+pytest==7.3.1

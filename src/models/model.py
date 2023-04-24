@@ -3,6 +3,8 @@ from _decimal import Decimal
 from dataclasses import dataclass
 from datetime import datetime
 
+from typing import List
+
 
 @dataclass(frozen=True)
 class Coordinate:
@@ -24,7 +26,8 @@ class Flight:
     date: datetime
 
 
-def find_flights(source: Airport, flights: list[Flight], initial_date: datetime, final_date: datetime, desired_range: int) -> [Flight]:
+def find_flights(source: Airport, flights: List[Flight], initial_date: datetime, final_date: datetime,
+                 desired_range: int) -> [Flight]:
     return sorted([flight for flight in flights if flight.source == source and
                    initial_date <= flight.date <= final_date and
                    _distance_in_km(source.coordinate, flight.destination.coordinate) <= desired_range
