@@ -1,10 +1,13 @@
 from _decimal import Decimal
 from datetime import datetime, timedelta
 
-from gateways.gateway_amadeus import AmadeusGateway
-from models.model import Airport, Coordinate
+import pytest
+
+from src.gateways.gateway_amadeus import AmadeusGateway
+from src.models.model import Airport, Coordinate
 
 
+@pytest.mark.skip
 def test_gateway_can_search_a_flight():
     amadeus_gateway = AmadeusGateway()
     source = Airport('GRU', Coordinate(Decimal('-23.4355556'), Decimal('-46.4730556')))

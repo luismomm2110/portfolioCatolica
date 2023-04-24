@@ -1,10 +1,8 @@
 from datetime import datetime
 
-import pytest
-
 from _decimal import Decimal
 
-from models.model import Airport, Flight, find_flights, Coordinate
+from src.models.model import Airport, Coordinate, Flight, find_flights
 
 
 def test_given_range_and_date_with_flight_when_search_for_flight_then_return_ordered_by_price():
