@@ -1,4 +1,7 @@
 import abc
+from typing import List, Tuple
+
+import pandas as pd
 
 
 class AbstractGateway(abc.ABC):
@@ -9,8 +12,11 @@ class AbstractGateway(abc.ABC):
 
 class IataGateway(AbstractGateway):
 
-    def fetch_airports(self) -> str:
-        with open('../resources/iata.csv') as json_file:
-            data = json_file.read()
+    def fetch_airports(self) -> Tuple[dict, ...]:
+        with open('../resources/iata.csv') as csv_file:
+            df = pd.read_csv(csv_file)
 
-            return data
+            dict_list = df.to_dict('records')
+            dict_tuple = tuple(dict_list)
+
+            return dict_tuple
