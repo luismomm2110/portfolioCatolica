@@ -9,6 +9,7 @@ WORKDIR /app
 # Copy the source code and requirements.txt into the container
 COPY src/ /app/src
 COPY tests/ /app/tests
+COPY resources/ /app/resources
 COPY requirements.txt /app
 
 # Install Python dependencies
