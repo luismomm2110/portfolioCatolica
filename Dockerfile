@@ -12,6 +12,9 @@ COPY tests/ /app/tests
 COPY resources/ /app/resources
 COPY requirements.txt /app
 
+# Copy the iata.csv file into the container
+COPY resources/iata.csv /app/resources/iata.csv
+
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
