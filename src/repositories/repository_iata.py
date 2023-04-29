@@ -10,10 +10,10 @@ class AbstractGateway(abc.ABC):
         raise NotImplementedError
 
 
-class IataGateway(AbstractGateway):
+class IataRepository(AbstractGateway):
 
     def fetch_airports(self) -> Tuple[dict, ...]:
-        with open('../../resources/iata.csv') as csv_file:
+        with open('resources/iata.csv') as csv_file:
             df = pd.read_csv(csv_file)
 
             dict_list = df.to_dict('records')

@@ -11,6 +11,7 @@ COPY src/ /app/src
 COPY tests/ /app/tests
 COPY resources/ /app/resources
 COPY requirements.txt /app
+COPY settings.py /app
 
 # Copy the iata.csv file into the container
 COPY resources/iata.csv /app/resources/iata.csv
