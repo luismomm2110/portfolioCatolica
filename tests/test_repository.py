@@ -1,8 +1,8 @@
-from src.repositories.gateway_iata import IataGateway
+from src.repositories.repository_iata import IataRepository
 
 
 def test_should_fetch_airports_from_iata_resource_as_tuple_of_dicts():
-    iata_gateway = IataGateway()
+    iata_gateway = IataRepository()
 
     result = iata_gateway.fetch_airports()
 
