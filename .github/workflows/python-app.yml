@@ -42,7 +42,9 @@ jobs:
           with:
             fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
         - name: Install Tox and any other tool required
-          run: pip install tox
+          run: |
+            pip install tox
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         - name: Launch Tox
           run: tox -e py
         - name: SonarCloud Scan
