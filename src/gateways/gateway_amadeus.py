@@ -5,13 +5,25 @@ from typing import List
 from amadeus import Client
 
 from settings import get_api_key_amadeus, get_api_secret_amadeus
-from src.models.model import Airport
+from src.models.model import Airport, Flight
 
 
 class AbstractGateway(abc.ABC):
     @abc.abstractmethod
     def get(self, origin: Airport, destinations: List[Airport], departure_date: datetime, return_date: datetime):
         raise NotImplementedError
+
+
+class FakeGateway(abc.ABC):
+    def __init__(self, flights: List[Flight]):
+        self.flights = flights
+
+    def get(self, origin: Airport, destinations: List[Airport], departure_date: datetime, return_date: datetime):
+        result = []
+        for destination in destinations:
+            result.append([flight for flight in self.flights if flight.source == origin and flight.destination == destination and
+                           flight.date == departure_date])
+        return result
 
 
 class AmadeusGateway(AbstractGateway):
