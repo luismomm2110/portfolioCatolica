@@ -14,7 +14,7 @@ class AbstractGateway(abc.ABC):
         raise NotImplementedError
 
 
-class FakeGateway(abc.ABC):
+class FakeGateway(AbstractGateway):
     def __init__(self, flights: List[Flight]):
         self.flights = flights
 

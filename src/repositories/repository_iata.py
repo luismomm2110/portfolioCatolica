@@ -3,6 +3,8 @@ from typing import List, Tuple
 
 import pandas as pd
 
+from src.models.model import Airport
+
 
 class AbstractRepository(abc.ABC):
     @abc.abstractmethod
@@ -11,11 +13,11 @@ class AbstractRepository(abc.ABC):
 
 
 class FakeRepository(AbstractRepository):
-    def __init__(self, airports: List[dict]):
+    def __init__(self, airports: List[Airport]):
         self.airports = airports
 
-    def fetch_airports(self):
-        return self.airports
+    def fetch_airports(self) -> Tuple[Airport, ...]:
+        return tuple(self.airports)
 
 
 class IataRepository(AbstractRepository):
