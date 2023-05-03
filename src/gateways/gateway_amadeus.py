@@ -18,12 +18,11 @@ class FakeGateway(AbstractGateway):
     def __init__(self, flights: List[Flight]):
         self.flights = flights
 
-    def get(self, origin: Airport, destinations: List[Airport], departure_date: datetime, return_date: datetime):
-        result = []
-        for destination in destinations:
-            result.append([flight for flight in self.flights if flight.source == origin and flight.destination == destination and
-                           flight.date == departure_date])
-        return result
+    def get(self, origin: Airport, destinations: List[Airport], departure_date: datetime, return_date: datetime) -> \
+            List[Flight]:
+
+        return [flight for flight in self.flights
+                if flight.source == origin and flight.destination in destinations and flight.date == departure_date]
 
 
 class AmadeusGateway(AbstractGateway):
