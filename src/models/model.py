@@ -26,12 +26,9 @@ class Flight:
     date: datetime
 
 
-def find_flights(source: Airport, flights: List[Flight], initial_date: datetime, final_date: datetime,
-                 desired_range: int) -> [Flight]:
-    return sorted([flight for flight in flights if flight.source == source and
-                   initial_date <= flight.date <= final_date and
-                   _distance_in_km(source.coordinate, flight.destination.coordinate) <= desired_range
-                   ], key=lambda flight: flight.price)
+def get_possible_airports(source: Airport, airports: List[Airport], desired_range: int) -> List[Airport]:
+    return [airport for airport in airports if _distance_in_km(source.coordinate, airport.coordinate)
+            <= desired_range  and airport != source]
 
 
 def _distance_in_km(p1: Coordinate, p2: Coordinate):
