@@ -28,7 +28,7 @@ class Flight:
 
 def get_possible_airports(source: Airport, airports: List[Airport], desired_range: int) -> List[Airport]:
     return [airport for airport in airports if _distance_in_km(source.coordinate, airport.coordinate)
-            <= desired_range  and airport != source]
+            <= desired_range and airport != source]
 
 
 def _distance_in_km(p1: Coordinate, p2: Coordinate):
