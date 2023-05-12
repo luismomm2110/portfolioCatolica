@@ -3,14 +3,24 @@ from typing import List, Tuple
 
 import pandas as pd
 
+from src.models.model import Airport
 
-class AbstractGateway(abc.ABC):
+
+class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def fetch_airports(self):
         raise NotImplementedError
 
 
-class IataRepository(AbstractGateway):
+class FakeRepository(AbstractRepository):
+    def __init__(self, airports: List[Airport]):
+        self.airports = airports
+
+    def fetch_airports(self) -> Tuple[Airport, ...]:
+        return tuple(self.airports)
+
+
+class IataRepository(AbstractRepository):
 
     def fetch_airports(self) -> Tuple[dict, ...]:
         with open('resources/iata.csv') as csv_file:
