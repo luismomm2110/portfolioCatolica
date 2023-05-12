@@ -23,11 +23,12 @@ class Flight:
     source: Airport
     destination: Airport
     price: Decimal
-    date: datetime
+    departure: datetime
 
 
-def get_possible_airports(source: Airport, airports: List[Airport], desired_range: int) -> List[Airport]:
-    return [airport for airport in airports if _distance_in_km(source.coordinate, airport.coordinate)
+def get_possible_airports(source: Airport, destination: Airport, airports: List[Airport], desired_range: int) \
+        -> List[Airport]:
+    return [airport for airport in airports if _distance_in_km(destination.coordinate, airport.coordinate)
             <= desired_range and airport != source]
 
 
