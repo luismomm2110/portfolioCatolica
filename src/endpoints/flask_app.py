@@ -13,7 +13,7 @@ app = Flask(__name__)
 def flights_endpoint():
     source = str(request.json['source'])
     destination = str(request.json['destination'])
-    departure = datetime(request.json['departure'])
+    departure = datetime.strptime(request.json['departure'], '%Y-%m-%d')
     desired_range = int(request.json['desired_range'])
     repository = IataRepository()
     gateway = AmadeusGateway()
