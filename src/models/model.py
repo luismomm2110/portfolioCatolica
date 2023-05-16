@@ -15,7 +15,7 @@ class Coordinate:
 @dataclass(frozen=True)
 class Airport:
     code: str
-    coordinate: Coordinate
+    coordinates: Coordinate
 
 
 @dataclass(frozen=True)
@@ -26,19 +26,21 @@ class Flight:
     departure: datetime
 
 
-def get_possible_airports(source: Airport, destination: Airport, airports: List[Airport], desired_range: int) \
-        -> List[Airport]:
-    return [airport for airport in airports if _distance_in_km(destination.coordinate, airport.coordinate)
+def get_possible_airports(source: dict, destination: dict, airports: List[dict], desired_range: int) \
+        -> List[dict]:
+    return [airport for airport in airports if _distance_in_km(destination['coordinates'], airport['coordinates'])
             <= desired_range and airport != source]
 
 
-def _distance_in_km(p1: Coordinate, p2: Coordinate):
+def _distance_in_km(p1: str, p2: str):
+    lat1, lon1 = p1.split(',')
+    lat2, lon2 = p2.split(',')
     radius_earth_in_km = 6371
 
-    lat1 = math.radians(p1.latitude)
-    lon1 = math.radians(p1.longitude)
-    lat2 = math.radians(p2.latitude)
-    lon2 = math.radians(p2.longitude)
+    lat1 = math.radians(float(lat1))
+    lon1 = math.radians(float(lon1))
+    lat2 = math.radians(float(lat2))
+    lon2 = math.radians(float(lon2))
 
     difference_latitude = lat2 - lat1
     difference_longitude = lon2 - lon1
