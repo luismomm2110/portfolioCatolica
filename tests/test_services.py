@@ -8,13 +8,13 @@ from src.models.model import Airport, Coordinate, Flight
 from src.repositories.repository_iata import FakeRepository
 from src.services.services import find_flights_within_range
 
-source = Airport(code='GRU', coordinate=Coordinate(latitude=Decimal('-23.4323'), longitude=Decimal('-46.4695')))
-destination = Airport(code='LAX', coordinate=Coordinate(latitude=Decimal('33.9425361'),
-                                                        longitude=Decimal('-118.408075')))
-other_destinations = [Airport(code='SAN', coordinate=Coordinate(latitude=Decimal('32.733556'),
-                                                                longitude=Decimal('-117.189657'))),
-                      Airport(code='SFO', coordinate=Coordinate(latitude=Decimal('37.618972'),
-                                                                longitude=Decimal('-122.374889')))]
+source = Airport(code='GRU', coordinates=Coordinate(latitude=Decimal('-23.4323'), longitude=Decimal('-46.4695')))
+destination = Airport(code='LAX', coordinates=Coordinate(latitude=Decimal('33.9425361'),
+                                                         longitude=Decimal('-118.408075')))
+other_destinations = [Airport(code='SAN', coordinates=Coordinate(latitude=Decimal('32.733556'),
+                                                                 longitude=Decimal('-117.189657'))),
+                      Airport(code='SFO', coordinates=Coordinate(latitude=Decimal('37.618972'),
+                                                                 longitude=Decimal('-122.374889')))]
 default_date = datetime(2020, 1, 1)
 original_flight = Flight(source=source, destination=destination, departure=default_date, price=Decimal('100.00'))
 

@@ -1,4 +1,5 @@
 import abc
+import math
 from datetime import datetime
 from typing import List
 
@@ -25,7 +26,7 @@ class FakeGateway(AbstractGateway):
 
 
 class AmadeusGateway(AbstractGateway):
-    def get(self, origin: Airport, destinations: List[Airport], departure_date: datetime, adults: int = 1):
+    def get(self, iata_code_origin: str, destinations: List[dict], departure_date: datetime, adults: int = 1):
         amadeus = Client(
             client_id=get_api_key_amadeus(),
             client_secret=get_api_secret_amadeus(),
@@ -33,11 +34,13 @@ class AmadeusGateway(AbstractGateway):
         result = []
 
         for destination in destinations:
-            result.append(amadeus.shopping.flight_offers_search.get(
-                originLocationCode=origin.code,
-                destinationLocationCode=destination.code,
-                departureDate=departure_date.strftime('%Y-%m-%d'),
-                adults=adults
-            ).data)
+            if iata_code_destination := destination['iata_code']:
+                if isinstance(iata_code_destination, str):
+                    result.append(amadeus.shopping.flight_offers_search.get(
+                        originLocationCode=iata_code_origin['iata_code'],
+                        destinationLocationCode=iata_code_destination,
+                        departureDate=departure_date.strftime('%Y-%m-%d'),
+                        adults=adults
+                    ).data)
 
         return result
