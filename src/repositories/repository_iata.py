@@ -4,8 +4,6 @@ from typing import List, Tuple
 
 import pandas as pd
 
-from src.models.model import Airport
-
 
 class AbstractRepository(abc.ABC):
     @abc.abstractmethod
@@ -17,14 +15,14 @@ class AbstractRepository(abc.ABC):
 
 
 class FakeRepository(AbstractRepository):
-    def __init__(self, airports: List[Airport]):
+    def __init__(self, airports: List[dict]):
         self.airports = airports
 
-    def fetch_airports(self) -> Tuple[Airport, ...]:
+    def fetch_airports(self) -> Tuple[dict, ...]:
         return tuple(self.airports)
 
     def fetch_airport(self, iata_code: str):
-        return next(airport for airport in self.airports if airport.code == iata_code)
+        return next(airport for airport in self.airports if airport['iata_code'] == iata_code)
 
 
 class IataRepository(AbstractRepository):
