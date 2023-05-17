@@ -1,4 +1,5 @@
 import abc
+import os
 from typing import List, Tuple
 
 import pandas as pd
@@ -28,7 +29,8 @@ class FakeRepository(AbstractRepository):
 
 class IataRepository(AbstractRepository):
     def __init__(self):
-        with open('../../resources/iata.csv') as csv_file:
+        csv_path = os.path.join(os.path.dirname(__file__), '../../resources/iata.csv')
+        with open(csv_path) as csv_file:
             df = pd.read_csv(csv_file)
             df = df.dropna(subset=['iata_code'])
 
