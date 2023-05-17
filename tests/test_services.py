@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import pytest
 
 from src.gateways.gateway_amadeus import FakeGateway
-from src.models.model import Airport, Coordinate, Flight
+from src.models.model import Flight
 from src.repositories.repository_iata import FakeRepository
 from src.services.services import find_flights_within_range
 

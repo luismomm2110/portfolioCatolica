@@ -20,8 +20,8 @@ class Airport:
 
 @dataclass(frozen=True)
 class Flight:
-    source: Airport
-    destination: Airport
+    source: dict
+    destination: dict
     price: Decimal
     departure: datetime
 
