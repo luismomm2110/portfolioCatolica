@@ -1,5 +1,4 @@
 import abc
-import math
 from datetime import datetime
 from typing import List
 
@@ -11,7 +10,7 @@ from src.models.model import Airport, Flight
 
 class AbstractGateway(abc.ABC):
     @abc.abstractmethod
-    def get(self, origin: Airport, destinations: List[Airport], departure_date: datetime):
+    def get(self, origin: Airport, destinations: List[dict], departure_date: datetime):
         raise NotImplementedError
 
 
@@ -19,7 +18,7 @@ class FakeGateway(AbstractGateway):
     def __init__(self, flights: List[Flight]):
         self.flights = flights
 
-    def get(self, origin: Airport, destinations: List[Airport], departure: datetime) -> \
+    def get(self, origin: Airport, destinations: List[dict], departure: datetime) -> \
             List[Flight]:
         return [flight for flight in self.flights if flight.source == origin and flight.destination
                 in destinations and flight.departure == departure]
