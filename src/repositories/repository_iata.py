@@ -28,8 +28,9 @@ class FakeRepository(AbstractRepository):
 
 class IataRepository(AbstractRepository):
     def __init__(self):
-        with open('resources/iata.csv') as csv_file:
+        with open('../../resources/iata.csv') as csv_file:
             df = pd.read_csv(csv_file)
+            df = df.dropna(subset=['iata_code'])
 
             self.airports = df.to_dict('records')
 
