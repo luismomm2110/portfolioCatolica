@@ -2,11 +2,11 @@ from _decimal import Decimal
 
 from src.models.model import Airport, Coordinate, get_possible_airports
 
-source = Airport('GRU', Coordinate(Decimal('-23.4355556'), Decimal('-46.4730556')))
-original_destination = Airport('LAX', Coordinate(Decimal('33.9425361'), Decimal('-118.408075')))
+source = {'iata_code': 'GRU', 'coordinates': '-23.4355556, -46.4730556'}
+original_destination = {'iata_code': 'LAX', 'coordinates': '33.9425361, -118.4080751'}
 other_destinations = [
-    Airport('SAN', Coordinate(Decimal('32.733556'), Decimal('-117.189657'))),
-    Airport('SFO', Coordinate(Decimal('37.618972'), Decimal('-122.374889'))),
+    {'iata_code': 'SAN', 'coordinates': '32.733556, -117.189657'},
+    {'iata_code': 'SFO', 'coordinates': '37.618972, -122.374889'}
 ]
 
 
