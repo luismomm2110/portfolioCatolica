@@ -6,19 +6,25 @@ FROM python:3.9-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the source code and requirements.txt into the container
-COPY src/ /app/src
-COPY tests/ /app/tests
-COPY resources/ /app/resources
 COPY requirements.txt /app
+
+COPY src/ src/
+COPY tests/ tests/
+COPY resources/ resources/
 COPY settings.py /app
 
 # Copy the iata.csv file into the container
-COPY resources/iata.csv /app/resources/iata.csv
+COPY resources/iata.csv resources/iata.csv
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+ENV PYTHONPATH /app
+
+WORKDIR /app/src/endpoints
+# Run the flask_app.py when the container launches
+
+EXPOSE 5000
+CMD ["python3", "flask_app.py"]
 
 # Expose any necessary ports (if applicable)
-EXPOSE 8080
-
