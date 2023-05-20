@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from flask import Flask, request, jsonify
@@ -24,4 +25,4 @@ def flights_endpoint():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run()
+    app.run(host='0.0.0.0', port=5000)

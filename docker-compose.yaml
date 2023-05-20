@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./resources:/app/resources
+      - ./settings.py:/app/settings.py
+    environment:
+      - PYTHONPATH=/app
