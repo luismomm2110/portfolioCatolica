@@ -7,7 +7,6 @@ from typing import Any
 
 @dataclass
 class TravelAgent:
-    user_id: int
     name: str
     email: str
     password_hash: str
@@ -24,13 +23,14 @@ class TravelAgent:
 
         self.password_hash = f"{salt}:{hashed_password}"
 
-    def check_password(self, password: str) -> bool:
+    def check_password(self, password: str):
         stored_salt, stored_hashed_password = self.password_hash.split(":")
 
         input_password_salt_combo = password + stored_salt
         input_hashed_password = hashlib.sha256(input_password_salt_combo.encode()).hexdigest()
 
-        return input_hashed_password == stored_hashed_password
+        if input_hashed_password != stored_hashed_password:
+            raise ValueError("Incorrect password")
 
     def __post_init__(self):
         for field_name, field_value in self.__dict__.items():
