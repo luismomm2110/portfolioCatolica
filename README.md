@@ -1,5 +1,6 @@
 # Search Flight
 
+
 Esse repositório contém o código fonte do projeto Search Flight, que é um sistema voltado para agências de viagens, que permite a busca de voos através de regiões personalizadas. Isso visa solucionar um problema bastante comum para clientes, que precisam buscar voos de forma manual, aeropor aeroporto, para encontrar o melhor preço.
 
 Usando esse sistema é possível criar regiões personalizadas, que podem ser usadas para buscar voos. Por exemplo, é possível criar uma região chamada "Sudeste", que contém os aeroportos de São Paulo, Rio de Janeiro, Minas Gerais e Espírito Santo. Com isso, é possível buscar voos para essa região, ao invés de buscar por cada aeroporto individualmente.
@@ -96,6 +97,28 @@ Não é necessário instalar as ferramentas acima, pois o Docker irá instalar t
 A metolodogia de desenvolvimento utilizada foi o [Kanban](https://pt.wikipedia.org/wiki/Kanban_(desenvolvimento_de_software)).
 Para design de software foi utilizado o [C4 Model](https://c4model.com/), com arquitetura Clean Architecture e Domain Driven Design.
 
+## Casos de uso:
+
+- [ ] O sistema deve permitir que o cliente final busque voos para determinadas regiões
+- [ ] O sistema deve permitir que o agente de viagem crie regiões e salve-as
+- [ ] O sistema deve permitir que o agente de viagem faça login para ver suas regiões criadas
+- [ ] O sistema deve permitir que o cliente busque voos para determinados horários
+- [ ] O sistema deve permitir que o cliente filtre por preço e número de passageiros
+- [ ] O sistema deve permitir que o usuário que as buscas sejam compartilhadas
 
 
+## Restrições do Projeto:
 
+- [ ] O sistema não vai permitir compras de passagens
+- [ ] O sistema não vai salvar histórico de buscas
+- [ ] O sistema não vai permitir que o usuário crie uma conta
+- [ ] O sistema não vai permitir que o usuário salve buscas
+- [ ] O sistema não vai permitir que o usuário crie alertas de preços
+- [ ] O sistema não vai permitir que o usuário crie alertas de disponibilidade
+
+
+## Trade-offs
+
+- O sistema não vai permitir compras de passagens pois não temos acesso a API de compra de passagens
+- O sistema não terá aplicativo mobile por falta de tempo 
+- O sistema não terá aviso de notificação por focar na arquitetura de busca e gerenciamento de regiões.
