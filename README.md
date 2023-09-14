@@ -68,7 +68,42 @@ Pull requests são bem-vindos. Para grandes mudanças, por favor abra uma issue 
 - [] O sistema deve ter um tempo de resposta imediato ou rápido
 - [] O sistema deve ser tolerante a falhas de usuário ou servidor
 - [] O sistema deve ser maleável para mudanças de regras de negócio ou design
-- [] O sistema deve manter as informações de forma segura e confidenciais. 
+- [] O sistema deve manter as informações de forma segura e confidenciais.
+
+## Casos de uso:
+
+- [ ] O sistema deve permitir que o cliente final busque voos para determinadas regiões
+- [ ] O sistema deve permitir que o agente de viagem crie regiões e salve-as
+- [ ] O sistema deve permitir que o agente de viagem faça login para ver suas regiões criadas
+- [ ] O sistema deve permitir que o cliente busque voos para determinados horários
+- [ ] O sistema deve permitir que o cliente filtre por preço e número de passageiros
+- [ ] O sistema deve permitir que o usuário que as buscas sejam compartilhadas
+
+
+## Restrições do Projeto:
+
+- [ ] O sistema não vai permitir compras de passagens
+- [ ] O sistema não vai salvar histórico de buscas
+- [ ] O sistema não vai permitir que o usuário crie uma conta
+- [ ] O sistema não vai permitir que o usuário salve buscas
+- [ ] O sistema não vai permitir que o usuário crie alertas de preços
+- [ ] ## Casos de uso:
+
+- [ ] O sistema deve permitir que o cliente final busque voos para determinadas regiões
+- [ ] O sistema deve permitir que o agente de viagem crie regiões e salve-as
+- [ ] O sistema deve permitir que o agente de viagem faça login para ver suas regiões criadas
+- [ ] O sistema deve permitir que o cliente busque voos para determinados horários
+- [ ] O sistema deve permitir que o cliente filtre por preço e número de passageiros
+- [ ] O sistema deve permitir que o usuário que as buscas sejam compartilhadas
+
+
+## Restrições do Projeto:
+
+- [ ] O sistema não vai permitir compras de passagens
+- [ ] O sistema não vai salvar histórico de buscas
+- [ ] O sistema não vai permitir que o usuário crie uma conta
+- [ ] O sistema não vai permitir que o usuário salve buscas
+- [ ] O sistema não vai permitir que o usuário crie alertas de preços
 
 ## Ferramentas: 
 
@@ -97,28 +132,16 @@ Não é necessário instalar as ferramentas acima, pois o Docker irá instalar t
 A metolodogia de desenvolvimento utilizada foi o [Kanban](https://pt.wikipedia.org/wiki/Kanban_(desenvolvimento_de_software)).
 Para design de software foi utilizado o [C4 Model](https://c4model.com/), com arquitetura Clean Architecture e Domain Driven Design.
 
-## Casos de uso:
-
-- [ ] O sistema deve permitir que o cliente final busque voos para determinadas regiões
-- [ ] O sistema deve permitir que o agente de viagem crie regiões e salve-as
-- [ ] O sistema deve permitir que o agente de viagem faça login para ver suas regiões criadas
-- [ ] O sistema deve permitir que o cliente busque voos para determinados horários
-- [ ] O sistema deve permitir que o cliente filtre por preço e número de passageiros
-- [ ] O sistema deve permitir que o usuário que as buscas sejam compartilhadas
-
-
-## Restrições do Projeto:
-
-- [ ] O sistema não vai permitir compras de passagens
-- [ ] O sistema não vai salvar histórico de buscas
-- [ ] O sistema não vai permitir que o usuário crie uma conta
-- [ ] O sistema não vai permitir que o usuário salve buscas
-- [ ] O sistema não vai permitir que o usuário crie alertas de preços
-- [ ] O sistema não vai permitir que o usuário crie alertas de disponibilidade
-
 
 ## Trade-offs
 
 - O sistema não vai permitir compras de passagens pois não temos acesso a API de compra de passagens
 - O sistema não terá aplicativo mobile por falta de tempo 
 - O sistema não terá aviso de notificação por focar na arquitetura de busca e gerenciamento de regiões.
+
+
+## Pacotes
+
+- Pacote 1 - Definição da Arquitetura, Documentação e Infraestratura
+- Pacote 2 - Criação de parte inicial dos casos de uso
+- Pacote 3 - Criação da parte final dos casos de uso e deploy em Cloud
