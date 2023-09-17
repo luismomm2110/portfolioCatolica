@@ -13,3 +13,13 @@ services:
       - ./settings.py:/app/settings.py
     environment:
       - PYTHONPATH=/app
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db:/data/db
