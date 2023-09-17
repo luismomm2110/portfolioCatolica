@@ -27,4 +27,3 @@ WORKDIR /app/src/endpoints
 EXPOSE 5000
 CMD ["python3", "flask_app.py"]
 
-# Expose any necessary ports (if applicable)
