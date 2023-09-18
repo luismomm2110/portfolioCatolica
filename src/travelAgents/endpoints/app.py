@@ -1,8 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request, abort
+from http import HTTPStatus
 from pymongo import MongoClient
 
 from src.travelAgents.gateways.gateways import MongoTravelAgentGateway
-from src.travelAgents.services.services import create_travel_agent, get_all_travel_agents
+from src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+    TravelAgentAlreadyExistsException
 
 app = Flask(__name__)
 
@@ -14,13 +16,22 @@ gateway = MongoTravelAgentGateway(mongo_client)
 @app.route('/create_travel_agent', methods=['POST'])
 def insert():
     data = request.json
-    create_travel_agent(gateway, data)
-    return "", 201
+    try:
+        create_travel_agent(gateway, data)
+        return "", HTTPStatus.CREATED
+    except TravelAgentAlreadyExistsException as e:
+        abort(HTTPStatus.UNPROCESSABLE_ENTITY, description=e.args)
 
 
-@app.route('/get_all_travel_agents', methods=['GET'])
-def get_all():
-    return jsonify(get_all_travel_agents(gateway))
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        email = request.json['email']
+        password = request.json['password']
+        login_as_travel_agent(gateway, email, password)
+        return "", HTTPStatus.OK
+    except ValueError as e:
+        abort(HTTPStatus.UNAUTHORIZED, description=e.args)
 
 
 if __name__ == '__main__':

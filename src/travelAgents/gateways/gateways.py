@@ -34,7 +34,16 @@ class MongoTravelAgentGateway(TravelAgentGateway):
         return self._mongo_client.db.collection.find()
 
     def get_travel_agent_by_email(self, email: str) -> TravelAgent:
-        return self._mongo_client.db.collection.find_one({"email": email})
+        travel_agent_data = self._mongo_client.db.collection.find_one({"email": email})
+        return TravelAgent(
+            name=travel_agent_data['name'],
+            email=travel_agent_data['email'],
+            password_hash=travel_agent_data['password_hash'],
+            phone_number=travel_agent_data['phone_number'],
+            company=travel_agent_data['company'],
+            date_of_birth=travel_agent_data['date_of_birth'],
+            date_joined=travel_agent_data['date_joined']
+        )
 
     def save(self, travel_agent: TravelAgent) -> None:
         travel_agent_to_dict = {
