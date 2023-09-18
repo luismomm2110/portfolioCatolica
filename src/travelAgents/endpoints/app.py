@@ -21,6 +21,8 @@ def insert():
         return "", HTTPStatus.CREATED
     except TravelAgentAlreadyExistsException as e:
         abort(HTTPStatus.UNPROCESSABLE_ENTITY, description=e.args)
+    except ValueError as e:
+        abort(HTTPStatus.UNPROCESSABLE_ENTITY, description=e.args)
 
 
 @app.route('/login', methods=['POST'])

@@ -3,7 +3,8 @@ from datetime import datetime
 import pytest
 
 from src.travelAgents.gateways.gateways import FakeTravelAgentGateway
-from src.travelAgents.services.services import create_travel_agent, login_as_travel_agent
+from src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+    TravelAgentAlreadyExistsException
 
 
 def test_when_create_user_then_it_is_saved():
@@ -94,7 +95,7 @@ def test_when_try_to_create_with_email_already_registered_then_it_raises_an_exce
         'date_joined': datetime(2020, 1, 1)
     }
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TravelAgentAlreadyExistsException) as excinfo:
         create_travel_agent(fake_travel_agent_gateway, travel_agent_information)
         create_travel_agent(fake_travel_agent_gateway, travel_agent_information)
 
