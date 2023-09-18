@@ -4,10 +4,9 @@ from datetime import datetime, timedelta
 import pytest
 
 from src.gateways.gateway_amadeus import AmadeusGateway
-from src.models.model import Airport, Coordinate
 
 
-@pytest.mark.skip
+@pytest.mark.skip(reason='Prevents from making requests to Amadeus API')
 def test_gateway_can_search_a_flight():
     amadeus_gateway = AmadeusGateway()
     source = {'iata_code': 'GRU', 'coordinates': '-23.4355556, -46.4730556'}
