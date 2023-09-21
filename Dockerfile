@@ -8,13 +8,13 @@ WORKDIR /app
 
 COPY requirements.txt /app
 
-COPY src/ src/
-COPY tests/ tests/
-COPY resources/ resources/
+COPY server/src/ src/
+COPY server/tests/ tests/
+COPY server/resources/ resources/
 COPY settings.py /app
 
 # Copy the iata.csv file into the container
-COPY resources/iata.csv resources/iata.csv
+COPY server/resources/iata.csv resources/iata.csv
 
 # Install Python dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt

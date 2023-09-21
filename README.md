@@ -34,21 +34,21 @@ Pull requests são bem-vindos. Para grandes mudanças, por favor abra uma issue 
 
 ## Modelagem de Dados:
 
-![Modelagem de Dados](./docs/der.png)
+![Modelagem de Dados](server/docs/der.png)
 
 ## Arquitetura do Projeto:
 
 ### Visão geral:
 
-![Visao geral](./docs/img.png)
+![Visao geral](server/docs/img.png)
 
 ### Visão dos containers:
 
-![Visao containers](./docs/img_1.png)
+![Visao containers](server/docs/img_1.png)
 
 ### Visão dos componentes:
 
-![Visao componentes](./docs/c4-componentes.png)
+![Visao componentes](server/docs/c4-componentes.png)
 
 ## Requisitos do projeto 
 
