@@ -1,11 +1,10 @@
-import os
 from datetime import datetime
 
 from flask import Flask, request, jsonify
 
-from src.gateways.gateway_amadeus import AmadeusGateway
-from src.repositories.repository_iata import IataRepository
-from src.services.services import find_flights_within_range
+from server.src.gateways.gateway_amadeus import AmadeusGateway
+from server.src.repositories.repository_iata import IataRepository
+from server.src.services.services import find_flights_within_range
 
 app = Flask(__name__)
 

@@ -2,8 +2,8 @@ from flask import Flask, request, abort
 from http import HTTPStatus
 from pymongo import MongoClient
 
-from src.travelAgents.gateways.gateways import MongoTravelAgentGateway
-from src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+from server.src.travelAgents.gateways.gateways import MongoTravelAgentGateway
+from server.src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
 
 app = Flask(__name__)

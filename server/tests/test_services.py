@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from src.gateways.gateway_amadeus import FakeGateway
-from src.models.model import Flight
-from src.repositories.repository_iata import FakeRepository
-from src.services.services import find_flights_within_range
+from server.src.gateways.gateway_amadeus import FakeGateway
+from server.src.models.model import Flight
+from server.src.repositories.repository_iata import FakeRepository
+from server.src.services.services import find_flights_within_range
 
 source = {'iata_code': 'GRU', 'coordinates': '-23.4355556, -46.4730556'}
 destination = {'iata_code': 'LAX', 'coordinates': '33.9425361, -118.4080751'}

@@ -1,9 +1,9 @@
 from datetime import datetime
 from typing import List
 
-from src.gateways.gateway_amadeus import AbstractGateway
-from src.models.model import Flight, get_possible_airports
-from src.repositories.repository_iata import AbstractRepository
+from server.src.gateways.gateway_amadeus import AbstractGateway
+from server.src.models.model import Flight, get_possible_airports
+from server.src.repositories.repository_iata import AbstractRepository
 
 
 def find_flights_within_range(iata_source: str, iata_destination: str, departure: datetime, desired_range: int,

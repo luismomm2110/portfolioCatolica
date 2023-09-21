@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.travelAgents.models.models import TravelAgent
+from server.src.travelAgents.models.models import TravelAgent
 
 
 def test_when_check_correct_password_then_return_true():

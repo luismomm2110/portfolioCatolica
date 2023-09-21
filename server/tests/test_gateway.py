@@ -1,9 +1,8 @@
-from _decimal import Decimal
 from datetime import datetime, timedelta
 
 import pytest
 
-from src.gateways.gateway_amadeus import AmadeusGateway
+from server.src.gateways.gateway_amadeus import AmadeusGateway
 
 
 @pytest.mark.skip(reason='Prevents from making requests to Amadeus API')

@@ -1,4 +1,4 @@
-from src.travelAgents.models.models import TravelAgent
+from server.src.travelAgents.models.models import TravelAgent
 
 
 class TravelAgentGateway:

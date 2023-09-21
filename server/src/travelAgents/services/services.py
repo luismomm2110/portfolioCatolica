@@ -1,5 +1,5 @@
-from src.travelAgents.gateways.gateways import TravelAgentGateway
-from src.travelAgents.models.models import TravelAgent
+from server.src.travelAgents.gateways.gateways import TravelAgentGateway
+from server.src.travelAgents.models.models import TravelAgent
 
 
 class TravelAgentAlreadyExistsException(ValueError):

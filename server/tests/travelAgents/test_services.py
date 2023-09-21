@@ -2,8 +2,8 @@ from datetime import datetime
 
 import pytest
 
-from src.travelAgents.gateways.gateways import FakeTravelAgentGateway
-from src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+from server.src.travelAgents.gateways.gateways import FakeTravelAgentGateway
+from server.src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
 
 
