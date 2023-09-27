@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import {loginGateway} from "../gateways/Login";
 
+import './Login.css';
+
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
     loginGateway(username, password).then((response) => {
       console.log(response);
     }).catch((error) => {
@@ -15,14 +18,16 @@ const Login: React.FC = () => {
   }
 
   return (
-  <>
+  <main>
     <form>
-        <h2>Login</h2>
+      <header>
+          <h2>Login</h2>
+        </header>
         <label htmlFor="login">Email:</label>
           <input
             id={'login'}
-            type="text"
-            placeholder="Username"
+            type="email"
+            placeholder="Email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -34,10 +39,10 @@ const Login: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" aria-label={'login'} onClick={handleSubmit}>Login</button>
+          <button type="submit" aria-label={'login'} onClick={e => handleSubmit(e)}>Login</button>
       </form>
-      { error && <p>{error}</p> }
-    </>
+      <section className={'error'}>{error && <p>{error}</p>}</section>
+    </main>
     );
   };
 
