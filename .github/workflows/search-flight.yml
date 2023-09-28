@@ -34,24 +34,6 @@ jobs:
     - name: Test with pytest and coverage
       run: |
         pytest --cov-report xml --cov=. server/tests/
-  sonarcloud:
-
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-          with:
-            fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-        - name: Install Tox and any other tool required
-          run: |
-            pip install tox
-            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        - name: Launch Tox
-          run: tox -e py
-        - name: SonarCloud Scan
-          uses: SonarSource/sonarcloud-github-action@master
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   frontend:
     runs-on: ubuntu-latest
@@ -78,3 +60,22 @@ jobs:
         run: |
           cd client/search_flights  # Navigate to your frontend directory if it's in a subdirectory
           npm test  # This assumes you have a test script in your package.json
+
+  sonarcloud:
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+        - name: Install Tox and any other tool required
+          run: |
+            pip install tox
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        - name: Launch Tox
+          run: tox -e py
+        - name: SonarCloud Scan
+          uses: SonarSource/sonarcloud-github-action@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
