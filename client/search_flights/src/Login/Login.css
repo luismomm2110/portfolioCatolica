@@ -1,3 +1,10 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -50,6 +57,8 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 40px;
 }
 
 .error p {
