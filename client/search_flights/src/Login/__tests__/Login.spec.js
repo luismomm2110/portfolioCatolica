@@ -62,4 +62,9 @@ describe('Login', () => {
 
         expect(await screen.findByText('Email e/ou senha incorreto(s)')).toBeInTheDocument();
     })
+
+    it('should show "sign up" link', () => {
+        render(<Login />);
+        expect(screen.getByRole('button', {name: 'Crie sua conta'})).toBeInTheDocument();
+    })
 })

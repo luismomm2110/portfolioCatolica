@@ -42,6 +42,9 @@ const Login: React.FC = () => {
           <button type="submit" aria-label={'login'} onClick={e => handleSubmit(e)}>Login</button>
       </form>
       <section className={'error'}>{error && <p>{error}</p>}</section>
+      <section>
+        <button>Crie sua conta</button>
+      </section>
     </main>
     );
   };
