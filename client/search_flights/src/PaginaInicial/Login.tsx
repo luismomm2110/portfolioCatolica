@@ -3,7 +3,11 @@ import {loginGateway} from "../gateways/Login";
 
 import './Login.css';
 
-const Login: React.FC = () => {
+interface Props {
+  onShowSignUp: () => void;
+}
+
+const Login: React.FC<Props> = ({ onShowSignUp }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -43,7 +47,7 @@ const Login: React.FC = () => {
       </form>
       <section className={'error'}>{error && <p>{error}</p>}</section>
       <section>
-        <button>Crie sua conta</button>
+        <button onClick={onShowSignUp}>Crie sua conta</button>
       </section>
     </main>
     );
