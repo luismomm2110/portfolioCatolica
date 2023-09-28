@@ -34,9 +34,36 @@ jobs:
     - name: Test with pytest and coverage
       run: |
         pytest --cov-report xml --cov=. server/tests/
-  sonarcloud:
 
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"  # or whatever version you prefer
+
+      - name: Install dependencies
+        run: |
+          cd client/search_flights
+          npm ci  
+
+      - name: Type check with TypeScript
+        run: |
+          cd client/search_flights  # Navigate to your frontend directory if it's in a subdirectory
+          npx tsc --noEmit  # This will run TypeScript's type checker
+
+      - name: Run frontend tests
+        run: |
+          cd client/search_flights  # Navigate to your frontend directory if it's in a subdirectory
+          npm test  # This assumes you have a test script in your package.json
+
+  sonarcloud:
       runs-on: ubuntu-latest
+
       steps:
         - uses: actions/checkout@v3
           with:
