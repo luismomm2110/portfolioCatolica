@@ -9,7 +9,7 @@ describe('Pagina Inicial', () => {
         expect(screen.getByRole('heading', {name: 'Login'})).toBeInTheDocument();
         expect(screen.getByLabelText('Email:')).toBeInTheDocument();
         expect(screen.getByLabelText('Password:')).toBeInTheDocument();
-        expect(screen.getByRole('button', {name: 'login'})).toBeInTheDocument();
+        expect(screen.getByRole('button', {name: 'Login'})).toBeInTheDocument();
     })
 
     it('Should change to Register screen when the Register button is clicked', async () => {

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
-import './FormContainer.css'
+import './ReusableForm.css'
+import {ReusableButton} from "../Button/ReusableButton";
 
 type Field = {
   id: string;
   type: string;
   placeholder: string;
   label: string;
+  value: string;
 };
 
 type ReusableFormProps = {
@@ -16,23 +18,9 @@ type ReusableFormProps = {
 };
 
 const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, onSubmit }) => {
-  const [formData, setFormData] = useState<Record<string, string>>({});
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
 
   return (
-    <form className={'reusableForm'} onSubmit={handleSubmit}>
+    <form className={'reusableForm'}>
       <header>
         <h2>{formTitle}</h2>
       </header>
@@ -43,12 +31,11 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, onSubmit
             id={field.id}
             type={field.type}
             placeholder={field.placeholder}
-            value={formData[field.id] || ''}
-            onChange={handleChange}
+            value={field.value || ''}
           />
         </div>
       ))}
-      <button type="submit" aria-label="submit">Submit</button>
+      <ReusableButton description={'Submit'}  label={'Login'} />
     </form>
   );
 };

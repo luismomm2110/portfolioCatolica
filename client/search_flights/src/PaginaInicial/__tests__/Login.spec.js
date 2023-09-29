@@ -26,7 +26,7 @@ describe('Login', () => {
     it ('should render the login button', () => {
         render(<Login />);
 
-        expect(screen.getByRole('button', {name: 'login'})).toBeInTheDocument();
+        expect(screen.getByRole('button', {name: 'Login'})).toBeInTheDocument();
     })
 
     it ('should call the login gateway when the login button is clicked',  () => {
@@ -39,7 +39,7 @@ describe('Login', () => {
         render(<Login />);
         userEvent.type(screen.getByLabelText('Email:'), 'cliente@cliente.com');
         userEvent.type(screen.getByLabelText('Password:'), 'cliente');
-        userEvent.click(screen.getByRole('button', {name: 'login'}));
+        userEvent.click(screen.getByRole('button', {name: 'Login'}));
 
         expect(global.fetch).toHaveBeenCalledTimes(1);
         expect(global.fetch).toHaveBeenCalledWith('http://localhost:8080/login', {

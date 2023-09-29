@@ -19,16 +19,5 @@
         padding-left: 5px;
         font-size: 16px;
     }
-
-    & button {
-        background-color: #4a90e2;
-        color: #fff;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
 }
 

@@ -3,20 +3,20 @@ import {loginGateway} from "../gateways/Login";
 
 import './Login.css';
 
-import ReusableForm from "../systemDesign/FormContainer";
+import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
+import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 
 interface Props {
   onShowSignUp: () => void;
 }
 
 const Login: React.FC<Props> = ({ onShowSignUp }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [name, setName] = useState('abobora');
+  const [password, setPassword] = useState('abobora');
 
-  const handleLoginSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    loginGateway(username, password).then((response) => {
+  const handleSubmit = () => {
+    loginGateway('', '').then((response) => {
       console.log(response);
     }).catch((error) => {
         setError(error.message);
@@ -29,21 +29,23 @@ const loginFields = [
     type: 'email',
     placeholder: 'Email',
     label: 'Email',
+    value: name,
   },
   {
     id: 'password',
     type: 'password',
     placeholder: 'Password',
     label: 'Password',
+    value: password,
   },
 ];
 
   return (
-  <main>
-      <ReusableForm formTitle="Login" fields={loginFields} onSubmit={handleLoginSubmit} />
+    <main>
+      <ReusableForm formTitle="Login" fields={loginFields} onSubmit={handleSubmit} />
       <section className={'error'}>{error && <p>{error}</p>}</section>
       <section>
-        <button onClick={onShowSignUp}>Crie sua conta</button>
+        <ReusableButton description={'Sign Up'} label={'Crie sua conta'} />
       </section>
     </main>
     );
