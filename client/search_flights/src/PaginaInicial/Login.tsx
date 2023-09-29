@@ -3,6 +3,8 @@ import {loginGateway} from "../gateways/Login";
 
 import './Login.css';
 
+import ReusableForm from "../systemDesign/FormContainer";
+
 interface Props {
   onShowSignUp: () => void;
 }
@@ -12,7 +14,7 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleLoginSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
     loginGateway(username, password).then((response) => {
       console.log(response);
@@ -21,30 +23,24 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
     })
   }
 
+const loginFields = [
+  {
+    id: 'login',
+    type: 'email',
+    placeholder: 'Email',
+    label: 'Email',
+  },
+  {
+    id: 'password',
+    type: 'password',
+    placeholder: 'Password',
+    label: 'Password',
+  },
+];
+
   return (
   <main>
-    <form>
-      <header>
-          <h2>Login</h2>
-        </header>
-        <label htmlFor="login">Email:</label>
-          <input
-            id={'login'}
-            type="email"
-            placeholder="Email"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-            <label htmlFor="password">Password:</label>
-          <input
-            id={'password'}
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit" aria-label={'login'} onClick={e => handleSubmit(e)}>Login</button>
-      </form>
+      <ReusableForm formTitle="Login" fields={loginFields} onSubmit={handleLoginSubmit} />
       <section className={'error'}>{error && <p>{error}</p>}</section>
       <section>
         <button onClick={onShowSignUp}>Crie sua conta</button>
