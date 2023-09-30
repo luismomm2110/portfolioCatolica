@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Login from './Login/Login'
+import {PaginaInicial} from './PaginaInicial/PaginaInicial'
 
 function App() {
     return (
         <div className="App">
-            <Login />
+            <PaginaInicial />
         </div>
     )
 }
