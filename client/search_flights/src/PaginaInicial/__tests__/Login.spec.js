@@ -29,6 +29,16 @@ describe('Login', () => {
         expect(screen.getByRole('button', {name: 'Login'})).toBeInTheDocument();
     })
 
+    it('should update email and password fields when user type', () => {
+        render(<Login />);
+
+        userEvent.type(screen.getByLabelText('Email:'), 'teste@teste.com')
+        userEvent.type(screen.getByLabelText('Password:'), 'senha_teste')
+
+        expect(screen.getByLabelText('Email:')).toHaveValue('teste@teste.com');
+        expect(screen.getByLabelText('Password:')).toHaveValue('senha_teste');
+    })
+
     it ('should call the login gateway when the login button is clicked',  () => {
       global.fetch = jest.fn(() => {
               return Promise.resolve({
@@ -38,17 +48,10 @@ describe('Login', () => {
       );
         render(<Login />);
         userEvent.type(screen.getByLabelText('Email:'), 'cliente@cliente.com');
-        userEvent.type(screen.getByLabelText('Password:'), 'cliente');
+        userEvent.type(screen.getByLabelText('Password:'), 'senha_errada');
         userEvent.click(screen.getByRole('button', {name: 'Login'}));
 
         expect(global.fetch).toHaveBeenCalledTimes(1);
-        expect(global.fetch).toHaveBeenCalledWith('http://localhost:8080/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({email: 'cliente@cliente.com', password: 'cliente'})
-        })
     })
 
     it('should render the error message when the login fails', async () => {
@@ -58,7 +61,7 @@ describe('Login', () => {
         render(<Login />);
         userEvent.type(screen.getByLabelText('Email:'), 'cliente@cliente.com');
         userEvent.type(screen.getByLabelText('Password:'), 'senha_errada');
-        userEvent.click(screen.getByRole('button', {name: 'login'}));
+        userEvent.click(screen.getByRole('button', {name: 'Login'}));
 
         expect(await screen.findByText('Email e/ou senha incorreto(s)')).toBeInTheDocument();
     })

@@ -12,8 +12,10 @@ interface Props {
 
 const Login: React.FC<Props> = ({ onShowSignUp }) => {
   const [error, setError] = useState('');
-  const [name, setName] = useState('abobora');
-  const [password, setPassword] = useState('abobora');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
 
   const handleSubmit = () => {
     loginGateway('', '').then((response) => {
@@ -23,26 +25,31 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
     })
   }
 
-const loginFields = [
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  }
+
+  const loginFields = [
   {
-    id: 'login',
+    id: 'email',
     type: 'email',
     placeholder: 'Email',
     label: 'Email',
-    value: name,
+    value: formData.email,
   },
   {
     id: 'password',
     type: 'password',
     placeholder: 'Password',
     label: 'Password',
-    value: password,
+    value: formData.password,
   },
 ];
 
   return (
     <main>
-      <ReusableForm formTitle="Login" fields={loginFields} onSubmit={handleSubmit} />
+      <ReusableForm formTitle="Login" fields={loginFields} handleSubmit={handleSubmit} handleChange={handleChange} />
       <section className={'error'}>{error && <p>{error}</p>}</section>
       <section>
         <ReusableButton description={'Sign Up'} label={'Crie sua conta'} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './ReusableForm.css'
 import {ReusableButton} from "../Button/ReusableButton";
@@ -14,13 +14,13 @@ type Field = {
 type ReusableFormProps = {
   formTitle: string;
   fields: Field[];
-  onSubmit: any;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, onSubmit }) => {
-
+const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSubmit, handleChange }) => {
   return (
-    <form className={'reusableForm'}>
+    <form className={'reusableForm'} onSubmit={handleSubmit}>
       <header>
         <h2>{formTitle}</h2>
       </header>
@@ -32,6 +32,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, onSubmit
             type={field.type}
             placeholder={field.placeholder}
             value={field.value || ''}
+            onChange={handleChange}
           />
         </div>
       ))}
