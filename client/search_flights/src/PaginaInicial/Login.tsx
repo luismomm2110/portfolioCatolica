@@ -52,7 +52,7 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
       <ReusableForm formTitle="Login" fields={loginFields} handleSubmit={handleSubmit} handleChange={handleChange} />
       <section className={'error'}>{error && <p>{error}</p>}</section>
       <section>
-        <ReusableButton description={'Sign Up'} label={'Crie sua conta'} />
+        <ReusableButton description={'Sign Up'} label={'Crie sua conta'} callback={onShowSignUp} />
       </section>
     </main>
     );

@@ -11,8 +11,6 @@ class TravelAgent:
     email: str
     password_hash: str
     phone_number: str
-    company: str
-    date_of_birth: datetime
     date_joined: datetime
 
     def set_password(self, password: str):

@@ -19,4 +19,14 @@ describe('SignUp', () => {
 
         expect(screen.getByRole('heading', {name: 'Crie sua conta!'})).toBeInTheDocument();
     })
+
+    it('should render the email, password and name fields', () => {
+        render(<SignUp />);
+
+        expect(screen.getByLabelText('Nome:')).toBeInTheDocument();
+        expect(screen.getByLabelText('Email:')).toBeInTheDocument();
+        expect(screen.getByLabelText('Password:')).toBeInTheDocument();
+        expect(screen.getByLabelText('Nome:')).toBeInTheDocument();
+        expect(screen.getByLabelText('Telefone:')).toBeInTheDocument();
+    })
 })

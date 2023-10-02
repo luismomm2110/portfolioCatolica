@@ -41,7 +41,6 @@ class MongoTravelAgentGateway(TravelAgentGateway):
             password_hash=travel_agent_data['password_hash'],
             phone_number=travel_agent_data['phone_number'],
             company=travel_agent_data['company'],
-            date_of_birth=travel_agent_data['date_of_birth'],
             date_joined=travel_agent_data['date_joined']
         )
 
@@ -52,7 +51,6 @@ class MongoTravelAgentGateway(TravelAgentGateway):
             'password_hash': travel_agent.password_hash,
             'phone_number': travel_agent.phone_number,
             'company': travel_agent.company,
-            'date_of_birth': travel_agent.date_of_birth,
             'date_joined': travel_agent.date_joined
         }
         self._mongo_client.db.collection.insert_one(travel_agent_to_dict)
