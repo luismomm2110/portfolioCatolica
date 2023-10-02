@@ -26,7 +26,7 @@ describe('Login', () => {
     it ('should render the login button', () => {
         render(<Login />);
 
-        expect(screen.getByRole('button', {name: 'Login'})).toBeInTheDocument();
+        expect(screen.getByRole('button', {name: 'Submit'})).toBeInTheDocument();
     })
 
     it('should update email and password fields when user type', () => {
@@ -49,7 +49,7 @@ describe('Login', () => {
         render(<Login />);
         userEvent.type(screen.getByLabelText('Email:'), 'cliente@cliente.com');
         userEvent.type(screen.getByLabelText('Password:'), 'senha_errada');
-        userEvent.click(screen.getByRole('button', {name: 'Login'}));
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
         expect(global.fetch).toHaveBeenCalledTimes(1);
     })
@@ -61,7 +61,7 @@ describe('Login', () => {
         render(<Login />);
         userEvent.type(screen.getByLabelText('Email:'), 'cliente@cliente.com');
         userEvent.type(screen.getByLabelText('Password:'), 'senha_errada');
-        userEvent.click(screen.getByRole('button', {name: 'Login'}));
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
         expect(await screen.findByText('Email e/ou senha incorreto(s)')).toBeInTheDocument();
     })
