@@ -36,7 +36,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSu
           />
         </div>
       ))}
-      <ReusableButton description={'Submit'}  label={'Login'} />
+      <ReusableButton description={'Submit'} label={'Submit'}/>
     </form>
   );
 };

@@ -1,7 +1,13 @@
 import React from "react";
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
+import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 
-export const SignUp: React.FC = () => {
+
+interface Props {
+    onShowLogin: () => void;
+}
+
+export const SignUp: React.FC<Props> = ({ onShowLogin }) => {
     const [formData, setFormData] = React.useState({
         name: '',
         email: '',
@@ -36,7 +42,7 @@ export const SignUp: React.FC = () => {
         },
         {
             id: 'phone',
-            type: 'text',
+            type: 'tel',
             placeholder: 'Telefone',
             label: 'Telefone',
             value: formData.phone,
@@ -60,6 +66,7 @@ export const SignUp: React.FC = () => {
    return (
        <main>
            <ReusableForm formTitle="Crie sua conta!" fields={loginFields} handleSubmit={handleSubmit} handleChange={handleChange} />
+           <ReusableButton description={'Login'} label={'Login'} callback={onShowLogin} />
        </main>
     )
 }
