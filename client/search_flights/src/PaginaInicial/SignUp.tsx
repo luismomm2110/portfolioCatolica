@@ -66,7 +66,7 @@ export const SignUp: React.FC<Props> = ({ onShowLogin }) => {
    return (
        <main>
            <ReusableForm formTitle="Crie sua conta!" fields={loginFields} handleSubmit={handleSubmit} handleChange={handleChange} />
-           <ReusableButton description={'Login'} label={'Login'} callback={onShowLogin} />
+           <ReusableButton description={'Faça Login'} label={'Faça Login'} callback={onShowLogin} />
        </main>
     )
 }

@@ -24,7 +24,7 @@ describe('Pagina Inicial', () => {
         render(<PaginaInicial/>);
         userEvent.click(await screen.findByRole('button', {name: 'Crie sua conta'}));
 
-        userEvent.click(await screen.findByRole('button', {name: 'Login'}));
+        userEvent.click(await screen.findByRole('button', {name: 'Faça Login'}));
 
         expect(await screen.findByRole('heading', {name: 'Login'})).toBeInTheDocument();
     })
