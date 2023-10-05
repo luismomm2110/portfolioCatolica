@@ -9,6 +9,7 @@ type Field = {
   placeholder: string;
   label: string;
   value: string;
+  error?: string;
 };
 
 type ReusableFormProps = {
@@ -34,6 +35,9 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSu
             value={field.value || ''}
             onChange={handleChange}
           />
+          <div className="error">
+            {field.error && <span>{field.error}</span>}
+          </div>
         </div>
       ))}
       <ReusableButton description={'Submit'} label={'Submit'}/>

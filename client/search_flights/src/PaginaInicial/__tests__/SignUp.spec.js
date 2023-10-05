@@ -2,6 +2,7 @@ import {render, screen} from '@testing-library/react';
 
 
 import {SignUp} from '../SignUp'
+import userEvent from '@testing-library/user-event'
 
 
 describe('SignUp', () => {
@@ -28,5 +29,16 @@ describe('SignUp', () => {
         expect(screen.getByLabelText('Password:')).toBeInTheDocument();
         expect(screen.getByLabelText('Nome:')).toBeInTheDocument();
         expect(screen.getByLabelText('Telefone:')).toBeInTheDocument();
+    })
+
+    it('should render error when password and confirmPassword doesnt match', () => {
+        render((<SignUp />));
+
+        userEvent.type(screen.getByLabelText('Nome:'), 'teste');
+        userEvent.type(screen.getByLabelText('Email:'), 'teste@teste.com')
+        userEvent.type(screen.getByLabelText('Password:'), 'senha_teste')
+        userEvent.type(screen.getByLabelText('Confirme sua senha:'), 'senha_errada')
+
+        expect(screen.getByText('Senhas não coincidem')).toBeInTheDocument();
     })
 })
