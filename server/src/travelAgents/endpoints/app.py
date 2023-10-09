@@ -1,4 +1,6 @@
 from flask import Flask, request, abort
+from flask_cors import CORS
+
 from http import HTTPStatus
 from pymongo import MongoClient
 
@@ -7,6 +9,8 @@ from server.src.travelAgents.services.services import create_travel_agent, login
     TravelAgentAlreadyExistsException
 
 app = Flask(__name__)
+CORS(app)
+
 
 client = MongoClient('localhost', 27017)
 mongo_client = client['search_flight_db']['travel_agent']

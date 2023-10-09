@@ -16,9 +16,29 @@ const [formData, setFormData] = React.useState({
         phone: '', phoneError: '',
     });
 
-    const handleSubmit = () => {
-        console.log(formData);
-    }
+    const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        fetch('http://127.0.0.1:5000/create_travel_agent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if(data.error) {
+                    console.log(data.error);
+                } else {
+                    console.log(data);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            }
+        );
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
@@ -83,7 +103,7 @@ const [formData, setFormData] = React.useState({
           }
           break;
         case 'phone':
-          const phoneRegex = /^\d{10}$/;
+          const phoneRegex = /^\d{10}$/;  
           if(!phoneRegex.test(value)) {
             return 'Please enter a valid phone number';
           }
@@ -101,14 +121,22 @@ const [formData, setFormData] = React.useState({
         default:
           break;
       }
-      return '';  // return empty string if there are no validation errors
+      return '';
     };
 
    return (
        <main>
-           <ReusableForm formTitle="Crie sua conta!" fields={loginFields} handleSubmit={handleSubmit} handleChange={handleChange} />
-           <ReusableButton description={'Faça Login'} label={'Faça Login'} callback={onShowLogin} />
+           <ReusableForm
+               formTitle="Crie sua conta!"
+               fields={loginFields}
+               handleSubmit={handleSubmit}
+               handleChange={handleChange}
+           />
+           <ReusableButton
+               description={'Faça Login'}
+               label={'Faça Login'}
+               callback={onShowLogin}
+           />
        </main>
     )
 }
-

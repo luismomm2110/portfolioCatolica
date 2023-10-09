@@ -20,6 +20,11 @@ type ReusableFormProps = {
 };
 
 const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSubmit, handleChange }) => {
+  const isDisabled = () => {
+    return fields.some((field) => field.error !== '');
+  }
+
+
   return (
     <form className={'reusableForm'} onSubmit={handleSubmit}>
       <header>
@@ -40,7 +45,11 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSu
           </div>
         </div>
       ))}
-      <ReusableButton description={'Submit'} label={'Submit'}/>
+      <ReusableButton
+          description={'Submit'}
+          label={'Submit'}
+          disabled={isDisabled()}
+      />
     </form>
   );
 };

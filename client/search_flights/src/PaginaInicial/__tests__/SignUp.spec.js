@@ -41,4 +41,26 @@ describe('SignUp', () => {
 
         expect(screen.getByText('Senhas não coincidem')).toBeInTheDocument();
     })
+
+    it('should call the SignUp gateway when the SignUp button is clicked',  () => {
+        render(<SignUp />);
+        userEvent.type(screen.getByLabelText('Nome:'), 'teste');
+        userEvent.type(screen.getByLabelText('Email:'), 'teste@teste.com');
+        userEvent.type(screen.getByLabelText('Password:'), 'senha_teste');
+        userEvent.type(screen.getByLabelText('Confirme sua senha:'), 'senha_teste');
+        userEvent.type(screen.getByLabelText('Telefone:'), '123456789');
+
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        expect(global.fetch).toHaveBeenCalledTimes(1);
+    })
+
+    it('should disable the SignUp button when the form is invalid', () => {
+        render(<SignUp />);
+
+        userEvent.type(screen.getByLabelText('Password:'), 'senha_teste');
+        userEvent.type(screen.getByLabelText('Confirme sua senha:'), 'outra_senha');
+
+        expect(screen.getByRole('button', {name: 'Submit'})).toBeDisabled();
+    })
 })
