@@ -18,6 +18,7 @@ const [formData, setFormData] = React.useState({
 
     const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        console.log(formData)
         fetch('http://127.0.0.1:5000/create_travel_agent', {
             method: 'POST',
             headers: {
@@ -103,7 +104,7 @@ const [formData, setFormData] = React.useState({
           }
           break;
         case 'phone':
-          const phoneRegex = /^\d{10}$/;  
+            const phoneRegex = /^\(?([1-9]{2})\)?[-. ]?([9]\d{4})[-. ]?(\d{4})$/;
           if(!phoneRegex.test(value)) {
             return 'Please enter a valid phone number';
           }

@@ -21,7 +21,9 @@ type ReusableFormProps = {
 
 const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSubmit, handleChange }) => {
   const isDisabled = () => {
-    return fields.some((field) => field.error !== '');
+    const isThereAnError = fields.some((field) => field.error !== '');
+    const isThereAnEmptyField = fields.some((field) => field.value === '');
+    return isThereAnError || isThereAnEmptyField;
   }
 
 

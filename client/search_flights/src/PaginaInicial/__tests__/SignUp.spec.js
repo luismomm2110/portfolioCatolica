@@ -63,4 +63,12 @@ describe('SignUp', () => {
 
         expect(screen.getByRole('button', {name: 'Submit'})).toBeDisabled();
     })
+
+    it('should disable the SignUp button when any field is empty', () => {
+        render(<SignUp />);
+
+        userEvent.type(screen.getByLabelText('Nome:'), '');
+
+        expect(screen.getByRole('button', {name: 'Submit'})).toBeDisabled();
+    })
 })
