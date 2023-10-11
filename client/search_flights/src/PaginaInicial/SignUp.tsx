@@ -13,18 +13,27 @@ const [formData, setFormData] = React.useState({
         email: '', emailError: '',
         password: '', passwordError: '',
         confirmPassword: '', confirmPasswordError: '',
-        phone: '', phoneError: '',
+        phone_number: '', phoneError: '',
     });
+
+
 
     const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        const formattedFormData = {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            phone_number: formData.phone_number,
+            };
+
         console.log(formData)
         fetch('http://127.0.0.1:5000/create_travel_agent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(formattedFormData),
         })
             .then(response => response.json())
             .then(data => {
@@ -65,11 +74,11 @@ const [formData, setFormData] = React.useState({
             error: formData.emailError
         },
         {
-            id: 'phone',
+            id: 'phone_number',
             type: 'tel',
             placeholder: 'Telefone',
             label: 'Telefone',
-            value: formData.phone,
+            value: formData.phone_number,
             error: formData.phoneError
         },
         {

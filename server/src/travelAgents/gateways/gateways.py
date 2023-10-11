@@ -1,3 +1,5 @@
+from typing import Optional
+
 from server.src.travelAgents.models.models import TravelAgent
 
 
@@ -33,14 +35,15 @@ class MongoTravelAgentGateway(TravelAgentGateway):
     def get_all_travel_agents(self) -> dict[str: TravelAgent]:
         return self._mongo_client.db.collection.find()
 
-    def get_travel_agent_by_email(self, email: str) -> TravelAgent:
+    def get_travel_agent_by_email(self, email: str) -> Optional[TravelAgent]:
         travel_agent_data = self._mongo_client.db.collection.find_one({"email": email})
+        if not travel_agent_data:
+            return None
         return TravelAgent(
             name=travel_agent_data['name'],
             email=travel_agent_data['email'],
-            password_hash=travel_agent_data['password_hash'],
+            password=travel_agent_data['password_hash'],
             phone_number=travel_agent_data['phone_number'],
-            company=travel_agent_data['company'],
             date_joined=travel_agent_data['date_joined']
         )
 
@@ -48,9 +51,8 @@ class MongoTravelAgentGateway(TravelAgentGateway):
         travel_agent_to_dict = {
             'name': travel_agent.name,
             'email': travel_agent.email,
-            'password_hash': travel_agent.password_hash,
+            'password_hash': travel_agent.password,
             'phone_number': travel_agent.phone_number,
-            'company': travel_agent.company,
             'date_joined': travel_agent.date_joined
         }
         self._mongo_client.db.collection.insert_one(travel_agent_to_dict)
