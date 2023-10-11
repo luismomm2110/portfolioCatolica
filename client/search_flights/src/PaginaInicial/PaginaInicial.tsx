@@ -8,7 +8,7 @@ export const PaginaInicial: React.FC = () => {
    return (
         <div>
             { isLogin ? <Login onShowSignUp={() => setIsLogin(false)} />  :
-                <SignUp />
+                <SignUp onShowLogin={() => setIsLogin(true)} />
             }
         </div>
     )

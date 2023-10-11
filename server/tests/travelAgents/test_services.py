@@ -1,4 +1,5 @@
 from datetime import datetime
+from unittest.mock import patch
 
 import pytest
 
@@ -7,27 +8,26 @@ from server.src.travelAgents.services.services import create_travel_agent, login
     TravelAgentAlreadyExistsException
 
 
-def test_when_create_user_then_it_is_saved():
+@patch('server.src.travelAgents.services.services.datetime')
+def test_when_create_user_then_it_is_saved(mock_datetime):
+    date_joined = datetime(2020, 1, 1)
+    mock_datetime.now.return_value = date_joined
     travel_agent = {
         'name': 'John Doe',
         'email': 'johndoe@gmail.com',
-        'password_hash': 'john123',
+        'password': 'john123',
         'phone_number': '(11) 99999-9999',
-        'company': 'Travel Agent Company',
-        'date_of_birth': datetime(1990, 1, 1),
-        'date_joined': datetime(2020, 1, 1)
     }
 
     fake_travel_agent_gateway = FakeTravelAgentGateway()
     create_travel_agent(fake_travel_agent_gateway, travel_agent)
 
-    assert fake_travel_agent_gateway.get_all_travel_agents()['johndoe@gmail.com'].name == 'John Doe'
-    assert fake_travel_agent_gateway.get_all_travel_agents()['johndoe@gmail.com'].email == 'johndoe@gmail.com'
-    assert fake_travel_agent_gateway.get_all_travel_agents()['johndoe@gmail.com'].password_hash is not None or ''
-    assert fake_travel_agent_gateway.get_all_travel_agents()['johndoe@gmail.com'].phone_number == '(11) 99999-9999'
-    assert fake_travel_agent_gateway.get_all_travel_agents()['johndoe@gmail.com'].company == 'Travel Agent Company'
-    assert fake_travel_agent_gateway.get_all_travel_agents()['johndoe@gmail.com'].date_of_birth == datetime(1990, 1, 1)
-    assert fake_travel_agent_gateway.get_all_travel_agents()['johndoe@gmail.com'].date_joined == datetime(2020, 1, 1)
+    actual_travel_agent = fake_travel_agent_gateway.get_all_travel_agents()['johndoe@gmail.com']
+    assert actual_travel_agent.name == 'John Doe'
+    assert actual_travel_agent.email == 'johndoe@gmail.com'
+    assert actual_travel_agent.password is not None or ''
+    assert actual_travel_agent.phone_number == '(11) 99999-9999'
+    assert actual_travel_agent.date_joined == date_joined.isoformat()
 
 
 def test_when_try_to_create_a_user_without_name_then_it_raises_an_exception():
@@ -37,11 +37,8 @@ def test_when_try_to_create_a_user_without_name_then_it_raises_an_exception():
         travel_agent_information = {
             'name': '',
             'email': 'joohndoe@gmail.com',
-            'password_hash': 'john123',
+            'password': 'john123',
             'phone_number': '(11) 99999-9999',
-            'company': 'Travel Agent Company',
-            'date_of_birth': datetime(1990, 1, 1),
-            'date_joined': datetime(2020, 1, 1)
         }
         create_travel_agent(fake_travel_agent_gateway, travel_agent_information)
 
@@ -53,11 +50,8 @@ def test_when_login_with_correct_password_then_it_returns_true():
     travel_agent_information = {
         'name': 'John Doe',
         'email': 'johndoe@gmail.com',
-        'password_hash': 'john123',
+        'password': 'john123',
         'phone_number': '(11) 99999-9999',
-        'company': 'Travel Agent Company',
-        'date_of_birth': datetime(1990, 1, 1),
-        'date_joined': datetime(2020, 1, 1)
     }
     create_travel_agent(fake_travel_agent_gateway, travel_agent_information)
 
@@ -69,11 +63,8 @@ def test_when_login_with_incorrect_password_then_throws_exception():
     travel_agent_information = {
         'name': 'John Doe',
         'email': 'johndoe@gmail.com',
-        'password_hash': 'john123',
+        'password': 'john123',
         'phone_number': '(11) 99999-9999',
-        'company': 'Travel Agent Company',
-        'date_of_birth': datetime(1990, 1, 1),
-        'date_joined': datetime(2020, 1, 1)
     }
     create_travel_agent(fake_travel_agent_gateway, travel_agent_information)
 
@@ -88,11 +79,8 @@ def test_when_try_to_create_with_email_already_registered_then_it_raises_an_exce
     travel_agent_information = {
         'name': 'John Doe',
         'email': 'johndoe@gmail.com',
-        'password_hash': 'john123',
+        'password': 'john123',
         'phone_number': '(11) 99999-9999',
-        'company': 'Travel Agent Company',
-        'date_of_birth': datetime(1990, 1, 1),
-        'date_joined': datetime(2020, 1, 1)
     }
 
     with pytest.raises(TravelAgentAlreadyExistsException) as excinfo:

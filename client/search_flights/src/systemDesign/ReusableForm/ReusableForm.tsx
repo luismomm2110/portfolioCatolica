@@ -9,6 +9,7 @@ type Field = {
   placeholder: string;
   label: string;
   value: string;
+  error?: string;
 };
 
 type ReusableFormProps = {
@@ -19,6 +20,13 @@ type ReusableFormProps = {
 };
 
 const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSubmit, handleChange }) => {
+  const isDisabled = () => {
+    const isThereAnError = fields.some((field) => field.error !== '');
+    const isThereAnEmptyField = fields.some((field) => field.value === '');
+    return isThereAnError || isThereAnEmptyField;
+  }
+
+
   return (
     <form className={'reusableForm'} onSubmit={handleSubmit}>
       <header>
@@ -34,9 +42,16 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSu
             value={field.value || ''}
             onChange={handleChange}
           />
+          <div className="error">
+            {field.error && <span>{field.error}</span>}
+          </div>
         </div>
       ))}
-      <ReusableButton description={'Submit'}  label={'Login'} />
+      <ReusableButton
+          description={'Submit'}
+          label={'Submit'}
+          disabled={isDisabled()}
+      />
     </form>
   );
 };
