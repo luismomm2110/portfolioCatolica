@@ -9,7 +9,7 @@ type Field = {
   placeholder: string;
   label: string;
   value: string;
-  error?: string;
+  error: string;
 };
 
 type ReusableFormProps = {

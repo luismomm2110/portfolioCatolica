@@ -48,7 +48,8 @@ describe('Login', () => {
       );
         render(<Login />);
         userEvent.type(screen.getByLabelText('Email:'), 'cliente@cliente.com');
-        userEvent.type(screen.getByLabelText('Password:'), 'senha_errada');
+        userEvent.type(screen.getByLabelText('Password:'), 'senha_correta');
+
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
         expect(global.fetch).toHaveBeenCalledTimes(1);
