@@ -37,6 +37,7 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
     placeholder: 'Email',
     label: 'Email',
     value: formData.email,
+    error: ''
   },
   {
     id: 'password',
@@ -44,15 +45,25 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
     placeholder: 'Password',
     label: 'Password',
     value: formData.password,
+    error: ''
   },
 ];
 
   return (
     <main>
-      <ReusableForm formTitle="Login" fields={loginFields} handleSubmit={handleSubmit} handleChange={handleChange} />
+      <ReusableForm
+          formTitle="Login"
+          fields={loginFields}
+          handleSubmit={handleSubmit}
+          handleChange={handleChange}
+      />
       <section className={'error'}>{error && <p>{error}</p>}</section>
       <section>
-        <ReusableButton description={'Sign Up'} label={'Crie sua conta'} callback={onShowSignUp} />
+        <ReusableButton
+            description={'Sign Up'}
+            label={'Crie sua conta'}
+            callback={onShowSignUp}
+        />
       </section>
     </main>
     );
