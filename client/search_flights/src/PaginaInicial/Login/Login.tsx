@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {loginGateway} from "../../gateways/Login";
+import {loginGateway} from "../gateways/Login";
 
 import './Login.css';
 
