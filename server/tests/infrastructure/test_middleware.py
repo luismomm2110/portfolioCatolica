@@ -10,7 +10,6 @@ Request = namedtuple("Request", ["headers"])
 
 
 class TestTokenRequiredDecorator(unittest.TestCase):
-
     def setUp(self):
         self.secret_key = "supersecret"
         self.request = Request(headers={})
