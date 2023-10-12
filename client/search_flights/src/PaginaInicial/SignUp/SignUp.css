@@ -1,0 +1,17 @@
+.SignUp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+     & label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+
+    & button:hover {
+        background-color: #357ab7;
+    }
+}

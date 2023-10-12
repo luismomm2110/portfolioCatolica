@@ -1,6 +1,7 @@
 import React from "react";
-import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
-import {ReusableButton} from "../systemDesign/Button/ReusableButton";
+import ReusableForm from "../../systemDesign/ReusableForm/ReusableForm";
+import {ReusableButton} from "../../systemDesign/Button/ReusableButton";
+import './SignUp.css'
 
 
 interface Props {
@@ -135,7 +136,7 @@ const [formData, setFormData] = React.useState({
     };
 
    return (
-       <main>
+       <main className={'SignUp'}>
            <ReusableForm
                formTitle="Crie sua conta!"
                fields={loginFields}

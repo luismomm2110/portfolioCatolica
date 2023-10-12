@@ -3,8 +3,8 @@ import {loginGateway} from "../gateways/Login";
 
 import './Login.css';
 
-import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
-import {ReusableButton} from "../systemDesign/Button/ReusableButton";
+import ReusableForm from "../../systemDesign/ReusableForm/ReusableForm";
+import {ReusableButton} from "../../systemDesign/Button/ReusableButton";
 
 interface Props {
   onShowSignUp: () => void;
@@ -50,7 +50,7 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
 ];
 
   return (
-    <main>
+    <main className={'Login'}>
       <ReusableForm
           formTitle="Login"
           fields={loginFields}
