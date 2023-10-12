@@ -14,7 +14,7 @@ class TestTokenRequiredDecorator(unittest.TestCase):
     def setUp(self):
         self.secret_key = "supersecret"
         self.request = Request(headers={})
-        self.get_user_by_id = ()
+        self.get_user_by_id = lambda user_id: None
 
     def test_valid_token(self):
         payload = {
@@ -45,7 +45,6 @@ class TestTokenRequiredDecorator(unittest.TestCase):
             "user_id": "1",
         }
         token = jwt.encode(payload, self.secret_key, algorithm="HS256")
-        self.get_user_by_id = lambda user_id: None
         self.request = Request({'Authorization': f'Bearer {token}'})
 
         @token_required(secret_key=self.secret_key, request=self.request, get_user_by_id=self.get_user_by_id)
@@ -66,6 +65,7 @@ class TestTokenRequiredDecorator(unittest.TestCase):
         response, status_code = dummy_function()
         self.assertEqual(status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
         self.assertEqual(response["message"], "Something went wrong")
+
 
 if __name__ == "__main__":
     unittest.main()
