@@ -4,7 +4,6 @@ import {
     createBrowserRouter,
     RouterProvider
 } from "react-router-dom";
-import './App.css';
 import {PaginaInicial} from './PaginaInicial/PaginaInicial'
 
 const App = () => {

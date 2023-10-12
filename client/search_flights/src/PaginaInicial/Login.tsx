@@ -50,7 +50,7 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
 ];
 
   return (
-    <main>
+    <main className={'Login'}>
       <ReusableForm
           formTitle="Login"
           fields={loginFields}
