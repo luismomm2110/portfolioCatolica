@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 from server.src.travelAgents.gateways.gateways import TravelAgentGateway
-from server.src.travelAgents.models.models import TravelAgent
+from server.src.travelAgents.models.models import TravelAgent, set_password
 
 
 class TravelAgentAlreadyExistsException(ValueError):
@@ -14,6 +14,7 @@ def create_travel_agent(travel_agent_gateway: TravelAgentGateway, travel_agent: 
         raise TravelAgentAlreadyExistsException('Email already in use')
     travel_agent['date_joined'] = datetime.now().isoformat()
     travel_agent['_id'] = str(uuid.uuid4())
+    travel_agent['password'] = set_password(travel_agent['password'])
     travel_agent = TravelAgent(**travel_agent)
     travel_agent_gateway.save(travel_agent)
 

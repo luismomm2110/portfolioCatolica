@@ -1,14 +1,14 @@
 import json
 import os
+from dataclasses import asdict
 
-import jwt
 from flask import Flask, request, abort
 from flask_cors import CORS
 
 from http import HTTPStatus
 from pymongo import MongoClient
 
-from server.src.infrastructure.auth_middleware import token_required, create_token
+from server.src.infrastructure.auth_middleware import create_token
 from server.src.travelAgents.gateways.gateways import MongoTravelAgentGateway
 from server.src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
@@ -36,18 +36,17 @@ def insert():
         abort(HTTPStatus.UNPROCESSABLE_ENTITY, description=e.args)
 
 
-@token_required(gateway.get_travel_agent_by_id, request, SECRET_KEY)
 @app.route('/login', methods=['POST'])
 def login():
     try:
         email = request.json['email']
         password = request.json['password']
         if travel_agent := login_as_travel_agent(gateway, email, password):
-            create_token(SECRET_KEY, travel_agent.id)
-            return HTTPStatus.OK, json.loads(travel_agent)
+            create_token(SECRET_KEY, str(travel_agent._id))
+            return json.dumps(asdict(travel_agent))
     except ValueError as e:
         abort(HTTPStatus.UNAUTHORIZED, description=e.args)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5001, debug=True)

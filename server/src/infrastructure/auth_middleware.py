@@ -7,12 +7,11 @@ from flask import abort
 
 def create_token(secret_key, user_id):
     try:
-        user = {}
-        user["token"] = jwt.encode(
-            {"user_id": user[user_id]},
+        user = {"token": jwt.encode(
+            {"user_id": str(user_id)},
             secret_key,
             algorithm="HS256"
-        )
+        )}
         return {
             "message": "Successfully fetched auth token",
             "data": user
