@@ -1,6 +1,6 @@
 import React from "react";
-import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
-import {ReusableButton} from "../systemDesign/Button/ReusableButton";
+import ReusableForm from "../../systemDesign/ReusableForm/ReusableForm";
+import {ReusableButton} from "../../systemDesign/Button/ReusableButton";
 import './SignUp.css'
 
 

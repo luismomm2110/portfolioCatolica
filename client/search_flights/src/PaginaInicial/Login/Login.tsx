@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import {loginGateway} from "../gateways/Login";
+import {loginGateway} from "../../gateways/Login";
 
 import './Login.css';
 
-import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
-import {ReusableButton} from "../systemDesign/Button/ReusableButton";
+import ReusableForm from "../../systemDesign/ReusableForm/ReusableForm";
+import {ReusableButton} from "../../systemDesign/Button/ReusableButton";
 
 interface Props {
   onShowSignUp: () => void;
