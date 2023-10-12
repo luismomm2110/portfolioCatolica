@@ -12,7 +12,7 @@ from server.src.travelAgents.services.services import create_travel_agent, login
 def test_when_create_user_then_it_is_saved(mock_datetime):
     date_joined = datetime(2020, 1, 1)
     mock_datetime.now.return_value = date_joined
-    travel_agent = {
+    travel_agent_data = {
         'name': 'John Doe',
         'email': 'johndoe@gmail.com',
         'password': 'john123',
@@ -20,9 +20,10 @@ def test_when_create_user_then_it_is_saved(mock_datetime):
     }
 
     fake_travel_agent_gateway = FakeTravelAgentGateway()
-    create_travel_agent(fake_travel_agent_gateway, travel_agent)
+    create_travel_agent(fake_travel_agent_gateway, travel_agent_data)
 
-    actual_travel_agent = fake_travel_agent_gateway.get_all_travel_agents()['johndoe@gmail.com']
+    actual_travel_agent =\
+        fake_travel_agent_gateway.get_travel_agent_by_email('johndoe@gmail.com')
     assert actual_travel_agent.name == 'John Doe'
     assert actual_travel_agent.email == 'johndoe@gmail.com'
     assert actual_travel_agent.password is not None or ''
@@ -45,7 +46,7 @@ def test_when_try_to_create_a_user_without_name_then_it_raises_an_exception():
     assert "'name' cannot be empty or None" in str(excinfo.value)
 
 
-def test_when_login_with_correct_password_then_it_returns_true():
+def test_when_login_with_correct_password_then_it_true():
     fake_travel_agent_gateway = FakeTravelAgentGateway()
     travel_agent_information = {
         'name': 'John Doe',
@@ -55,7 +56,14 @@ def test_when_login_with_correct_password_then_it_returns_true():
     }
     create_travel_agent(fake_travel_agent_gateway, travel_agent_information)
 
-    assert login_as_travel_agent(fake_travel_agent_gateway, 'johndoe@gmail.com', 'john123') is True
+    travel_agent_data = login_as_travel_agent(fake_travel_agent_gateway,
+                                              'johndoe@gmail.com',
+                                              'john123')
+
+    assert travel_agent_data.name == 'John Doe'
+    assert travel_agent_data.email == 'johndoe@gmail.com'
+    assert travel_agent_data.password is not None or ''
+    assert travel_agent_data.phone_number == '(11) 99999-9999'
 
 
 def test_when_login_with_incorrect_password_then_throws_exception():

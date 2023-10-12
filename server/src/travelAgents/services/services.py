@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from server.src.travelAgents.gateways.gateways import TravelAgentGateway
@@ -12,6 +13,7 @@ def create_travel_agent(travel_agent_gateway: TravelAgentGateway, travel_agent: 
     if travel_agent_gateway.get_travel_agent_by_email(travel_agent['email']):
         raise TravelAgentAlreadyExistsException('Email already in use')
     travel_agent['date_joined'] = datetime.now().isoformat()
+    travel_agent['_id'] = str(uuid.uuid4())
     travel_agent = TravelAgent(**travel_agent)
     travel_agent_gateway.save(travel_agent)
 
@@ -20,6 +22,6 @@ def login_as_travel_agent(travel_agent_gateway: TravelAgentGateway, email: str, 
     try:
         travel_agent = travel_agent_gateway.get_travel_agent_by_email(email)
         travel_agent.check_password(password)
-        return True
+        return travel_agent
     except (KeyError, ValueError):
         raise ValueError('Invalid email or password')

@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import List
 
-from server.src.flights.gateways import AbstractGateway
-from server.src.flights.models import Flight, get_possible_airports
+from server.src.flights.gateways.gateway_amadeus import AbstractGateway
+from server.src.flights.models.model import get_possible_airports, Flight
 from server.src.flights.repositories.repository_iata import AbstractRepository
 
 

@@ -7,6 +7,7 @@ from typing import Any
 
 @dataclass
 class TravelAgent:
+    _id: str
     name: str
     email: str
     password: str

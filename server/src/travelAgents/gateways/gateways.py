@@ -7,7 +7,7 @@ class TravelAgentGateway:
     def get_travel_agent_by_email(self, email: str) -> TravelAgent:
         raise NotImplementedError
 
-    def get_travel_agent_by_id(self, id: str) -> TravelAgent:
+    def get_travel_agent_by_id(self, _id: str) -> TravelAgent:
         raise NotImplementedError
 
     def save(self, travel_agent: TravelAgent) -> None:
@@ -21,9 +21,9 @@ class FakeTravelAgentGateway(TravelAgentGateway):
     def get_travel_agent_by_email(self, email: str) -> TravelAgent:
         return self._travel_agents.get(email)
 
-    def get_travel_agent_by_id(self, id: str) -> Optional[TravelAgent]:
+    def get_travel_agent_by_id(self, _id: str) -> Optional[TravelAgent]:
         for travel_agent in self._travel_agents.values():
-            if travel_agent.id == id:
+            if travel_agent._id == _id:
                 return travel_agent
         return None
 
@@ -40,6 +40,7 @@ class MongoTravelAgentGateway(TravelAgentGateway):
         if not travel_agent_data:
             return None
         return TravelAgent(
+            _id=travel_agent_data['_id'],
             name=travel_agent_data['name'],
             email=travel_agent_data['email'],
             password=travel_agent_data['password_hash'],
@@ -47,11 +48,12 @@ class MongoTravelAgentGateway(TravelAgentGateway):
             date_joined=travel_agent_data['date_joined']
         )
 
-    def get_travel_agent_by_id(self, id: str) -> Optional[TravelAgent]:
+    def get_travel_agent_by_id(self, _id: str) -> Optional[TravelAgent]:
         travel_agent_data = self._mongo_client.db.collection.find_one({"_id": id})
         if not travel_agent_data:
             return None
         return TravelAgent(
+            _id=travel_agent_data['_id'],
             name=travel_agent_data['name'],
             email=travel_agent_data['email'],
             password=travel_agent_data['password_hash'],

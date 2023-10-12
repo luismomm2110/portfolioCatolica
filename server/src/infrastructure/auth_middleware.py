@@ -2,6 +2,23 @@ from functools import wraps
 from http import HTTPStatus
 
 import jwt
+from flask import abort
+
+
+def create_token(secret_key, user_id):
+    try:
+        user = {}
+        user["token"] = jwt.encode(
+            {"user_id": user[user_id]},
+            secret_key,
+            algorithm="HS256"
+        )
+        return {
+            "message": "Successfully fetched auth token",
+            "data": user
+        }
+    except Exception:
+        abort(HTTPStatus.UNAUTHORIZED, description='erro')
 
 
 def token_required(secret_key, request, get_user_by_id):
