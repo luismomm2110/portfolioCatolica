@@ -20,10 +20,7 @@ class TravelAgent:
         input_password_salt_combo = password + stored_salt
         input_hashed_password = hashlib.sha256(input_password_salt_combo.encode()).hexdigest()
 
-        if input_hashed_password != stored_hashed_password:
-            raise ValueError("Incorrect password")
-
-        return True
+        return input_hashed_password == stored_hashed_password
 
     def __post_init__(self):
         for field_name, field_value in self.__dict__.items():

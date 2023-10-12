@@ -20,9 +20,9 @@ def create_travel_agent(travel_agent_gateway: TravelAgentGateway, travel_agent: 
 
 
 def login_as_travel_agent(travel_agent_gateway: TravelAgentGateway, email: str, password: str):
-    try:
-        travel_agent = travel_agent_gateway.get_travel_agent_by_email(email)
-        travel_agent.check_password(password)
-        return travel_agent
-    except (KeyError, ValueError):
+    travel_agent = travel_agent_gateway.get_travel_agent_by_email(email)
+
+    if not travel_agent or not travel_agent.check_password(password):
         raise ValueError('Invalid email or password')
+
+    return travel_agent
