@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, abort
 from flask_cors import CORS
 
@@ -11,10 +13,12 @@ from server.src.travelAgents.services.services import create_travel_agent, login
 app = Flask(__name__)
 CORS(app)
 
-
-client = MongoClient('localhost', 27017)
-mongo_client = client['search_flight_db']['travel_agent']
-gateway = MongoTravelAgentGateway(mongo_client)
+SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+print(SECRET_KEY)
+app.config['SECRET_KEY'] = SECRET_KEY
+mongo_client = MongoClient('localhost', 27017)
+travel_agent_client = mongo_client['search_flight_db']['travel_agent']
+gateway = MongoTravelAgentGateway(travel_agent_client)
 
 
 @app.route('/create_travel_agent', methods=['POST'])
