@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import JWTManager, create_access_token
 
 from http import HTTPStatus
 from pymongo import MongoClient
@@ -13,6 +13,7 @@ from server.src.travelAgents.services.services import create_travel_agent, login
 
 app = Flask(__name__)
 CORS(app)
+jwt = JWTManager(app)
 
 SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
 print(SECRET_KEY)
