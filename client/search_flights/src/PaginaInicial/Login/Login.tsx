@@ -28,8 +28,28 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+    const error = validateField(id, value);
+    setFormData({ ...formData, [id]: value, [id + 'Error']: error });
   }
+
+  const validateField = (id: string, value: string): string => {
+    switch(id) {
+      case 'email':
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(value)) {
+          return 'Por favor entre um email válido';
+        }
+        break;
+      case 'password':
+        if(value.length < 8) {
+          return 'Senha deve ter pelo menos 8 caracteres';
+        }
+        break;
+      default:
+        break;
+    }
+    return '';
+  };
 
   const loginFields = [
   {
