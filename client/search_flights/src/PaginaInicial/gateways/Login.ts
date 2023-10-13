@@ -1,10 +1,10 @@
-import axios from 'axios';
-
 export const loginGateway = async (email: string, password: string) => {
-    const response =
-        await axios.post('http://localhost:5001/login', {
-            email: email,
-            password: password
-        });
-    return response.data;
-};
+    const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email, password})
+    })
+    return await response.json()
+}
