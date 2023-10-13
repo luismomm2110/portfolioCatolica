@@ -5,12 +5,16 @@ import './Login.css';
 
 import ReusableForm from "../../systemDesign/ReusableForm/ReusableForm";
 import {ReusableButton} from "../../systemDesign/Button/ReusableButton";
+import {useAuth} from "../../auth/authProvider";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
   onShowSignUp: () => void;
 }
 
 const Login: React.FC<Props> = ({ onShowSignUp }) => {
+  const { setToken } = useAuth();
+  const navigate = useNavigate();
   const [gatewayError, setGatewayError] = useState('');
 
   const [formData, setFormData] = useState({
@@ -21,7 +25,8 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     loginGateway(formData.email, formData.password).then((response) => {
-      console.log(response);
+      setToken(response.access_token);
+      navigate("/profile", { replace: true });
     }).catch((error) => {
         setGatewayError(error.message);
     })
