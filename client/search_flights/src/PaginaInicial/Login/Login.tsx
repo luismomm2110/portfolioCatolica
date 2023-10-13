@@ -5,7 +5,6 @@ import './Login.css';
 
 import ReusableForm from "../../systemDesign/ReusableForm/ReusableForm";
 import {ReusableButton} from "../../systemDesign/Button/ReusableButton";
-import {useAuth} from "../../auth/authProvider";
 
 interface Props {
   onShowSignUp: () => void;
@@ -13,7 +12,6 @@ interface Props {
 
 const Login: React.FC<Props> = ({ onShowSignUp }) => {
   const [gatewayError, setGatewayError] = useState('');
-  const { token } = useAuth();
 
   const [formData, setFormData] = useState({
     email: '',
