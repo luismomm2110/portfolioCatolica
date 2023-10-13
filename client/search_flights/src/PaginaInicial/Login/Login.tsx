@@ -11,17 +11,18 @@ interface Props {
 }
 
 const Login: React.FC<Props> = ({ onShowSignUp }) => {
-  const [error, setError] = useState('');
+  const [gatewayError, setGatewayError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const handleSubmit = () => {
-    loginGateway('', '').then((response) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    loginGateway(formData.email, formData.password).then((response) => {
       console.log(response);
     }).catch((error) => {
-        setError(error.message);
+        setGatewayError(error.message);
     })
   }
 
@@ -57,7 +58,7 @@ const Login: React.FC<Props> = ({ onShowSignUp }) => {
           handleSubmit={handleSubmit}
           handleChange={handleChange}
       />
-      <section className={'error'}>{error && <p>{error}</p>}</section>
+      <section className={'error'}>{gatewayError && <p>{gatewayError}</p>}</section>
       <section>
         <ReusableButton
             description={'Sign Up'}

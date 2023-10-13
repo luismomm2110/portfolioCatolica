@@ -1,5 +1,4 @@
 .reusableForm {
-    background-color: red;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,18 +18,20 @@
         font-size: 16px;
     }
 
-    .error {
-        color: red;
-        font-size: 14px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 10px;
-    }
+}
 
-    .error span {
-        margin: 0;
-    }
+.error {
+    color: red;
+    font-size: 14px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.error span {
+    margin: 0;
 }
 
