@@ -39,10 +39,9 @@ def insert():
 @app.route('/login', methods=['POST'])
 def login():
     try:
-        email = request.json['email']
-        password = request.json['password']
+        email, password = request.json['email'], request.json['password']
         if travel_agent := login_as_travel_agent(gateway, email, password):
-            create_token(SECRET_KEY, str(travel_agent._id))
+            create_token(SECRET_KEY, travel_agent._id)
             return json.dumps(asdict(travel_agent))
     except ValueError as e:
         abort(HTTPStatus.UNAUTHORIZED, description=e.args)
