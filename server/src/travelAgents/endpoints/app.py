@@ -1,14 +1,12 @@
-import json
 import os
-from dataclasses import asdict
 
-from flask import Flask, request, abort
+from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token
 
 from http import HTTPStatus
 from pymongo import MongoClient
 
-from server.src.infrastructure.auth_middleware import create_token
 from server.src.travelAgents.gateways.gateways import MongoTravelAgentGateway
 from server.src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
@@ -41,8 +39,8 @@ def login():
     try:
         email, password = request.json['email'], request.json['password']
         if travel_agent := login_as_travel_agent(gateway, email, password):
-            create_token(SECRET_KEY, travel_agent._id)
-            return json.dumps(asdict(travel_agent))
+            access_token = create_access_token(identity={'_id': travel_agent._id})
+            return jsonify(access_token=access_token, name=travel_agent.name)
     except ValueError as e:
         abort(HTTPStatus.UNAUTHORIZED, description=e.args)
 
