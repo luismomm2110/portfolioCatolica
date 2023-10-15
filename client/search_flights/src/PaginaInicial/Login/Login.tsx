@@ -5,16 +5,15 @@ import './Login.css';
 
 import ReusableForm from "../../systemDesign/ReusableForm/ReusableForm";
 import {ReusableButton} from "../../systemDesign/Button/ReusableButton";
-import {useAuth} from "../../auth/authProvider";
-import {useNavigate} from "react-router-dom";
 
 interface Props {
   onShowSignUp: () => void;
+  setToken: (token: string) => void;
+  navigate: (path: string, options?: any) => void;
 }
 
-const Login: React.FC<Props> = ({ onShowSignUp }) => {
-  const { setToken } = useAuth();
-  const navigate = useNavigate();
+
+const Login: React.FC<Props> = ({ onShowSignUp, setToken, navigate }) => {
   const [gatewayError, setGatewayError] = useState('');
 
   const [formData, setFormData] = useState({
