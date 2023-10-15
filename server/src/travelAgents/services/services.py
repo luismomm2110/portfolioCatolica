@@ -19,7 +19,7 @@ def create_travel_agent(travel_agent_gateway: TravelAgentGateway, travel_agent_d
     travel_agent_gateway.save(travel_agent_data)
 
 
-def login_as_travel_agent(travel_agent_gateway: TravelAgentGateway, email: str, password: str):
+def login_as_travel_agent(travel_agent_gateway: TravelAgentGateway, email: str, password: str) -> TravelAgent:
     travel_agent = travel_agent_gateway.get_travel_agent_by_email(email)
 
     if not travel_agent or not travel_agent.check_password(password):

@@ -1,14 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import Login from "./Login/Login";
 import { SignUp } from "./SignUp/SignUp";
+import {useNavigate} from "react-router-dom";
+import {useAuth} from "../auth/authProvider";
 
 export const PaginaInicial: React.FC = () => {
-    const [isLogin, setIsLogin] = React.useState(true);
+    const { setToken } = useAuth();
+    const [isLogin, setIsLogin] = useState(true);
+    const navigate = useNavigate();
 
-   return (
+
+    return (
         <div>
-            { isLogin ? <Login onShowSignUp={() => setIsLogin(false)} />  :
-                <SignUp onShowLogin={() => setIsLogin(true)} />
+            {isLogin ?
+                <Login
+                    onShowSignUp={() => setIsLogin(false)}
+                    setToken={setToken}
+                    navigate={navigate}
+                /> :
+                <SignUp onShowLogin={() => setIsLogin(true)}/>
             }
         </div>
     )
