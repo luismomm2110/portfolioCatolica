@@ -15,7 +15,7 @@ export const Routes: React.FC = () => {
             element: <ProtectedRoute/>,
             children: [
                 {
-                    path: '/',
+                    path: '/profile',
                     element: <div>Authenticated</div>,
                 }
             ]
