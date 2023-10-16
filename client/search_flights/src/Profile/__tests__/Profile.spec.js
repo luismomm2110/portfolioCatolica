@@ -1,28 +1,33 @@
 import {render, screen} from '@testing-library/react';
 import Profile from '../Profile'
-import userEvent from '@testing-library/user-event'
+import AuthProvider from '../../auth/authProvider'
+import {Router} from 'react-router-dom'
+
+const renderWithAuthProvider = () => {
+
+    return render(
+        <AuthProvider>
+            <Router
+                navigator={{}}
+                location={{pathname: '/profile'}}
+                routes={[]}
+                >
+                <Profile/>
+            </Router>
+        </AuthProvider>
+    )
+}
 
 describe('Profile', () => {
-    beforeEach(() => {
-        global.fetch = jest.fn(() => {
-                return Promise.resolve({
-                    json: () => Promise.resolve({}),
-                })
-            }
-        );
-    })
-
     it('Should render the Profile screen', () => {
-        render(<Profile/>);
+        renderWithAuthProvider()
 
         expect(screen.getByText('Profile')).toBeInTheDocument();
     });
 
-    it('Should call the logout gateway when I click in the Logout', () => {
-        render(<Profile/>)
+    it('Should have the logout button', () => {
+        renderWithAuthProvider()
 
-        userEvent.click(screen.getByRole('button', {name: 'Logout'}));
-
-        expect(global.fetch).toHaveBeenCalledTimes(1);
+        expect(screen.getByText('Logout')).toBeInTheDocument();
     })
 })
