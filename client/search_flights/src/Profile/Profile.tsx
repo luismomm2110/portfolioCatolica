@@ -1,23 +1,30 @@
 import React from 'react';
-import logoutGateway from "./gateway";
+import {useAuth} from "../auth/authProvider";
+import {useNavigate} from "react-router-dom";
+import {ReusableButton} from "../systemDesign/Button/ReusableButton";
+import './Profile.css'
 
 
 const Profile: React.FC = () => {
+    const { setToken } = useAuth();
+    const navigate = useNavigate()
     const logout = () => {
-        logoutGateway().then(() => {
-            console.log('logged out')
-        })
+        setToken(null);
+        navigate('/')
     }
 
     return (
         <>
-            <header>
-                <button onClick={logout}>
-                    Logout
-                </button>
+            <header className={'header'}>
+                <div></div>
+                <h1>Profile</h1>
+                    <ReusableButton
+                        description={'Logout'}
+                        label={'Logout'}
+                        callback={logout}
+                    />
             </header>
             <main>
-                <h1>Profile</h1>
             </main>
         </>
     );

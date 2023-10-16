@@ -1,0 +1,10 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    & h1 {
+        position: absolute;
+        left: 50%;
+    }
+}

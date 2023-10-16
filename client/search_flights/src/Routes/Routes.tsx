@@ -4,6 +4,7 @@ import {ProtectedRoute} from "../auth/ProtectedRoute";
 import {PaginaInicial} from "../PaginaInicial/PaginaInicial";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import Profile from "../Profile/Profile";
 
 export const Routes: React.FC = () => {
 
@@ -16,7 +17,7 @@ export const Routes: React.FC = () => {
             children: [
                 {
                     path: '/profile',
-                    element: <div>Authenticated</div>,
+                    element: <Profile />,
                 }
             ]
         }
