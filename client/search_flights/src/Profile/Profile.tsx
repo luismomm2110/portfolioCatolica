@@ -15,21 +15,23 @@ const Profile: React.FC = () => {
 
     return (
         <>
-            <header className={'header'}>
-                <h1>Profile</h1>
-                <ReusableButton
-                    description={'Logout'}
-                    label={'Logout'}
-                    callback={logout}
-                />
-            </header>
-            <main className={'conteudo-principal'}>
-                <ReusableButton
-                    description={'Criar área de voos'}
-                    label={'Criar área de voos'}
-                    callback={() => navigate('/createFlightArea')}
-                />
-            </main>
+            <div className={'profile'}>
+                <header>
+                    <h1>Profile</h1>
+                    <ReusableButton
+                        description={'Logout'}
+                        label={'Logout'}
+                        callback={logout}
+                    />
+                </header>
+                <main>
+                    <ReusableButton
+                        description={'Criar área de voos'}
+                        label={'Criar área de voos'}
+                        callback={() => navigate('/createFlightArea')}
+                    />
+                </main>
+            </div>
         </>
     );
 };
