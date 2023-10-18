@@ -18,6 +18,10 @@ export const Routes: React.FC = () => {
                 {
                     path: '/profile',
                     element: <Profile />,
+                },
+                {
+                    path: '/createFlightArea',
+                    element: <div>createFlightArea</div>,
                 }
             ]
         }
