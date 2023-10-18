@@ -1,8 +1,14 @@
 .header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     margin-bottom: 100px;
+
+    & button {
+        height: 50px;
+        margin-right: 50px;
+    }
 }
 
 .conteudo-principal {
