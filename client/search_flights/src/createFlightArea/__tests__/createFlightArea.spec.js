@@ -21,4 +21,14 @@ describe(('createFlightArea'), () => {
 
         expect(screen.getByText('O nome da área de voo deve ter no máximo 50 caracteres')).toBeInTheDocument()
     })
+
+    it('Should accept an origin airport', () => {
+        render(<CreateFlightArea/>)
+
+        const input = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input, 'Aeroporto de Guarulhos')
+
+        expect(screen.getByRole('textbox', {name: 'Aeroporto de origem:'})).toHaveValue(
+            'Aeroporto de Guarulhos');
+    })
 })
