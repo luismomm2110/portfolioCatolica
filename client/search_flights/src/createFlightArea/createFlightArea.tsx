@@ -3,13 +3,22 @@ import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 
 const CreateFlightArea: React.FC = () => {
     const [formData, setFormData] = useState({
-        flightAreaName: '',
+        flightAreaName: '', flightAreaNameError: '',
     })
+
+    const validateField = (id: string, value: string) => {
+        if (id === 'flightAreaName') {
+            if (value === '') {
+                return 'Campo obrigatório';
+            }
+        }
+        return '';
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
-        console.log(id, value)
-        setFormData({ ...formData, [id]: value});
+        const error = validateField(id, value);
+        setFormData({ ...formData, [id]: value, [id + 'Error']: error });
     }
 
     const flightAreaFields = [
@@ -20,7 +29,7 @@ const CreateFlightArea: React.FC = () => {
             type: 'text',
             placeholder: 'Insira o nome da área de voo',
             value: formData.flightAreaName,
-            error: ''
+            error: formData.flightAreaNameError
         }]
 
     return (
