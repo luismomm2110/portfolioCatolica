@@ -102,10 +102,11 @@ def test_when_search_for_a_date_without_flights_then_return_empty_list(fake_repo
 
 def test_when_search_for_a_city_then_return_the_nearest_fifty_airports(fake_repository):
     city = 'São Paulo'
+    limit = 50
 
-    airports = find_nearest_airports_by_city(city, fake_repository)
+    airports = find_nearest_airports_by_city(city, limit, fake_repository)
 
-    assert len(airports) == 50
+    assert len(airports) == limit
 
 
 @pytest.fixture
