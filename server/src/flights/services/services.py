@@ -15,3 +15,8 @@ def find_flights_within_range(iata_source: str, iata_destination: str, departure
     flights = gateway.get(iata_source, possible_airports, departure)
 
     return flights
+
+def find_nearest_airports_by_city(city: str, repository: AbstractRepository):
+    airports = repository.fetch_airports()[0:50]
+
+    return airports
