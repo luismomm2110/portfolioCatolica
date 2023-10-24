@@ -16,7 +16,11 @@ def find_flights_within_range(iata_source: str, iata_destination: str, departure
 
     return flights
 
+
 def find_nearest_airports_by_city(city: str, limit: int, repository: AbstractRepository):
+    if repository.fetch_municipality(city) is None:
+        return []
+
     airports = repository.fetch_airports()[0:limit]
 
     return airports
