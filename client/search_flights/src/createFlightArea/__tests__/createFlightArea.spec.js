@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
 import CreateFlightArea from '../createFlightArea'
+import Login from '../../PaginaInicial/Login/Login'
 
 describe(('createFlightArea'), () => {
     it('should give a name to the flight area', () => {
@@ -30,5 +31,23 @@ describe(('createFlightArea'), () => {
 
         expect(screen.getByRole('textbox', {name: 'Aeroporto de origem:'})).toHaveValue(
             'Aeroporto de Guarulhos');
+    })
+
+    it ('should call the searchAirports gateway when the submit an airport name',  () => {
+        global.fetch = jest.fn(() => {
+                return Promise.resolve({
+                    json: () => Promise.resolve({}),
+                })
+            }
+        );
+        render(<CreateFlightArea />);
+
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos do Leste Asiático')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input2, 'Aeroporto de Guarulhos')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        expect(global.fetch).toHaveBeenCalledTimes(1);
     })
 })

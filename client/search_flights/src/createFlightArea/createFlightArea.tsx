@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
+import {searchAirportGateway} from "./gateways/searchAirportGateway";
 
 const CreateFlightArea: React.FC = () => {
     const [formData, setFormData] = useState({
         flightAreaName: '', flightAreaNameError: '',
         flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
     })
+    const [gatewayError, setGatewayError] = useState('');
 
     const validateField = (id: string, value: string) => {
         if (id === 'flightAreaName') {
@@ -19,6 +21,15 @@ const CreateFlightArea: React.FC = () => {
             }
         }
         return '';
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        searchAirportGateway(formData.flightAreaOriginalAirport).then((response) => {
+            console.log(response);
+        }).catch((error) => {
+            setGatewayError(error.message);
+        })
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +68,7 @@ const CreateFlightArea: React.FC = () => {
             <ReusableForm
                 formTitle=""
                 fields={flightAreaFields}
-                handleSubmit={() => {}}
+                handleSubmit={handleSubmit}
                 handleChange={handleChange}
             />
             </main>
