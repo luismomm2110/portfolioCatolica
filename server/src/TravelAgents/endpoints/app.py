@@ -7,8 +7,8 @@ from flask_jwt_extended import JWTManager, create_access_token
 from http import HTTPStatus
 from pymongo import MongoClient
 
-from server.src.travelAgents.gateways.gateways import MongoTravelAgentGateway
-from server.src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+from server.src.TravelAgents.gateways.gateways import MongoTravelAgentGateway
+from server.src.TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
 
 app = Flask(__name__)

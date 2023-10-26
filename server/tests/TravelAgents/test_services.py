@@ -3,12 +3,12 @@ from unittest.mock import patch
 
 import pytest
 
-from server.src.travelAgents.gateways.gateways import FakeTravelAgentGateway
-from server.src.travelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+from server.src.TravelAgents.gateways.gateways import FakeTravelAgentGateway
+from server.src.TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
 
 
-@patch('server.src.travelAgents.services.services.datetime')
+@patch('server.src.TravelAgents.services.services.datetime')
 def test_when_create_user_then_it_is_saved(mock_datetime):
     date_joined = datetime(2020, 1, 1)
     mock_datetime.now.return_value = date_joined

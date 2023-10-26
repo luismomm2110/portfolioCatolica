@@ -8,7 +8,7 @@ from server.src.Flights.gateways.gateway_amadeus import FakeGateway
 from server.src.Flights.models.model import Flight
 from server.src.Flights.services.services import find_flights_within_range
 from server.src.Airports.services.services import find_nearest_airports_by_city
-from server.tests.Airports.test_services import source, destination, destinations
+from server.tests.utils import source, destination, destinations
 
 default_date = datetime(2020, 1, 1)
 original_flight = Flight(source=source, destination=destination, departure=default_date, price=Decimal('100.00'))
