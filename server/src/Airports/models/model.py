@@ -1,7 +1,12 @@
 import math
 from dataclasses import dataclass
+from decimal import Decimal
 
-from server.src.Flights.models.model import Coordinate
+
+@dataclass(frozen=True)
+class Coordinate:
+    latitude: Decimal
+    longitude: Decimal
 
 
 @dataclass(frozen=True)
@@ -27,3 +32,5 @@ def _distance_in_km(p1: str, p2: str):
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
     return radius_earth_in_km * c
+
+

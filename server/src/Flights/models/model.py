@@ -8,12 +8,6 @@ from server.src.Airports.models.model import _distance_in_km
 
 
 @dataclass(frozen=True)
-class Coordinate:
-    latitude: Decimal
-    longitude: Decimal
-
-
-@dataclass(frozen=True)
 class Flight:
     source: dict
     destination: dict
