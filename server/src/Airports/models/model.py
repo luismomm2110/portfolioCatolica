@@ -1,6 +1,7 @@
 import math
 from dataclasses import dataclass
 from decimal import Decimal
+from typing import List
 
 
 @dataclass(frozen=True)
@@ -34,3 +35,7 @@ def distance_in_km(p1: str, p2: str):
     return radius_earth_in_km * c
 
 
+def get_possible_airports(source: dict, destination: dict, airports: List[dict], desired_range: int) \
+        -> List[dict]:
+    return [airport for airport in airports if distance_in_km(destination['coordinates'], airport['coordinates'])
+            <= desired_range and airport != source]

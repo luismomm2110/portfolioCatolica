@@ -5,8 +5,8 @@ from typing import List, Tuple
 
 from server.src.Airports.repositories.repository import AbstractRepository
 from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
-from server.src.Flights.models.model import get_possible_airports, Flight
-from server.src.Airports.models.model import Airport
+from server.src.Flights.models.model import Flight
+from server.src.Airports.models.model import Airport, get_possible_airports
 
 
 def find_flights_within_range(iata_source: str, iata_destination: str, departure: datetime, desired_range: int,
