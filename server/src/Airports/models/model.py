@@ -16,7 +16,7 @@ class Airport:
     municipality: str
 
 
-def _distance_in_km(p1: str, p2: str):
+def distance_in_km(p1: str, p2: str):
     lat1, lon1 = p1.split(',')
     lat2, lon2 = p2.split(',')
     radius_earth_in_km = 6371

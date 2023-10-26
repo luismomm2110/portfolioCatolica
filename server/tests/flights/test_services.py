@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 import pytest
 
+from server.src.Airports.repositories.repository import FakeRepository
 from server.src.Flights.gateways.gateway_amadeus import FakeGateway
 from server.src.Flights.models.model import Flight
-from server.src.Flights.repositories.repository_iata import FakeRepository
 from server.src.Flights.services.services import find_flights_within_range, find_nearest_airports_by_city
 
 source = {'code': 'GRU', 'coordinates': '-23.4355556, -46.4730556', 'municipality': 'São Paulo'}
