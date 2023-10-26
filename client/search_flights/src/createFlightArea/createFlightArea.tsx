@@ -53,7 +53,7 @@ const CreateFlightArea: React.FC = () => {
             label: 'Aeroporto de origem',
             name: 'Aeroporto de origem',
             type: 'text',
-            placeholder: 'Insira um aeroporto de origem',
+            placeholder: 'Insira o nome da cidade',
             value: formData.flightAreaOriginalAirport,
             error: formData.flightAreaOriginalAirportError
         }

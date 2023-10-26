@@ -17,18 +17,14 @@ const [formData, setFormData] = React.useState({
         phone_number: '', phoneError: '',
     });
 
-
-
     const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formattedFormData = {
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-            phone_number: formData.phone_number,
+                name: formData.name,
+                email: formData.email,
+                password: formData.password,
+                phone_number: formData.phone_number,
             };
-
-        console.log(formData)
         fetch('http://127.0.0.1:5000/create_travel_agent', {
             method: 'POST',
             headers: {
