@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import pandas as pd
 
-from server.src.flights.models.model import Airport
+from server.src.Airports.models.model import Airport
 
 
 class AbstractRepository(abc.ABC):

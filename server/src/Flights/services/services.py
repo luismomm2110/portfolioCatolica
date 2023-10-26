@@ -3,9 +3,10 @@ from datetime import datetime
 from decimal import Decimal
 from typing import List, Tuple
 
-from server.src.flights.gateways.gateway_amadeus import AbstractGateway
-from server.src.flights.models.model import get_possible_airports, Flight, Airport
-from server.src.flights.repositories.repository_iata import AbstractRepository
+from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
+from server.src.Flights.models.model import get_possible_airports, Flight
+from server.src.Airports.models.model import Airport
+from server.src.Flights.repositories.repository_iata import AbstractRepository
 
 
 def find_flights_within_range(iata_source: str, iata_destination: str, departure: datetime, desired_range: int,

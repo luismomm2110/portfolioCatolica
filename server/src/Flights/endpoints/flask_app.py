@@ -2,9 +2,9 @@ from datetime import datetime
 
 from flask import Flask, request, jsonify
 
-from server.src.flights.gateways import AmadeusGateway
-from server.src.flights.repositories.repository_iata import IataRepository
-from server.src.flights.services.services import find_flights_within_range
+from server.src.Flights.gateways import AmadeusGateway
+from server.src.Flights.repositories.repository_iata import IataRepository
+from server.src.Flights.services.services import find_flights_within_range
 
 app = Flask(__name__)
 
@@ -18,7 +18,7 @@ def flights_endpoint():
     repository = IataRepository()
     gateway = AmadeusGateway()
 
-    return jsonify({'flights': find_flights_within_range(source, destination, departure, desired_range, repository,
+    return jsonify({'Flights': find_flights_within_range(source, destination, departure, desired_range, repository,
                                                          gateway)}), 200
 
 

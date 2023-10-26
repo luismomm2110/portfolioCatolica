@@ -1,4 +1,4 @@
-from server.src.flights.repositories.repository_iata import IataRepository
+from server.src.Flights.repositories.repository_iata import IataRepository
 
 
 def test_should_fetch_airports_from_iata_resource_as_tuple_of_dicts():
