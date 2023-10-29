@@ -39,14 +39,16 @@ class IataRepository(AbstractRepository):
         with open(csv_path) as csv_file:
             df = pd.read_csv(csv_file)
             df = df.dropna(subset=['iata_code'])
+            self.airports = [Airport(code=row['iata_code'],
+                                     coordinates=row['coordinates'],
+                                     municipality=row['municipality']) for _, row in df.iterrows()]
 
-            # todo fix this
-
-    def fetch_airports(self) -> Tuple[dict, ...]:
+    def fetch_airports(self) -> Tuple[Airport, ...]:
         return tuple(self.airports)
 
     def fetch_airport(self, iata_code: str):
-        return next(airport for airport in self.airports if airport['iata_code'] == iata_code)
+        return next(airport for airport in self.airports if
+                    airport.code == iata_code)
 
     def fetch_airports_by_municipality(self, city: str):
         return tuple(airport for airport in self.airports if airport.municipality == city)

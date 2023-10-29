@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Flask, request, jsonify
 
 from server.src.Airports.repositories.repository import IataRepository
-from server.src.Flights.gateways import AmadeusGateway
+from server.src.Flights.gateways.gateway_amadeus import AmadeusGateway
 from server.src.Flights.services.services import find_flights_within_range
 
 app = Flask(__name__)
