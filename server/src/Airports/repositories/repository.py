@@ -41,7 +41,8 @@ class IataRepository(AbstractRepository):
             df = df.dropna(subset=['iata_code'])
             self.airports = [Airport(code=row['iata_code'],
                                      coordinates=row['coordinates'],
-                                     municipality=row['municipality']) for _, row in df.iterrows()]
+                                     municipality=row['municipality'],
+                                     name=row['name']) for _, row in df.iterrows()]
 
     def fetch_airports(self) -> Tuple[Airport, ...]:
         return tuple(self.airports)

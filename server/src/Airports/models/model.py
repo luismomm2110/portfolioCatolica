@@ -13,6 +13,7 @@ class Coordinate:
 @dataclass(frozen=True)
 class Airport:
     code: str
+    name: str
     coordinates: Coordinate
     municipality: str
 

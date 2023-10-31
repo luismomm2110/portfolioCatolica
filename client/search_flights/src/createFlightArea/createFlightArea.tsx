@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 import {searchAirportGateway} from "./gateways/searchAirportGateway";
+import {Airport} from "./types";
 
 const CreateFlightArea: React.FC = () => {
     const [formData, setFormData] = useState({
         flightAreaName: '', flightAreaNameError: '',
         flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
     })
+    const [airports, setAirports] = useState<Airport[]>([])
     const [gatewayError, setGatewayError] = useState('');
 
     const validateField = (id: string, value: string) => {
@@ -26,7 +28,7 @@ const CreateFlightArea: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         searchAirportGateway(formData.flightAreaOriginalAirport).then((response) => {
-            console.log(response);
+            setAirports(response.data)
         }).catch((error) => {
             setGatewayError(error.message);
         })
@@ -37,6 +39,18 @@ const CreateFlightArea: React.FC = () => {
         const error = validateField(id, value);
         setFormData({ ...formData, [id]: value, [id + 'Error']: error });
     }
+
+    const checkBoxes = airports.map((airport) => {
+        return {
+            id: airport.code,
+            label: `${airport.name} (${airport.distance})`,
+            name: airport.name,
+            type: 'checkbox',
+            placeholder: '',
+            value: airport.name,
+            error: ''
+        }
+    })
 
     const flightAreaFields = [
         {
@@ -56,7 +70,8 @@ const CreateFlightArea: React.FC = () => {
             placeholder: 'Insira o nome da cidade',
             value: formData.flightAreaOriginalAirport,
             error: formData.flightAreaOriginalAirportError
-        }
+        },
+        ...checkBoxes
     ]
 
     return (
