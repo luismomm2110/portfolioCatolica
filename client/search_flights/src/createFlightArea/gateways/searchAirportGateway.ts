@@ -1,4 +1,4 @@
-export const searchAirportGateway = async (airportName: string, limit: string = '3') => {
+export const searchAirportGateway = async (airportName: string, limit: string = '30') => {
     const url =  new URL('http://localhost:5001/airports')
     url.searchParams.append('city', airportName)
     url.searchParams.append('limit', limit)

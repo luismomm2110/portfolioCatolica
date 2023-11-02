@@ -10,11 +10,15 @@ const CreateFlightArea: React.FC = () => {
     })
     const [airports, setAirports] = useState<Airport[]>([])
     const [gatewayError, setGatewayError] = useState('');
+    const isSelectingAirports = airports.length > 0;
 
     const validateField = (id: string, value: string) => {
         if (id === 'flightAreaName') {
             if (value === '') {
                 return 'Campo obrigatório';
+            }
+            if (value.length > 50) {
+                return 'O nome da área de voo deve ter no máximo 50 caracteres';
             }
         }
         if (id === 'flightAreaOriginalAirport') {
@@ -48,7 +52,7 @@ const CreateFlightArea: React.FC = () => {
             type: 'checkbox',
             placeholder: '',
             value: airport.name,
-            error: ''
+            error: '',
         }
     })
 
@@ -60,7 +64,8 @@ const CreateFlightArea: React.FC = () => {
             type: 'text',
             placeholder: 'Insira o nome da área de voo',
             value: formData.flightAreaName,
-            error: formData.flightAreaNameError
+            error: formData.flightAreaNameError,
+            disabled: isSelectingAirports
         },
         {
             id: 'flightAreaOriginalAirport',
@@ -69,7 +74,8 @@ const CreateFlightArea: React.FC = () => {
             type: 'text',
             placeholder: 'Insira o nome da cidade',
             value: formData.flightAreaOriginalAirport,
-            error: formData.flightAreaOriginalAirportError
+            error: formData.flightAreaOriginalAirportError,
+            disabled: isSelectingAirports
         },
         ...checkBoxes
     ]

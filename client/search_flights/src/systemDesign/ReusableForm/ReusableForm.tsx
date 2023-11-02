@@ -7,9 +7,11 @@ type Field = {
   id: string;
   type: string;
   placeholder: string;
+  name?: string;
   label: string;
   value: string;
   error: string;
+  disabled?: boolean;
 };
 
 type ReusableFormProps = {
@@ -39,8 +41,10 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSu
             id={field.id}
             type={field.type}
             placeholder={field.placeholder}
+            name={field.name}
             value={field.value || ''}
             onChange={handleChange}
+            disabled={field.disabled ?? false}
           />
           <div className="error">
             {field.error && <span>{field.error}</span>}

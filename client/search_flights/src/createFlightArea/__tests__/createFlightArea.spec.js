@@ -1,6 +1,10 @@
 import userEvent from '@testing-library/user-event'
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import CreateFlightArea from '../createFlightArea'
+import {searchAirportGateway} from '../gateways/searchAirportGateway'
+
+jest.mock('../gateways/searchAirportGateway')
+
 
 describe(('createFlightArea'), () => {
     it('should give a name to the flight area', () => {
@@ -33,67 +37,97 @@ describe(('createFlightArea'), () => {
     })
 
     it ('should call the searchAirports gateway when the submit an airport name',  () => {
-        global.fetch = jest.fn(() => {
-                return Promise.resolve({
-                    json: () => Promise.resolve({}),
-                })
-            }
-        );
+        searchAirportGateway.mockResolvedValueOnce({
+            data: []
+        })
         render(<CreateFlightArea />);
 
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
-        userEvent.type(input, 'Aeroportos do Leste Asiático')
+        userEvent.type(input, 'Aeroportos de São Paulo')
         const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
-        userEvent.type(input2, 'Aeroporto de Guarulhos')
+        userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
-        expect(global.fetch).toHaveBeenCalledTimes(1);
+        expect(searchAirportGateway).toHaveBeenCalledWith('São Paulo')
     })
 
-    it('Should render the received airports as checkbox', async () => {
-        global.fetch = jest.fn(() => {
-            return Promise.resolve({
-                json: () => Promise.resolve({
-                    data : {
-                        airports: [
-                            {
-                                code: 'GRU',
-                                name: 'Aeroporto de Guarulhos',
-                                city: 'São Paulo',
-                                country: 'Brasil',
-                                distance: 0
-                            },
-                            {
-                                'code': 'CGH',
-                                name: 'Aeroporto de Congonhas',
-                                city: 'São Paulo',
-                                country: 'Brasil',
-                                distance: 30
-                            },
-                            {
-                                code: 'VCP',
-                                name: 'Aeroporto de Viracopos',
-                                municipality: 'Campinas',
-                                country: 'Brasil',
-                                distance: 80
-                            }
-                        ]
-                    }
-                })
-            })
-        }
-        );
+    it('Should render the received airports and distance as checkbox', async () => {
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
         render(<CreateFlightArea />);
 
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
-        userEvent.type(input, 'Aeroportos do Leste Asiático')
+        userEvent.type(input, 'Aeroportos de São Paulo')
         const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
-        userEvent.type(input2, 'Aeroporto de Guarulhos')
+        userEvent.type(input2, 'São Paulo')
 
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
-        expect(await screen.findByRole('checkbox', {name: 'Aeroporto de Guarulhos'})).toBeInTheDocument()
-        expect(await screen.findByRole('checkbox', {name: 'Aeroporto de Congonhas'})).toBeInTheDocument()
-        expect(await screen.findByRole('checkbox', {name: 'Aeroporto de Viracopos'})).toBeInTheDocument()
+        expect(await screen.findByLabelText('Aeroporto de Guarulhos (0):')).toBeInTheDocument()
+        expect(await screen.findByLabelText('Aeroporto de Congonhas (30):')).toBeInTheDocument()
+        expect(await screen.findByLabelText('Aeroporto de Viracopos (80):')).toBeInTheDocument()
+    })
+
+    it('Should disable the Field name and origin airport when the user submit the form', async () => {
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea />);
+
+        const inputDaAreaDeVoo = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(inputDaAreaDeVoo, 'Aeroportos de São Paulo')
+        const inputDaCidade = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(inputDaCidade, 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        await waitFor(() => {
+            expect(inputDaAreaDeVoo).toBeDisabled()
+        })
+        expect(inputDaCidade).toBeDisabled()
     })
 })
