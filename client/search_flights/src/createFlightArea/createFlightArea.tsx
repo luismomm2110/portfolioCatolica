@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 import {searchAirportGateway} from "./gateways/searchAirportGateway";
 import {Airport} from "./types";
+import './styles.css';
 
 const CreateFlightArea: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ const CreateFlightArea: React.FC = () => {
         flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
     })
     const [airports, setAirports] = useState<Airport[]>([])
-    const [gatewayError, setGatewayError] = useState('');
+    const [_, setGatewayError] = useState('');
     const isSelectingAirports = airports.length > 0;
 
     const validateField = (id: string, value: string) => {
@@ -77,7 +78,6 @@ const CreateFlightArea: React.FC = () => {
             error: formData.flightAreaOriginalAirportError,
             disabled: isSelectingAirports
         },
-        ...checkBoxes
     ]
 
     return (
@@ -85,13 +85,25 @@ const CreateFlightArea: React.FC = () => {
             <header>
                 <h1>Create Flight Area</h1>
             </header>
-            <main>
+            <main
+                className={'create-flight-area'}
+            >
             <ReusableForm
                 formTitle=""
                 fields={flightAreaFields}
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
             />
+                {isSelectingAirports &&
+                    <ReusableForm
+                        formTitle={'Aeroportos encontrados'}
+                        fields={checkBoxes}
+                        handleSubmit={() => {
+                        }}
+                        handleChange={() => {
+                        }}
+                    />
+                }
             </main>
         </>
     );

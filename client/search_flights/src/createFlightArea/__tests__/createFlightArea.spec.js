@@ -51,6 +51,20 @@ describe(('createFlightArea'), () => {
         expect(searchAirportGateway).toHaveBeenCalledWith('São Paulo')
     })
 
+    it ('should not display the Find Airports section before finding airports',  () => {
+        searchAirportGateway.mockResolvedValueOnce({
+            data: []
+        })
+        render(<CreateFlightArea />);
+
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos de São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input2, 'São Paulo')
+
+        expect(screen.queryByRole('heading', {  name: /aeroportos encontrados/i})).not.toBeInTheDocument()
+    })
+
     it('Should render the received airports and distance as checkbox', async () => {
         searchAirportGateway.mockResolvedValueOnce({
             data: [
