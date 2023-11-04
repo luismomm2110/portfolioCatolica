@@ -3,28 +3,32 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    .airports-found {
-        & header {
-            grid-column: span 3;
-            text-align: center;
-        }
-
-        & form {
-            width: 100%;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-    }
 }
 
 .checkbox-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Creates a three-column layout */
-    gap: 10px; /* Adjusts space between the grid items */
+    padding: 10px;
+    margin-top: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.checkbox-container div {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
 

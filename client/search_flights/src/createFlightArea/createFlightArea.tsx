@@ -10,7 +10,7 @@ const CreateFlightArea: React.FC = () => {
         flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
     })
     const [airports, setAirports] = useState<Airport[]>([])
-    const [_, setGatewayError] = useState('');
+    const [gatewayError, setGatewayError] = useState('');
     const isSelectingAirports = airports.length > 0;
 
     const validateField = (id: string, value: string) => {
@@ -35,21 +35,21 @@ const CreateFlightArea: React.FC = () => {
         searchAirportGateway(formData.flightAreaOriginalAirport).then((response) => {
             setAirports(response.data)
         }).catch((error) => {
-            setGatewayError(error.message);
+            setGatewayError('Contate o suporte');
         })
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
+        const {id, value} = e.target;
         const error = validateField(id, value);
-        setFormData({ ...formData, [id]: value, [id + 'Error']: error });
+        setFormData({...formData, [id]: value, [id + 'Error']: error});
     }
 
     const checkBoxes = airports.map((airport, index) => (
-      <div key={index}>
-        <input type="checkbox" id={`checkbox-${airport.code}`} name="airport" value={airport.name} />
-        <label htmlFor={`checkbox-${index}`}>{airport.name}</label>
-      </div>
+        <div key={index}>
+            <input type="checkbox" id={`checkbox-${airport.code}`} name="airport" value={airport.name}/>
+            <label htmlFor={`checkbox-${index}`}>{airport.name}</label>
+        </div>
     ));
 
     const flightAreaFields = [
@@ -83,15 +83,18 @@ const CreateFlightArea: React.FC = () => {
             <main
                 className={'create-flight-area'}
             >
-            <ReusableForm
-                formTitle=""
-                fields={flightAreaFields}
-                handleSubmit={handleSubmit}
-                handleChange={handleChange}
-            />
-              <section className={'checkbox-container'}>
-                {checkBoxes}
-              </section>
+                <ReusableForm
+                    formTitle=""
+                    fields={flightAreaFields}
+                    handleSubmit={handleSubmit}
+                    handleChange={handleChange}
+                />
+                {gatewayError && <p className={'error-message'}>{gatewayError}</p>}
+                {isSelectingAirports &&
+                    <section className={'checkbox-container'}>
+                        {checkBoxes}
+                    </section>
+                }
             </main>
         </div>
     );

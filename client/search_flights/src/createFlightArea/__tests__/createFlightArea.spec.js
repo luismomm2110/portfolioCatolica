@@ -144,4 +144,19 @@ describe(('createFlightArea'), () => {
         })
         expect(inputDaCidade).toBeDisabled()
     })
+
+    it('Should display Contact Support when gateway returns an error', async () => {
+        searchAirportGateway.mockRejectedValueOnce({
+            data: []
+        })
+        render(<CreateFlightArea />);
+
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos de São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input2, 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        expect(await screen.findByText('Contate o suporte')).toBeInTheDocument()
+    })
 })
