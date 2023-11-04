@@ -45,17 +45,12 @@ const CreateFlightArea: React.FC = () => {
         setFormData({ ...formData, [id]: value, [id + 'Error']: error });
     }
 
-    const checkBoxes = airports.map((airport) => {
-        return {
-            id: airport.code,
-            label: `${airport.name} (${airport.distance})`,
-            name: airport.name,
-            type: 'checkbox',
-            placeholder: '',
-            value: airport.name,
-            error: '',
-        }
-    })
+    const checkBoxes = airports.map((airport, index) => (
+      <div key={index}>
+        <input type="checkbox" id={`checkbox-${airport.code}`} name="airport" value={airport.name} />
+        <label htmlFor={`checkbox-${index}`}>{airport.name}</label>
+      </div>
+    ));
 
     const flightAreaFields = [
         {
@@ -94,16 +89,9 @@ const CreateFlightArea: React.FC = () => {
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
             />
-                {isSelectingAirports &&
-                    <section className={'airports-found'}>
-                        <ReusableForm
-                            formTitle={'Aeroportos encontrados'}
-                            fields={checkBoxes}
-                            handleSubmit={() => {}}
-                            handleChange={() => {}}
-                        />
-                    </section>
-                }
+              <section className={'checkbox-container'}>
+                {checkBoxes}
+              </section>
             </main>
         </div>
     );

@@ -19,3 +19,12 @@
     }
 }
 
+.checkbox-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Creates a three-column layout */
+    gap: 10px; /* Adjusts space between the grid items */
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
