@@ -83,12 +83,15 @@ const CreateFlightArea: React.FC = () => {
             <main
                 className={'create-flight-area'}
             >
-                <ReusableForm
-                    formTitle=""
-                    fields={flightAreaFields}
-                    handleSubmit={handleSubmit}
-                    handleChange={handleChange}
-                />
+                <div className={'select-airports'}>
+                    <ReusableForm
+                        formTitle=""
+                        fields={flightAreaFields}
+                        handleSubmit={handleSubmit}
+                        handleChange={handleChange}
+                    />
+                    {isSelectingAirports && <p>Nenhum aeroporto selecionado</p>}
+                </div>
                 {gatewayError && <p className={'error-message'}>{gatewayError}</p>}
                 {isSelectingAirports &&
                     <section className={'checkbox-container'}>

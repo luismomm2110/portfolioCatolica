@@ -31,4 +31,16 @@
     margin-top: 5px;
 }
 
+.select-airports {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    gap: 50px;
+
+    & p {
+        font-weight: bold;
+        font-size: 20px;
+    }
+}
+
 
