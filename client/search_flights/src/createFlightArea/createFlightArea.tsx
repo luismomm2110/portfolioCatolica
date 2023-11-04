@@ -81,9 +81,9 @@ const CreateFlightArea: React.FC = () => {
     ]
 
     return (
-        <>
+        <div className={'flight-area-container'}>
             <header>
-                <h1>Create Flight Area</h1>
+                <h1>Crie sua área de voo</h1>
             </header>
             <main
                 className={'create-flight-area'}
@@ -95,17 +95,17 @@ const CreateFlightArea: React.FC = () => {
                 handleChange={handleChange}
             />
                 {isSelectingAirports &&
-                    <ReusableForm
-                        formTitle={'Aeroportos encontrados'}
-                        fields={checkBoxes}
-                        handleSubmit={() => {
-                        }}
-                        handleChange={() => {
-                        }}
-                    />
+                    <section className={'airports-found'}>
+                        <ReusableForm
+                            formTitle={'Aeroportos encontrados'}
+                            fields={checkBoxes}
+                            handleSubmit={() => {}}
+                            handleChange={() => {}}
+                        />
+                    </section>
                 }
             </main>
-        </>
+        </div>
     );
 }
 
