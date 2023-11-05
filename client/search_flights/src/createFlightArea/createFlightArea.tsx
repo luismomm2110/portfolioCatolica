@@ -5,7 +5,7 @@ import {Airport} from "./types";
 import './styles.css';
 
 interface CreateFlightAreaProps {
-  selectedAirportLimit?: number;
+    selectedAirportLimit?: number;
 }
 
 const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
@@ -112,14 +112,17 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
     }
 
     const selectedAirportsList = selectedAirports.map((airport) => (
-        <section>
-            <li key={airport.code}>{airport.name}</li>
-            <button
-                name={'Remover'}
-                onClick={() => handleSelectingAirport(airport)}
-                >X
-            </button>
-        </section>
+        <>
+            <li key={airport.code}>
+                <span>{airport.name}</span>
+                <button
+                    name={'Remover'}
+                    onClick={() => handleSelectingAirport(airport)}
+                >
+                    X
+                </button>
+            </li>
+        </>
     ));
 
     return (
@@ -139,7 +142,10 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
                     />
                     <div>
                         {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
-                        {isSelectingAirports && <ul>{selectedAirportsList}</ul>}
+                        {isSelectingAirports &&
+                            <ul className={'selected-airports-list'} >
+                                {selectedAirportsList}
+                            </ul>}
                     </div>
                 </div>
                 {gatewayError && <p className={'error-message'}>{gatewayError}</p>}
