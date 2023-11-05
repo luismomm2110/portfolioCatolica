@@ -14,6 +14,7 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
         cityOfOrigin: '', cityOfOriginError: '',
         flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
     })
+    const [findedCityOfOrigin, setFindedCityOfOrigin] = useState('');
     const [airports, setAirports] = useState<Airport[]>([])
     const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
@@ -89,17 +90,18 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
             placeholder: 'Insira a cidade de origem',
             value: formData.cityOfOrigin,
             error: formData.cityOfOriginError,
-        },
-        {
-            id: 'flightAreaOriginalAirport',
-            label: 'Aeroporto de destino',
-            name: 'Aeroporto de destino',
-            type: 'text',
-            placeholder: 'Insira o nome do aeroporto de destino',
-            value: formData.flightAreaOriginalAirport,
-            error: formData.flightAreaOriginalAirportError,
-        },
+        }
     ]
+
+    const fieldAreaOriginalAirport = {
+        id: 'flightAreaOriginalAirport',
+        label: 'Aeroporto de destino',
+        name: 'Aeroporto de destino',
+        type: 'text',
+        placeholder: 'Insira o nome do aeroporto de destino',
+        value: formData.flightAreaOriginalAirport,
+        error: formData.flightAreaOriginalAirportError,
+    }
 
     const selectedAirportsMessage = () => {
         if (isAirportLimitReached) {
@@ -141,7 +143,9 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
                 <div className={'select-airports'}>
                     <ReusableForm
                         formTitle=""
-                        fields={flightAreaFields}
+                        fields={findedCityOfOrigin.length === 0
+                            ? flightAreaFields :
+                            [...flightAreaFields, fieldAreaOriginalAirport]}
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
                     />

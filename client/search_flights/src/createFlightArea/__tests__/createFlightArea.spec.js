@@ -16,6 +16,12 @@ describe(('createFlightArea'), () => {
         expect(screen.getByText('O nome da área de voo deve ter no máximo 50 caracteres')).toBeInTheDocument()
     })
 
+    it('Should not display the airports input before finding an origin airport', () => {
+        render(<CreateFlightArea/>)
+
+        expect(screen.queryByRole('textbox', {name: 'Aeroporto de destino:'})).not.toBeInTheDocument()
+    })
+
     it ('should call the searchAirports gateway when the submit an origin and destination airport',  () => {
         searchAirportGateway.mockResolvedValueOnce({
             data: []
