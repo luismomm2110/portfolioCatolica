@@ -46,17 +46,18 @@ const CreateFlightArea: React.FC = () => {
         setFormData({...formData, [id]: value, [id + 'Error']: error});
     }
 
+    const handleCheckboxAirport = (airport: Airport) => {
+        if (selectedAirports.includes(airport)) {
+            setSelectedAirports(selectedAirports.filter((selectedAirport) => selectedAirport.code !== airport.code));
+        } else {
+            setSelectedAirports([...selectedAirports, airport]);
+        }
+    }
+
     const checkBoxes = airports.map((airport, index) => (
         <div key={airport.code}>
-            <input type="checkbox" id={`checkbox-${airport.code}`} name="airport" value={airport.name} onClick={
-                () => {
-                    if (selectedAirports.includes(airport)) {
-                        setSelectedAirports(selectedAirports.filter((selectedAirport) => selectedAirport.code !== airport.code));
-                    } else {
-                        setSelectedAirports([...selectedAirports, airport]);
-                    }
-                }
-            }/>
+            <input type="checkbox" id={`checkbox-${airport.code}`} name="airport" value={airport.name}
+                   onClick={() => handleCheckboxAirport(airport)}/>
             <label htmlFor={`checkbox-${airport.code}`}>{`${airport.name}: ${airport.distance} km`}</label>
         </div>
     ));
@@ -91,6 +92,8 @@ const CreateFlightArea: React.FC = () => {
         if (selectedAirports.length === 1) {
             return '1 aeroporto selecionado';
         }
+
+        return `${selectedAirports.length} aeroportos selecionados`;
     }
 
     return (

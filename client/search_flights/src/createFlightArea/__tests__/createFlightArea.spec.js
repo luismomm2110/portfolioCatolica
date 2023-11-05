@@ -197,7 +197,7 @@ describe(('createFlightArea'), () => {
         expect(await screen.findByText('Nenhum aeroporto selecionado')).toBeInTheDocument()
     })
 
-    it('Should display the number of airports selected', async () => {
+    it('Should display when there is one airport selected', async () => {
         searchAirportGateway.mockResolvedValueOnce({
             data: [
                 {
@@ -234,5 +234,46 @@ describe(('createFlightArea'), () => {
         userEvent.click(checkbox)
 
         expect(await screen.findByText('1 aeroporto selecionado')).toBeInTheDocument()
+    })
+
+    it('Should display when there is more than one airport selected', async () => {
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea />);
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos de São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input2, 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
+        userEvent.click(checkbox)
+        const checkbox2 = await screen.findByLabelText('Aeroporto de Congonhas: 30 km')
+        userEvent.click(checkbox2)
+
+        expect(await screen.findByText('2 aeroportos selecionados')).toBeInTheDocument()
     })
 })
