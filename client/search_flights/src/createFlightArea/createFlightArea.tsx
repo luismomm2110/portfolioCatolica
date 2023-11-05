@@ -30,11 +30,6 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
                 return 'O nome da área de voo deve ter no máximo 50 caracteres';
             }
         }
-        if (id === 'flightAreaOriginalAirport') {
-            if (value === '') {
-                return 'Campo obrigatório';
-            }
-        }
         return '';
     }
 
