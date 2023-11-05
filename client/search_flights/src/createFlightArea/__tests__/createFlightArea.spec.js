@@ -401,4 +401,44 @@ describe(('createFlightArea'), () => {
         expect(screen.getByLabelText('Aeroporto de Congonhas: 30 km')).toBeDisabled()
         expect(screen.getByLabelText('Aeroporto de Viracopos: 80 km')).toBeDisabled()
     })
+
+    it ('should not disable checked checkboxes when user try to select more than limit of airports', async () => {
+        const limit = 1;
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea selectedAirportLimit={limit}/>);
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos de São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input2, 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
+        userEvent.click(checkbox)
+
+        expect(screen.getByLabelText('Aeroporto de Guarulhos: 0 km')).not.toBeDisabled()
+    })
 })
