@@ -3,6 +3,7 @@ import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 import {searchAirportGateway} from "./gateways/searchAirportGateway";
 import {Airport} from "./types";
 import './styles.css';
+import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -36,11 +37,20 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        searchAirportGateway(formData.flightAreaOriginalAirport).then((response) => {
-            setAirports(response.data)
-        }).catch((error) => {
-            setGatewayError(error.response.data.message);
-        })
+        if (findedCityOfOrigin.length === 0) {
+            cityOfOriginGateway(formData.cityOfOrigin).then((response) => {
+                    setFindedCityOfOrigin(response.data)
+                }
+            ).catch((error) => {
+                setGatewayError(error.response.data.message);
+            })
+        } else {
+            searchAirportGateway(formData.flightAreaOriginalAirport).then((response) => {
+                setAirports(response.data)
+            }).catch((error) => {
+                setGatewayError(error.response.data.message);
+            })
+        }
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

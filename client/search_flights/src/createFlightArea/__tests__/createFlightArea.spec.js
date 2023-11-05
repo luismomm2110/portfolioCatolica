@@ -2,8 +2,10 @@ import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
 import CreateFlightArea from '../createFlightArea'
 import {searchAirportGateway} from '../gateways/searchAirportGateway'
+import {cityOfOriginGateway} from '../gateways/cityOfOriginGateway'
 
 jest.mock('../gateways/searchAirportGateway')
+jest.mock('../gateways/cityOfOriginGateway')
 
 
 describe(('createFlightArea'), () => {
@@ -20,6 +22,19 @@ describe(('createFlightArea'), () => {
         render(<CreateFlightArea/>)
 
         expect(screen.queryByRole('textbox', {name: 'Aeroporto de destino:'})).not.toBeInTheDocument()
+    })
+
+    it ('should call the cityOfOrigin gateway when the submit an origin',  () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: []
+        })
+        render(<CreateFlightArea />);
+
+        userEvent.type(screen.getByRole('textbox', {name: 'Nome da área de voo:'}), 'Aeroportos do Leste Europeu')
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        expect(cityOfOriginGateway).toHaveBeenCalledWith("São Paulo")
     })
 
     it ('should call the searchAirports gateway when the submit an origin and destination airport',  () => {
