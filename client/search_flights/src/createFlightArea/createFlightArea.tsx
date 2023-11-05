@@ -8,7 +8,7 @@ interface CreateFlightAreaProps {
   selectedAirportLimit?: number;
 }
 
-const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit}) => {
+const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
     const [formData, setFormData] = useState({
         flightAreaName: '', flightAreaNameError: '',
         flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
@@ -16,7 +16,9 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
     const [airports, setAirports] = useState<Airport[]>([])
     const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
+
     const isSelectingAirports = airports.length > 0;
+    const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
 
     const validateField = (id: string, value: string) => {
         if (id === 'flightAreaName') {
@@ -60,9 +62,16 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
 
     const checkBoxes = airports.map((airport, index) => (
         <div key={airport.code}>
-            <input type="checkbox" id={`checkbox-${airport.code}`} name="airport" value={airport.name}
-                   onClick={() => handleCheckboxAirport(airport)}/>
-            <label htmlFor={`checkbox-${airport.code}`}>{`${airport.name}: ${airport.distance} km`}</label>
+            <input
+                type="checkbox"
+                id={`checkbox-${airport.code}`}
+                name="airport" value={airport.name}
+                onClick={() => handleCheckboxAirport(airport)}
+                disabled={isAirportLimitReached && !selectedAirports.includes(airport)}
+            />
+            <label
+                htmlFor={`checkbox-${airport.code}`}>{`${airport.name}: ${airport.distance} km`}
+            </label>
         </div>
     ));
 
@@ -90,7 +99,7 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
     ]
 
     const selectedAirportsMessage = () => {
-        if (selectedAirportLimit && selectedAirports.length > selectedAirportLimit) {
+        if (isAirportLimitReached) {
             return `Você atingiu o limite de ${selectedAirportLimit} aeroporto(s)`;
         }
 
