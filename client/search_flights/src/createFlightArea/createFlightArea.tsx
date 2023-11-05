@@ -4,7 +4,11 @@ import {searchAirportGateway} from "./gateways/searchAirportGateway";
 import {Airport} from "./types";
 import './styles.css';
 
-const CreateFlightArea: React.FC = () => {
+interface CreateFlightAreaProps {
+  selectedAirportLimit?: number;
+}
+
+const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit}) => {
     const [formData, setFormData] = useState({
         flightAreaName: '', flightAreaNameError: '',
         flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
@@ -86,6 +90,10 @@ const CreateFlightArea: React.FC = () => {
     ]
 
     const selectedAirportsMessage = () => {
+        if (selectedAirportLimit && selectedAirports.length > selectedAirportLimit) {
+            return `Você atingiu o limite de ${selectedAirportLimit} aeroporto(s)`;
+        }
+
         if (selectedAirports.length === 0) {
             return 'Nenhum aeroporto selecionado';
         }
