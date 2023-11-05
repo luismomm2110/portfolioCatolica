@@ -52,7 +52,7 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
         setFormData({...formData, [id]: value, [id + 'Error']: error});
     }
 
-    const handleCheckboxAirport = (airport: Airport) => {
+    const handleSelectingAirport = (airport: Airport) => {
         if (selectedAirports.includes(airport)) {
             setSelectedAirports(selectedAirports.filter((selectedAirport) => selectedAirport.code !== airport.code));
         } else {
@@ -66,7 +66,7 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
                 type="checkbox"
                 id={`checkbox-${airport.code}`}
                 name="airport" value={airport.name}
-                onClick={() => handleCheckboxAirport(airport)}
+                onClick={() => handleSelectingAirport(airport)}
                 disabled={isAirportLimitReached && !selectedAirports.includes(airport)}
             />
             <label
@@ -111,6 +111,17 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
         return `${selectedAirports.length} aeroportos selecionados`;
     }
 
+    const selectedAirportsList = selectedAirports.map((airport) => (
+        <section>
+            <li key={airport.code}>{airport.name}</li>
+            <button
+                name={'Remover'}
+                onClick={() => handleSelectingAirport(airport)}
+                >X
+            </button>
+        </section>
+    ));
+
     return (
         <div className={'flight-area-container'}>
             <header>
@@ -126,7 +137,10 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
                     />
-                    {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
+                    <div>
+                        {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
+                        {isSelectingAirports && <ul>{selectedAirportsList}</ul>}
+                    </div>
                 </div>
                 {gatewayError && <p className={'error-message'}>{gatewayError}</p>}
                 {isSelectingAirports &&

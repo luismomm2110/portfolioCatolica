@@ -457,4 +457,84 @@ describe(('createFlightArea'), () => {
 
         expect(await screen.findByText('2 aeroportos selecionados')).toBeInTheDocument()
     })
+
+    it('Should display the selected airports as a list', async () => {
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea/>);
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos de São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input2, 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
+        userEvent.click(checkbox)
+
+        expect(await screen.findByText('Aeroporto de Guarulhos')).toBeInTheDocument()
+    })
+
+    it ('Should remove the airport from the list when the user click on the remove button', async () => {
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea/>);
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos de São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input2, 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
+        userEvent.click(checkbox)
+        userEvent.click(screen.getByRole('button', {name: 'X'}))
+
+        expect(await screen.findByText('Nenhum aeroporto selecionado')).toBeInTheDocument()
+        expect(screen.queryByText('Aeroporto de Guarulhos')).not.toBeInTheDocument()
+    })
 })
