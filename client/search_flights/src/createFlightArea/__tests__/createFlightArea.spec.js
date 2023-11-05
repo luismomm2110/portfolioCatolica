@@ -105,46 +105,6 @@ describe(('createFlightArea'), () => {
         expect(await screen.findByLabelText('Aeroporto de Viracopos: 80 km')).toBeInTheDocument()
     })
 
-    it('Should disable the Field name and origin airport when the user submit the form', async () => {
-        searchAirportGateway.mockResolvedValueOnce({
-            data: [
-                {
-                    code: 'GRU',
-                    name: 'Aeroporto de Guarulhos',
-                    city: 'São Paulo',
-                    country: 'Brasil',
-                    distance: 0
-                },
-                {
-                    'code': 'CGH',
-                    name: 'Aeroporto de Congonhas',
-                    city: 'São Paulo',
-                    country: 'Brasil',
-                    distance: 30
-                },
-                {
-                    code: 'VCP',
-                    name: 'Aeroporto de Viracopos',
-                    municipality: 'Campinas',
-                    country: 'Brasil',
-                    distance: 80
-                }
-            ]
-        })
-        render(<CreateFlightArea />);
-
-        const inputDaAreaDeVoo = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
-        userEvent.type(inputDaAreaDeVoo, 'Aeroportos de São Paulo')
-        const inputDaCidade = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
-        userEvent.type(inputDaCidade, 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
-
-        await waitFor(() => {
-            expect(inputDaAreaDeVoo).toBeDisabled()
-        })
-        expect(inputDaCidade).toBeDisabled()
-    })
-
     it('Should display Contact Support when gateway returns an error', async () => {
         searchAirportGateway.mockRejectedValueOnce({
             data: []

@@ -84,7 +84,6 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
             placeholder: 'Insira o nome da área de voo',
             value: formData.flightAreaName,
             error: formData.flightAreaNameError,
-            disabled: isSelectingAirports
         },
         {
             id: 'flightAreaOriginalAirport',
@@ -94,7 +93,6 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
             placeholder: 'Insira o nome da cidade',
             value: formData.flightAreaOriginalAirport,
             error: formData.flightAreaOriginalAirportError,
-            disabled: isSelectingAirports
         },
     ]
 
