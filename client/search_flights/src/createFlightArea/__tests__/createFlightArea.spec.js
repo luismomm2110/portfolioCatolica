@@ -401,4 +401,60 @@ describe(('createFlightArea'), () => {
 
         expect(screen.getByLabelText('Aeroporto de Guarulhos: 0 km')).not.toBeDisabled()
     })
+
+    it('Should allow user to select more airports when change airport', async () => {
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea/>);
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos de São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input2, 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
+        userEvent.click(checkbox)
+        const input3 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.clear(input3)
+        userEvent.type(input3, 'João Pessoa')
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'JPA',
+                    name: 'Aeroporto de João Pessoa',
+                    city: 'João Pessoa',
+                    country: 'Brasil',
+                    distance: 0
+                },
+            ]
+        })
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        const checkbox2 = await screen.findByLabelText('Aeroporto de João Pessoa: 0 km')
+        userEvent.click(checkbox2)
+
+        expect(await screen.findByText('2 aeroportos selecionados')).toBeInTheDocument()
+    })
 })
