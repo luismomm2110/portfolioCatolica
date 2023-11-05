@@ -36,19 +36,18 @@ describe(('createFlightArea'), () => {
             'Aeroporto de Guarulhos');
     })
 
-    it ('should call the searchAirports gateway when the submit an airport name',  () => {
+    it ('should call the searchAirports gateway when the submit an origin and destination airport',  () => {
         searchAirportGateway.mockResolvedValueOnce({
             data: []
         })
         render(<CreateFlightArea />);
 
-        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
-        userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
-        userEvent.type(input2, 'São Paulo')
+        userEvent.type(screen.getByRole('textbox', {name: 'Nome da área de voo:'}), 'Aeroportos do Leste Europeu')
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        userEvent.type(screen.getByRole('textbox', {name: 'Aeroporto de destino:'}), 'Varsovia')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
-        expect(searchAirportGateway).toHaveBeenCalledWith('São Paulo')
+        expect(searchAirportGateway).toHaveBeenCalledWith('São Paulo", "Varsovia')
     })
 
     it ('should not display the Find Airports section before finding airports',  () => {

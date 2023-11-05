@@ -11,6 +11,7 @@ interface CreateFlightAreaProps {
 const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
     const [formData, setFormData] = useState({
         flightAreaName: '', flightAreaNameError: '',
+        cityOfOrigin: '', cityOfOriginError: '',
         flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
     })
     const [airports, setAirports] = useState<Airport[]>([])
@@ -39,10 +40,10 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        searchAirportGateway(formData.flightAreaOriginalAirport).then((response) => {
+        searchAirportGateway(formData.cityOfOrigin, formData.flightAreaOriginalAirport).then((response) => {
             setAirports(response.data)
         }).catch((error) => {
-            setGatewayError('Contate o suporte');
+            setGatewayError(error.response.data.message);
         })
     }
 
@@ -86,11 +87,20 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
             error: formData.flightAreaNameError,
         },
         {
-            id: 'flightAreaOriginalAirport',
-            label: 'Aeroporto de origem',
-            name: 'Aeroporto de origem',
+            id: 'cityOfOrigin',
+            label: 'Cidade de origem',
+            name: 'Cidade de origem',
             type: 'text',
-            placeholder: 'Insira o nome da cidade',
+            placeholder: 'Insira a cidade de origem',
+            value: formData.cityOfOrigin,
+            error: formData.cityOfOriginError,
+        },
+        {
+            id: 'flightAreaOriginalAirport',
+            label: 'Aeroporto de destino',
+            name: 'Aeroporto de destino',
+            type: 'text',
+            placeholder: 'Insira o nome do aeroporto de destino',
             value: formData.flightAreaOriginalAirport,
             error: formData.flightAreaOriginalAirportError,
         },
