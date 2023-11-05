@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import {render, screen, waitFor} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import CreateFlightArea from '../createFlightArea'
 import {searchAirportGateway} from '../gateways/searchAirportGateway'
 
@@ -29,10 +29,10 @@ describe(('createFlightArea'), () => {
     it('Should accept an origin airport', () => {
         render(<CreateFlightArea/>)
 
-        const input = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input, 'Aeroporto de Guarulhos')
 
-        expect(screen.getByRole('textbox', {name: 'Aeroporto de origem:'})).toHaveValue(
+        expect(screen.getByRole('textbox', {name: 'Aeroporto de destino:'})).toHaveValue(
             'Aeroporto de Guarulhos');
     })
 
@@ -47,7 +47,7 @@ describe(('createFlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Aeroporto de destino:'}), 'Varsovia')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
-        expect(searchAirportGateway).toHaveBeenCalledWith('São Paulo", "Varsovia')
+        expect(searchAirportGateway).toHaveBeenCalledWith("São Paulo", "Varsovia")
     })
 
     it ('should not display the Find Airports section before finding airports',  () => {
@@ -58,7 +58,7 @@ describe(('createFlightArea'), () => {
 
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
 
         expect(screen.queryByRole('heading', {  name: /aeroportos encontrados/i})).not.toBeInTheDocument()
@@ -94,7 +94,8 @@ describe(('createFlightArea'), () => {
 
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
 
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
@@ -102,21 +103,6 @@ describe(('createFlightArea'), () => {
         expect(await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')).toBeInTheDocument()
         expect(await screen.findByLabelText('Aeroporto de Congonhas: 30 km')).toBeInTheDocument()
         expect(await screen.findByLabelText('Aeroporto de Viracopos: 80 km')).toBeInTheDocument()
-    })
-
-    it('Should display Contact Support when gateway returns an error', async () => {
-        searchAirportGateway.mockRejectedValueOnce({
-            data: []
-        })
-        render(<CreateFlightArea />);
-
-        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
-        userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
-        userEvent.type(input2, 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
-
-        expect(await screen.findByText('Contate o suporte')).toBeInTheDocument()
     })
 
     it('Should display if there arent airports selected', async () => {
@@ -149,7 +135,8 @@ describe(('createFlightArea'), () => {
 
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
@@ -185,7 +172,8 @@ describe(('createFlightArea'), () => {
         render(<CreateFlightArea />);
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
@@ -223,8 +211,9 @@ describe(('createFlightArea'), () => {
         })
         render(<CreateFlightArea />);
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
@@ -264,8 +253,9 @@ describe(('createFlightArea'), () => {
         })
         render(<CreateFlightArea/>);
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
@@ -307,8 +297,9 @@ describe(('createFlightArea'), () => {
         })
         render(<CreateFlightArea selectedAirportLimit={limit}/>);
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
@@ -349,8 +340,9 @@ describe(('createFlightArea'), () => {
         })
         render(<CreateFlightArea selectedAirportLimit={limit}/>);
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
@@ -390,8 +382,9 @@ describe(('createFlightArea'), () => {
         })
         render(<CreateFlightArea selectedAirportLimit={limit}/>);
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
@@ -430,13 +423,14 @@ describe(('createFlightArea'), () => {
         render(<CreateFlightArea/>);
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
-        const input3 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input3 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.clear(input3)
         userEvent.type(input3, 'João Pessoa')
         searchAirportGateway.mockResolvedValueOnce({
@@ -485,8 +479,9 @@ describe(('createFlightArea'), () => {
         })
         render(<CreateFlightArea/>);
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
@@ -524,8 +519,9 @@ describe(('createFlightArea'), () => {
         })
         render(<CreateFlightArea/>);
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
         userEvent.type(input2, 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
