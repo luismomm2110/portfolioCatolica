@@ -37,6 +37,24 @@ describe(('createFlightArea'), () => {
         expect(cityOfOriginGateway).toHaveBeenCalledWith("São Paulo")
     })
 
+    it('should display error when returned while submitting an origin',  async () => {
+        cityOfOriginGateway.mockRejectedValueOnce({
+            response: {
+                data: {
+                    message: 'Cidade não encontrada'
+                }
+            }
+        })
+
+        render(<CreateFlightArea />);
+
+        userEvent.type(screen.getByRole('textbox', {name: 'Nome da área de voo:'}), 'Aeroportos do Leste Europeu')
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        expect(await screen.findByText('Cidade não encontrada')).toBeInTheDocument()
+    })
+
     it ('should call the searchAirports gateway when the submit an origin and destination airport',  () => {
         searchAirportGateway.mockResolvedValueOnce({
             data: []
