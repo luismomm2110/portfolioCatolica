@@ -100,9 +100,9 @@ describe(('createFlightArea'), () => {
 
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
-        expect(await screen.findByLabelText('Aeroporto de Guarulhos (0):')).toBeInTheDocument()
-        expect(await screen.findByLabelText('Aeroporto de Congonhas (30):')).toBeInTheDocument()
-        expect(await screen.findByLabelText('Aeroporto de Viracopos (80):')).toBeInTheDocument()
+        expect(await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')).toBeInTheDocument()
+        expect(await screen.findByLabelText('Aeroporto de Congonhas: 30 km')).toBeInTheDocument()
+        expect(await screen.findByLabelText('Aeroporto de Viracopos: 80 km')).toBeInTheDocument()
     })
 
     it('Should disable the Field name and origin airport when the user submit the form', async () => {
@@ -160,7 +160,7 @@ describe(('createFlightArea'), () => {
         expect(await screen.findByText('Contate o suporte')).toBeInTheDocument()
     })
 
-    it('Should display the number of airports selected', async () => {
+    it('Should display if there arent airports selected', async () => {
         searchAirportGateway.mockResolvedValueOnce({
             data: [
                 {
@@ -195,5 +195,44 @@ describe(('createFlightArea'), () => {
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
         expect(await screen.findByText('Nenhum aeroporto selecionado')).toBeInTheDocument()
+    })
+
+    it('Should display the number of airports selected', async () => {
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea />);
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos de São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de origem:'})
+        userEvent.type(input2, 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
+        userEvent.click(checkbox)
+
+        expect(await screen.findByText('1 aeroporto selecionado')).toBeInTheDocument()
     })
 })

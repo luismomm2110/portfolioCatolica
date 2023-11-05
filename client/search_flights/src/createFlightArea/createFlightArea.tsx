@@ -11,6 +11,7 @@ const CreateFlightArea: React.FC = () => {
     })
     const [airports, setAirports] = useState<Airport[]>([])
     const [gatewayError, setGatewayError] = useState('');
+    const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
     const isSelectingAirports = airports.length > 0;
 
     const validateField = (id: string, value: string) => {
@@ -46,9 +47,17 @@ const CreateFlightArea: React.FC = () => {
     }
 
     const checkBoxes = airports.map((airport, index) => (
-        <div key={index}>
-            <input type="checkbox" id={`checkbox-${airport.code}`} name="airport" value={airport.name}/>
-            <label htmlFor={`checkbox-${index}`}>{airport.name}</label>
+        <div key={airport.code}>
+            <input type="checkbox" id={`checkbox-${airport.code}`} name="airport" value={airport.name} onClick={
+                () => {
+                    if (selectedAirports.includes(airport)) {
+                        setSelectedAirports(selectedAirports.filter((selectedAirport) => selectedAirport.code !== airport.code));
+                    } else {
+                        setSelectedAirports([...selectedAirports, airport]);
+                    }
+                }
+            }/>
+            <label htmlFor={`checkbox-${airport.code}`}>{`${airport.name}: ${airport.distance} km`}</label>
         </div>
     ));
 
@@ -75,6 +84,15 @@ const CreateFlightArea: React.FC = () => {
         },
     ]
 
+    const selectedAirportsMessage = () => {
+        if (selectedAirports.length === 0) {
+            return 'Nenhum aeroporto selecionado';
+        }
+        if (selectedAirports.length === 1) {
+            return '1 aeroporto selecionado';
+        }
+    }
+
     return (
         <div className={'flight-area-container'}>
             <header>
@@ -90,7 +108,7 @@ const CreateFlightArea: React.FC = () => {
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
                     />
-                    {isSelectingAirports && <p>Nenhum aeroporto selecionado</p>}
+                    {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
                 </div>
                 {gatewayError && <p className={'error-message'}>{gatewayError}</p>}
                 {isSelectingAirports &&
