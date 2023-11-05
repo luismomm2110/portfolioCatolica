@@ -27,7 +27,7 @@ describe(('createFlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Aeroporto de destino:'}), 'Varsovia')
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
-        expect(searchAirportGateway).toHaveBeenCalledWith("São Paulo", "Varsovia")
+        expect(searchAirportGateway).toHaveBeenCalledWith("Varsovia")
     })
 
     it ('should not display the Find Airports section before finding airports',  () => {
