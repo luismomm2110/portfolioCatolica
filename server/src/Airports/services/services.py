@@ -1,3 +1,4 @@
+import unicodedata
 from dataclasses import asdict
 
 from server.src.Airports.models.model import distance_in_km
@@ -20,3 +21,22 @@ def find_nearest_airports_by_city(city: str, limit: int, repository: AbstractRep
         airports_data.append(airport_data)
 
     return sorted(airports_data, key=lambda a: a['distance'])[:limit + len(airports_of_city)]
+
+
+def find_city(city: str, repository: AbstractRepository):
+    fetched_cities = repository.fetch_cities()
+    normalized_input_city = city.strip().lower()
+    normalized_input_city = _remove_accents(normalized_input_city)
+    for fecthed_city in fetched_cities:
+        normalized_city_in_repository = fecthed_city.lower()
+        normalized_city_in_repository = _remove_accents(normalized_city_in_repository)
+        if normalized_city_in_repository == normalized_input_city:
+            return fecthed_city
+    return None
+
+
+def _remove_accents(input_str):
+    # Normalize the input string to decompose the characters into base characters and their modifiers
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    # Return the string with only base characters, removing the modifiers (accents)
+    return "".join([c for c in nfkd_form if not unicodedata.combining(c)])

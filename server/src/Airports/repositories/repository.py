@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import pandas as pd
 
-from server.src.Airports.models.model import Airport
+from server.src.Airports.models.model import Airport, Municipality
 
 
 class AbstractRepository(abc.ABC):
@@ -16,6 +16,9 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     def fetch_airports_by_municipality(self, city: str):
+        raise NotImplementedError
+
+    def fetch_cities(self):
         raise NotImplementedError
 
 
@@ -31,6 +34,9 @@ class FakeRepository(AbstractRepository):
 
     def fetch_airports_by_municipality(self, city: str) -> Tuple[Airport]:
         return tuple(airport for airport in self.airports if airport.municipality == city)
+
+    def fetch_cities(self) -> Tuple[Municipality]:
+        return tuple(set(airport.municipality for airport in self.airports))
 
 
 class IataRepository(AbstractRepository):
@@ -53,3 +59,6 @@ class IataRepository(AbstractRepository):
 
     def fetch_airports_by_municipality(self, city: str):
         return tuple(airport for airport in self.airports if airport.municipality == city)
+
+    def fetch_cities(self) -> Tuple[Municipality]:
+        return tuple(set(airport.municipality for airport in self.airports))
