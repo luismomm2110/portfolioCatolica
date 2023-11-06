@@ -5,6 +5,11 @@ from typing import List
 
 
 @dataclass(frozen=True)
+class Municipality:
+    name: str
+
+
+@dataclass(frozen=True)
 class Coordinate:
     latitude: Decimal
     longitude: Decimal
@@ -15,7 +20,7 @@ class Airport:
     code: str
     name: str
     coordinates: Coordinate
-    municipality: str
+    municipality: Municipality
 
 
 def distance_in_km(p1: str, p2: str):

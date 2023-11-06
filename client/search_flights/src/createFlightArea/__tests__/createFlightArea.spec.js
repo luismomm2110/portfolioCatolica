@@ -55,6 +55,20 @@ describe(('createFlightArea'), () => {
         expect(await screen.findByText('Cidade não encontrada')).toBeInTheDocument()
     })
 
+    it ('should not display the Find Airports section before finding airports',  () => {
+        searchAirportGateway.mockResolvedValueOnce({
+            data: []
+        })
+        render(<CreateFlightArea />);
+
+        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
+        userEvent.type(input, 'Aeroportos de São Paulo')
+        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
+        userEvent.type(input2, 'São Paulo')
+
+        expect(screen.queryByRole('heading', {  name: /aeroportos encontrados/i})).not.toBeInTheDocument()
+    })
+
     it ('should call the searchAirports gateway when the submit an origin and destination airport',  () => {
         searchAirportGateway.mockResolvedValueOnce({
             data: []
