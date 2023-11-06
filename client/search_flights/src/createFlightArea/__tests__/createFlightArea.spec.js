@@ -63,10 +63,10 @@ describe(('createFlightArea'), () => {
 
         const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
         userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
+        const input2 = screen.getByRole('textbox', {name: 'Cidade de origem:'})
         userEvent.type(input2, 'São Paulo')
 
-        expect(screen.queryByRole('heading', {  name: /aeroportos encontrados/i})).not.toBeInTheDocument()
+        expect(screen.queryByRole('textbox', {name: 'Aeroporto de destino:'})).not.toBeInTheDocument()
     })
 
     it ('should call the searchAirports gateway when the submit an origin and destination airport',  () => {
@@ -81,20 +81,6 @@ describe(('createFlightArea'), () => {
         userEvent.click(screen.getByRole('button', {name: 'Submit'}));
 
         expect(searchAirportGateway).toHaveBeenCalledWith("Varsovia")
-    })
-
-    it ('should not display the Find Airports section before finding airports',  () => {
-        searchAirportGateway.mockResolvedValueOnce({
-            data: []
-        })
-        render(<CreateFlightArea />);
-
-        const input = screen.getByRole('textbox', {name: 'Nome da área de voo:'})
-        userEvent.type(input, 'Aeroportos de São Paulo')
-        const input2 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
-        userEvent.type(input2, 'São Paulo')
-
-        expect(screen.queryByRole('heading', {  name: /aeroportos encontrados/i})).not.toBeInTheDocument()
     })
 
     it('Should render the received airports and distance as checkbox', async () => {
