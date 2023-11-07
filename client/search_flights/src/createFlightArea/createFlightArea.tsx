@@ -48,6 +48,7 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
             searchAirportGateway(formData.flightAreaOriginalAirport).then((response) => {
                 setAirports(response.data)
             }).catch((error) => {
+                console.log(error.response.data.message)
                 setGatewayError(error.response.data.message);
             })
         }
