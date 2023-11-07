@@ -62,7 +62,8 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
 
     const handleSelectingAirport = (airport: Airport) => {
         if (selectedAirports.includes(airport)) {
-            setSelectedAirports(selectedAirports.filter((selectedAirport) => selectedAirport.code !== airport.code));
+            setSelectedAirports(selectedAirports.filter((selectedAirport) =>
+                selectedAirport.code !== airport.code));
         } else {
             setSelectedAirports([...selectedAirports, airport]);
         }
@@ -72,13 +73,14 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
         <div key={airport.code}>
             <input
                 type="checkbox"
-                id={`checkbox-${airport.code}`}
+                id={airport.code}
                 name="airport" value={airport.name}
                 onClick={() => handleSelectingAirport(airport)}
                 disabled={isAirportLimitReached && !selectedAirports.includes(airport)}
+                checked={selectedAirports.includes(airport)}
             />
             <label
-                htmlFor={`checkbox-${airport.code}`}>{`${airport.name}: ${airport.distance} km`}
+                htmlFor={airport.code}>{`${airport.name}: ${airport.distance} km`}
             </label>
         </div>
     ));

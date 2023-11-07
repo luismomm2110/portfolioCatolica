@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import CreateFlightArea from '../createFlightArea'
 import {searchAirportGateway} from '../gateways/searchAirportGateway'
 import {cityOfOriginGateway} from '../gateways/cityOfOriginGateway'
@@ -578,6 +578,51 @@ describe(('createFlightArea'), () => {
         expect(screen.queryByText('Aeroporto de Guarulhos')).not.toBeInTheDocument()
     })
 
+    it ('Should uncheck an airport from the checkboxes when the user click on the remove button', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea/>);
+        userEvent.type(screen.getByRole('textbox', {name: 'Nome da área de voo:'}), 'Aeroportos de São Paulo')
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
+        userEvent.click(checkbox)
+        userEvent.click(screen.getByRole('button', {name: 'X'}))
+
+        await waitFor(() => {
+            expect(screen.getByLabelText('Aeroporto de Guarulhos: 0 km')).not.toBeChecked()
+        })
+    })
+
     it('Should change the submit button text to "Salvar" when the user select one or more airports', async () => {
         cityOfOriginGateway.mockResolvedValueOnce({
             data: 'São Paulo'
@@ -618,5 +663,51 @@ describe(('createFlightArea'), () => {
         userEvent.click(checkbox)
 
         expect(screen.getByRole('button', {name: 'Salvar'})).toBeInTheDocument()
+    })
+
+    it('Should keep the submit button text to "Submit" when the user doesnt have any selected airports', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea/>);
+        userEvent.type(screen.getByRole('textbox', {name: 'Nome da área de voo:'}), 'Aeroportos de São Paulo')
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
+        userEvent.click(checkbox)
+        userEvent.click(screen.getByRole('button', {name: 'X'}))
+
+        await waitFor(() => {
+            expect(screen.getByRole('button', {name: 'Submit'})).toBeInTheDocument()
+        })
+        expect(screen.queryByRole('button', {name: 'Salvar'})).not.toBeInTheDocument()
     })
 })
