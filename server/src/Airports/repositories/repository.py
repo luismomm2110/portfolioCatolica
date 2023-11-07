@@ -61,4 +61,4 @@ class IataRepository(AbstractRepository):
         return tuple(airport for airport in self.airports if airport.municipality == city)
 
     def fetch_cities(self) -> Tuple[Municipality]:
-        return tuple(set(airport.municipality for airport in self.airports))
+        return tuple(set(airport.municipality for airport in self.airports if airport.municipality))

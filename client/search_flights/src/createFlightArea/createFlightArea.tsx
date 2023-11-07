@@ -39,7 +39,7 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
         e.preventDefault();
         if (findedCityOfOrigin.length === 0) {
             cityOfOriginGateway(formData.cityOfOrigin).then((response) => {
-                    setFindedCityOfOrigin(response.data)
+                setFindedCityOfOrigin(response.data)
                 }
             ).catch((error) => {
                 setGatewayError(error.response.data.message);
