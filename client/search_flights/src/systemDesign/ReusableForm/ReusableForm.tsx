@@ -19,9 +19,10 @@ type ReusableFormProps = {
   fields: Field[];
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  submitText?: string;
 };
 
-const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSubmit, handleChange }) => {
+const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSubmit, handleChange, submitText }) => {
   const isDisabled = () => {
     const isThereAnError = fields.some((field) => field.error !== '');
     const isThereAnEmptyField = fields.some((field) => field.value === '');
@@ -52,8 +53,8 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSu
         </div>
       ))}
       <ReusableButton
-          description={'Submit'}
-          label={'Submit'}
+          description={submitText ?? 'Submit'}
+          label={submitText ?? 'Submit'}
           disabled={isDisabled()}
       />
     </form>

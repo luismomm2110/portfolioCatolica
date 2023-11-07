@@ -577,4 +577,46 @@ describe(('createFlightArea'), () => {
         expect(await screen.findByText('Nenhum aeroporto selecionado')).toBeInTheDocument()
         expect(screen.queryByText('Aeroporto de Guarulhos')).not.toBeInTheDocument()
     })
+
+    it('Should change the submit button text to "Salvar" when the user select one or more airports', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<CreateFlightArea/>);
+        userEvent.type(screen.getByRole('textbox', {name: 'Nome da área de voo:'}), 'Aeroportos de São Paulo')
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
+        userEvent.click(checkbox)
+
+        expect(screen.getByRole('button', {name: 'Salvar'})).toBeInTheDocument()
+    })
 })

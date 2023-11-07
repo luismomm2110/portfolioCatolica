@@ -153,6 +153,7 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
             >
                 <div className={'select-airports'}>
                     <ReusableForm
+                        submitText={selectedAirports.length > 0 ? 'Salvar' : 'Submit'}
                         formTitle=""
                         fields={findedCityOfOrigin.length === 0
                             ? flightAreaFields :
