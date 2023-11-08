@@ -9,5 +9,7 @@ export const searchAirportGateway = async (airportName: string, limit: string = 
             'Content-Type': 'application/json',
         },
     })
+    if (response.status === 404) throw new Error('Aeroporto não encontrado')
+    if (!response.ok) throw new Error('Error fetching airports')
     return await response.json()
 }

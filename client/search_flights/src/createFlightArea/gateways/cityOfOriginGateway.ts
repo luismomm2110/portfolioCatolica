@@ -9,5 +9,8 @@ export const cityOfOriginGateway = async (city: string) => {
             'Content-Type': 'application/json',
         },
     })
+    console.log(response)
+    if (response.status === 404) throw new Error('Cidade não encontrada')
+    if (!response.ok) throw new Error('Error fetching cities')
     return await response.json()
 }

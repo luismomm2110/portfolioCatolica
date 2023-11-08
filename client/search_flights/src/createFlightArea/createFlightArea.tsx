@@ -35,22 +35,26 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
         return '';
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (findedCityOfOrigin.length === 0) {
-            cityOfOriginGateway(formData.cityOfOrigin).then((response) => {
-                setFindedCityOfOrigin(response.data)
+            try {
+                const response = await cityOfOriginGateway(formData.cityOfOrigin);
+                setFindedCityOfOrigin(response.data);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setGatewayError(error.message);
                 }
-            ).catch((error) => {
-                setGatewayError(error.response.data.message);
-            })
+            }
         } else {
-            searchAirportGateway(formData.flightAreaOriginalAirport).then((response) => {
-                setAirports(response.data)
-            }).catch((error) => {
-                console.log(error.response.data.message)
-                setGatewayError(error.response.data.message);
-            })
+            try {
+                const response = await searchAirportGateway(formData.flightAreaOriginalAirport);
+                setAirports(response.data);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setGatewayError(error.message);
+                }
+            }
         }
     }
 
@@ -69,7 +73,7 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
         }
     }
 
-    const checkBoxes = airports.map((airport, index) => (
+    const checkBoxes = airports.map((airport) => (
         <div key={airport.code}>
             <input
                 type="checkbox"
