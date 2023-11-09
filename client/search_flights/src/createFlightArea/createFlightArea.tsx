@@ -4,6 +4,8 @@ import {searchAirportGateway} from "./gateways/searchAirportGateway";
 import {Airport} from "./types";
 import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
+import {ReusableButton} from "../systemDesign/Button/ReusableButton";
+import {createFlightAreaGateway} from "./gateways/createFlightAreaGateway";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -19,8 +21,8 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
     const [airports, setAirports] = useState<Airport[]>([])
     const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
-
     const isSelectingAirports = airports.length > 0;
+    const hasSelectedAirports = selectedAirports.length > 0;
     const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
 
     const validateField = (id: string, value: string) => {
@@ -33,6 +35,22 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
             }
         }
         return '';
+    }
+
+    const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+        const response = await createFlightAreaGateway(
+              formData.flightAreaName,
+               formData.cityOfOrigin,
+                formData.flightAreaOriginalAirport,
+                selectedAirports.map((airport) => airport.code)
+            )
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setGatewayError(error.message);
+            }
+        }
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -159,7 +177,6 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
             >
                 <div className={'select-airports'}>
                     <ReusableForm
-                        submitText={selectedAirports.length > 0 ? 'Salvar' : 'Submit'}
                         formTitle=""
                         fields={findedCityOfOrigin.length === 0
                             ? flightAreaFields :
@@ -167,6 +184,13 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
                     />
+                    {hasSelectedAirports &&
+                        <ReusableButton
+                            description={'Salvar'}
+                            label={'Salvar'}
+                            callback={() => console.log('salvar')}
+                        />
+                    }
                     <div>
                         {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
                         {isSelectingAirports &&
