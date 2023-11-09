@@ -11,4 +11,7 @@ class FakeFlightAreaGateway(FlightAreaGateway):
         self._flight_areas = {}
 
     def save_flight_area(self, flight_area: FlightArea):
-        self._flight_areas[flight_area.id] = FlightArea
+        self._flight_areas[flight_area._id] = flight_area
+
+    def get_flight_area_by_id(self, flight_area_id):
+        return self._flight_areas[flight_area_id]
