@@ -1,0 +1,60 @@
+.flight-area-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-container {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+.error-message {
+    color: red;
+    font-size: 48px;
+    margin-top: 5px;
+}
+
+.select-airports {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    gap: 50px;
+
+    & p {
+        font-weight: bold;
+        font-size: 20px;
+    }
+}
+
+.selected-airports-list {
+    padding: 0;
+
+    & li {
+        padding-inline-start: 0;
+        list-style: none;
+        padding: 0;
+        margin-bottom: 5px;
+
+        & span {
+            margin-right: 10px;
+        }
+
+        & button {
+            padding: 5px;
+            font-size: 15px;
+            border-radius: 10px;
+        }
+    }
+}
+
