@@ -8,3 +8,11 @@ export type Airport = {
     };
     municipality: string;
 }
+
+export type FlightArea = {
+    _id: string;
+    name: string;
+    airports: Airport[];
+    travel_agent_id: string;
+    city_origin: string;
+}

@@ -4,11 +4,14 @@ import {useNavigate} from "react-router-dom";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import './Profile.css'
 import flightAreaGateway from "./gateways/flightAreaGateway";
+import {FlightArea} from "../createFlightArea/types";
 
 
 const Profile: React.FC = () => {
     const { setToken } = useAuth();
     const navigate = useNavigate()
+    const [flightAreas, setFlightAreas] = React.useState<FlightArea[]>([])
+
     const logout = () => {
         setToken(null);
         navigate('/')
@@ -16,9 +19,19 @@ const Profile: React.FC = () => {
 
     useEffect(() => {
         flightAreaGateway().then((response) => {
-            console.log(response)
+            setFlightAreas(response)
         })
     }, []);
+
+    const listFlightAreas = () => {
+        return flightAreas.map((flightArea) => {
+            return (
+                <li key={flightArea._id}>
+                    <h1>{flightArea.name}</h1>
+                </li>
+            )
+        })
+    }
 
     return (
         <>
@@ -37,6 +50,9 @@ const Profile: React.FC = () => {
                         label={'Criar área de voos'}
                         callback={() => navigate('/createFlightArea')}
                     />
+                    <ul>
+                        {listFlightAreas()}
+                    </ul>
                 </main>
             </div>
         </>

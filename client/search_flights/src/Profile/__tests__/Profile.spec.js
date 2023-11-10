@@ -40,4 +40,30 @@ describe('Profile', () => {
 
         expect(flightAreaGateway).toHaveBeenCalled()
     })
+
+    it('Should contain the Flight Area data', async () => {
+        const flightAreaData = [
+            {
+                _id: 1,
+                name: 'Flight Area 1',
+                airports: [],
+                travel_agent_id: 1,
+                city_origin: 'City 1'
+            },
+            {
+                _id: 2,
+                name: 'Flight Area 2',
+                airports: [],
+                travel_agent_id: 1,
+                city_origin: 'City 2',
+            }
+        ]
+        flightAreaGateway.mockResolvedValueOnce(flightAreaData)
+
+        renderWithAuthProvider()
+
+        expect(await screen.findByText('Flight Area 1')).toBeInTheDocument()
+        expect(await screen.findByText('Flight Area 2')).toBeInTheDocument()
+    })
 })
+
