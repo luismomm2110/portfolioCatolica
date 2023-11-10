@@ -25,7 +25,7 @@ const [formData, setFormData] = React.useState({
                 password: formData.password,
                 phone_number: formData.phone_number,
             };
-        fetch('http://127.0.0.1:5000/create_travel_agent', {
+        fetch('http://127.0.0.1:5000/travel_agent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

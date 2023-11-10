@@ -23,7 +23,7 @@ travel_agent_client = mongo_client['search_flight_db']['travel_agent']
 gateway = MongoTravelAgentGateway(travel_agent_client)
 
 
-@app.route('/create_travel_agent', methods=['POST'])
+@app.route('/travel_agent', methods=['POST'])
 def insert():
     data = request.json
     try:
