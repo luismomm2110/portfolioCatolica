@@ -132,3 +132,4 @@ dmypy.json
 config.ini
 /pessoal.pem
 .idea/
+/server/resources/iata.csv
