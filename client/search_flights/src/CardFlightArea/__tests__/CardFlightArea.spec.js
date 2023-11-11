@@ -47,8 +47,21 @@ describe('CardFlightArea', () => {
         button.click();
 
         await waitFor(
-            () => expect(navigator.clipboard.writeText).toHaveBeenCalled()
+            () => expect(navigator.clipboard.writeText).toHaveBeenCalledWith(url)
         );
+    })
+
+    it('Should change the text to "Copiado" when click on Compartilhar button', async () => {
+        const flightArea = {
+            name: "Aeroportos do Leste Asiático",
+            _id: '123'
+        }
+        render(<CardFlightArea flightArea={flightArea} onExcluir={() => {}}/>)
+
+        const button = screen.getByText('Compartilhar');
+        button.click();
+
+        expect(await screen.findByText('Copiado')).toBeInTheDocument();
     })
 })
 
