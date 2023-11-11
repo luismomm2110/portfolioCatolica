@@ -11,6 +11,8 @@ class FlightAreaGateway:
     def get_flight_area_from_travel_agent(self, travel_agent_id):
         raise NotImplementedError
 
+    def delete_flight_area(self, flight_area_id):
+        raise NotImplementedError
 
 class FakeFlightAreaGateway(FlightAreaGateway):
     def __init__(self):
@@ -25,6 +27,9 @@ class FakeFlightAreaGateway(FlightAreaGateway):
     def get_flight_area_from_travel_agent(self, travel_agent_id):
         return [flight_area for flight_area in self._flight_areas.values()
                 if flight_area.travel_agent_id == travel_agent_id]
+
+    def delete_flight_area(self, flight_area_id):
+        del self._flight_areas[flight_area_id]
 
 
 class MongoFlightAreaGateway(FlightAreaGateway):
@@ -58,3 +63,5 @@ class MongoFlightAreaGateway(FlightAreaGateway):
             airports=flight_area['airports']
         ) for flight_area in flight_area_data]
 
+    def delete_flight_area(self, flight_area_id):
+        self._mongo_client.db.collection.delete_one({"_id": flight_area_id})
