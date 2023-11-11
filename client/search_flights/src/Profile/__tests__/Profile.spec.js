@@ -22,12 +22,16 @@ jest.mock('../gateways/flightAreaGateway')
 
 describe('Profile', () => {
     it('Should render the Profile screen', () => {
+        flightAreaGateway.mockResolvedValueOnce({data: {}})
+
         renderWithAuthProvider()
 
         expect(screen.getByText('Profile')).toBeInTheDocument();
     });
 
     it('Should have the logout button', () => {
+        flightAreaGateway.mockResolvedValueOnce({data: {}})
+
         renderWithAuthProvider()
 
         expect(screen.getByText('Logout')).toBeInTheDocument();
@@ -58,7 +62,7 @@ describe('Profile', () => {
                 city_origin: 'City 2',
             }
         ]
-        flightAreaGateway.mockResolvedValueOnce(flightAreaData)
+        flightAreaGateway.mockResolvedValue(flightAreaData)
 
         renderWithAuthProvider()
 

@@ -5,6 +5,7 @@ import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import './Profile.css'
 import flightAreaGateway from "./gateways/flightAreaGateway";
 import {FlightArea} from "../createFlightArea/types";
+import CardFlightArea from "../CardFlightArea/CardFlightArea";
 
 
 const Profile: React.FC = () => {
@@ -27,7 +28,7 @@ const Profile: React.FC = () => {
         return flightAreas.map((flightArea) => {
             return (
                 <li key={flightArea._id}>
-                    <h1>{flightArea.name}</h1>
+                    <CardFlightArea flightArea={flightArea} />
                 </li>
             )
         })
