@@ -5,9 +5,10 @@ import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 
 interface CardFlightAreaProps {
     flightArea: FlightArea;
+    onExcluir: (flightArea: FlightArea) => void;
 }
 
-const CardFlightArea: React.FC<CardFlightAreaProps> = ({flightArea}) => {
+const CardFlightArea: React.FC<CardFlightAreaProps> = ({flightArea, onExcluir}) => {
     return (
         <>
             <div className={'card-flight-area'}>
@@ -21,6 +22,7 @@ const CardFlightArea: React.FC<CardFlightAreaProps> = ({flightArea}) => {
                     <ReusableButton
                         description={'Excluir'}
                         label={'Excluir'}
+                        callback={() => onExcluir(flightArea)}
                     />
                 </footer>
             </div>

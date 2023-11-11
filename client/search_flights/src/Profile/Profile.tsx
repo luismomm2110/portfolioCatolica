@@ -6,6 +6,7 @@ import './Profile.css'
 import flightAreaGateway from "./gateways/flightAreaGateway";
 import {FlightArea} from "../createFlightArea/types";
 import CardFlightArea from "../CardFlightArea/CardFlightArea";
+import {deleteFlightAreaGateway} from "./gateways/deleteFlightAreaGateway";
 
 
 const Profile: React.FC = () => {
@@ -24,11 +25,21 @@ const Profile: React.FC = () => {
         })
     }, []);
 
+    const handleExcluir = (deletedFlightArea: FlightArea) => {
+        deleteFlightAreaGateway(deletedFlightArea._id).then(() => {
+                const newFlightAreas = flightAreas.filter((flightArea) =>
+                    flightArea._id !== deletedFlightArea._id)
+                setFlightAreas(newFlightAreas)
+            }
+    )};
+
     const listFlightAreas = () => {
         return flightAreas.map((flightArea) => {
             return (
                 <li key={flightArea._id}>
-                    <CardFlightArea flightArea={flightArea} />
+                    <CardFlightArea
+                        flightArea={flightArea}
+                        onExcluir={handleExcluir}/>
                 </li>
             )
         })

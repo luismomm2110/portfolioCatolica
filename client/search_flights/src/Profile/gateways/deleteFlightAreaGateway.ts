@@ -1,4 +1,4 @@
-export const deleteFlightArea = async (_id: string) => {
+export const deleteFlightAreaGateway = async (_id: string) => {
     const url =  new URL('http://localhost:5001/flight_areas')
 
     const response = await fetch(url.toString(), {
