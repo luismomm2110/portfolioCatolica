@@ -10,5 +10,14 @@ describe('CardFlightArea', () => {
 
         expect(screen.getByText('Aeroportos do Leste Asiático')).toBeInTheDocument();
     });
+
+    it('Should render a Excluir button', () => {
+        const flightArea = {
+            name: "Aeroportos do Leste Asiático",
+        }
+        render(<CardFlightArea flightArea={flightArea}/>)
+
+        expect(screen.getByText('Excluir')).toBeInTheDocument();
+    })
 })
 

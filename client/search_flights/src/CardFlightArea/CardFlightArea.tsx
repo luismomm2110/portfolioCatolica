@@ -1,5 +1,6 @@
 import React from 'react';
 import {FlightArea} from "../createFlightArea/types";
+import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 
 
 interface CardFlightAreaProps {
@@ -10,7 +11,15 @@ const CardFlightArea: React.FC<CardFlightAreaProps> = ({flightArea}) => {
     return (
         <>
             <div className={'card-flight-area'}>
-                <h2>{flightArea.name}</h2>
+                <header>
+                    <h2>{flightArea.name}</h2>
+                </header>
+                <footer>
+                    <ReusableButton
+                        description={'Excluir'}
+                        label={'Excluir'}
+                    />
+                </footer>
             </div>
         </>
     );
