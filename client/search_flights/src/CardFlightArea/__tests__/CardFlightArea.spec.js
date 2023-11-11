@@ -19,5 +19,14 @@ describe('CardFlightArea', () => {
 
         expect(screen.getByText('Excluir')).toBeInTheDocument();
     })
+
+    it('Should render a Compartilhar button', () => {
+        const flightArea = {
+            name: "Aeroportos do Leste Asiático",
+        }
+        render(<CardFlightArea flightArea={flightArea}/>)
+
+        expect(screen.getByText('Compartilhar')).toBeInTheDocument();
+    })
 })
 

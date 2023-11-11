@@ -16,6 +16,9 @@ const CardFlightArea: React.FC<CardFlightAreaProps> = ({flightArea}) => {
                 </header>
                 <footer>
                     <ReusableButton
+                        description={'Compartilhar'}
+                        label={'Editar'}/>
+                    <ReusableButton
                         description={'Excluir'}
                         label={'Excluir'}
                     />
