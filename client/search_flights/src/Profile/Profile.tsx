@@ -1,16 +1,48 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useAuth} from "../auth/authProvider";
 import {useNavigate} from "react-router-dom";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import './Profile.css'
+import flightAreaGateway from "./gateways/flightAreaGateway";
+import {FlightArea} from "../createFlightArea/types";
+import CardFlightArea from "../CardFlightArea/CardFlightArea";
+import {deleteFlightAreaGateway} from "./gateways/deleteFlightAreaGateway";
 
 
 const Profile: React.FC = () => {
     const { setToken } = useAuth();
     const navigate = useNavigate()
+    const [flightAreas, setFlightAreas] = React.useState<FlightArea[]>([])
+
     const logout = () => {
         setToken(null);
         navigate('/')
+    }
+
+    useEffect(() => {
+        flightAreaGateway().then((response) => {
+            setFlightAreas(response)
+        })
+    }, []);
+
+    const handleExcluir = (deletedFlightArea: FlightArea) => {
+        deleteFlightAreaGateway(deletedFlightArea._id).then(() => {
+                const newFlightAreas = flightAreas.filter((flightArea) =>
+                    flightArea._id !== deletedFlightArea._id)
+                setFlightAreas(newFlightAreas)
+            }
+    )};
+
+    const listFlightAreas = () => {
+        return flightAreas.map((flightArea) => {
+            return (
+                <li key={flightArea._id}>
+                    <CardFlightArea
+                        flightArea={flightArea}
+                        onExcluir={handleExcluir}/>
+                </li>
+            )
+        })
     }
 
     return (
@@ -30,6 +62,9 @@ const Profile: React.FC = () => {
                         label={'Criar área de voos'}
                         callback={() => navigate('/createFlightArea')}
                     />
+                    <ul>
+                        {listFlightAreas()}
+                    </ul>
                 </main>
             </div>
         </>
