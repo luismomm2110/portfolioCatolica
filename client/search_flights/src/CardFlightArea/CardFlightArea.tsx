@@ -9,6 +9,15 @@ interface CardFlightAreaProps {
 }
 
 const CardFlightArea: React.FC<CardFlightAreaProps> = ({flightArea, onExcluir}) => {
+    const handleCompartilhar = async () => {
+        try {
+            const url = `http://localhost:3000/flight_area/${flightArea._id}`
+            await navigator.clipboard.writeText(url);
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    }
+
     return (
         <>
             <div className={'card-flight-area'}>
@@ -18,7 +27,9 @@ const CardFlightArea: React.FC<CardFlightAreaProps> = ({flightArea, onExcluir}) 
                 <footer>
                     <ReusableButton
                         description={'Compartilhar'}
-                        label={'Editar'}/>
+                        label={'Compartilhar'}
+                        callback={handleCompartilhar}
+                    />
                     <ReusableButton
                         description={'Excluir'}
                         label={'Excluir'}
