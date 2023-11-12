@@ -1,17 +1,16 @@
 import React, {useState} from "react";
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 import {searchAirportGateway} from "./gateways/searchAirportGateway";
+import DatePicker from "react-datepicker";
 import {Airport} from "./types";
 import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
-import {ReusableButton} from "../systemDesign/Button/ReusableButton";
-import {createFlightAreaGateway} from "./gateways/createFlightAreaGateway";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
 }
 
-const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
+const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
     const [formData, setFormData] = useState({
         flightAreaName: '', flightAreaNameError: '',
         cityOfOrigin: '', cityOfOriginError: '',
@@ -22,7 +21,6 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
     const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
     const isSelectingAirports = airports.length > 0;
-    const hasSelectedAirports = selectedAirports.length > 0;
     const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
 
     const validateField = (id: string, value: string) => {
@@ -35,22 +33,6 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
             }
         }
         return '';
-    }
-
-    const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-        const response = await createFlightAreaGateway(
-              formData.flightAreaName,
-               formData.cityOfOrigin,
-                formData.flightAreaOriginalAirport,
-                selectedAirports.map((airport) => airport.code)
-            )
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                setGatewayError(error.message);
-            }
-        }
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -184,13 +166,6 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
                     />
-                    {hasSelectedAirports &&
-                        <ReusableButton
-                            description={'Salvar'}
-                            label={'Salvar'}
-                            callback={() => console.log('salvar')}
-                        />
-                    }
                     <div>
                         {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
                         {isSelectingAirports &&
@@ -203,11 +178,19 @@ const CreateFlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit
                 {isSelectingAirports &&
                     <section className={'checkbox-container'}>
                         {checkBoxes}
+                        <div>
+                            <label htmlFor="flightDate">Data do Voo:</label>
+                            <DatePicker
+                                onChange={(date) => console.log(date)}
+                                dateFormat="dd/MM/yyyy"
+                            />
+                        </div>
                     </section>
+
                 }
             </main>
         </div>
     );
 }
 
-export default CreateFlightArea;
+export default FlightArea;

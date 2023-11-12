@@ -5,7 +5,7 @@ import {PaginaInicial} from "../PaginaInicial/PaginaInicial";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Profile from "../Profile/Profile";
-import CreateFlightArea from "../createFlightArea/createFlightArea";
+import FlightArea from "../FlightArea/FlightArea";
 
 export const Routes: React.FC = () => {
 
@@ -21,8 +21,8 @@ export const Routes: React.FC = () => {
                     element: <Profile />,
                 },
                 {
-                    path: '/createFlightArea',
-                    element: <CreateFlightArea/>,
+                    path: '/FlightArea',
+                    element: <FlightArea/>,
                 }
             ]
         }

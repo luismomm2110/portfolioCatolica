@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlightArea} from "../createFlightArea/types";
+import {FlightArea} from "../FlightArea/types";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 
 

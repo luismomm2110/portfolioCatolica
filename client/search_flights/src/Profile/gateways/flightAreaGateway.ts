@@ -1,4 +1,4 @@
-import {FlightArea} from "../../createFlightArea/types";
+import {FlightArea} from "../../FlightArea/types";
 
 const flightAreaGateway = async (): Promise<FlightArea[]> => {
     const token = localStorage.getItem('token');
