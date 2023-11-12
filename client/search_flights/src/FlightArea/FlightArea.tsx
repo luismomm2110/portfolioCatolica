@@ -20,6 +20,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     const [airports, setAirports] = useState<Airport[]>([])
     const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
+    const [flightDate, setFlightDate] = useState<Date>(new Date());
     const isSelectingAirports = airports.length > 0;
     const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
 
@@ -178,7 +179,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                 {isSelectingAirports &&
                     <section className={'checkbox-container'}>
                         {checkBoxes}
-                        <ReusableDatePicker onChange={(date) => console.log(date)}/>
+                        <ReusableDatePicker onChange={(date) => setFlightDate(date)}/>
                     </section>
 
                 }
