@@ -6,6 +6,7 @@ import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableDatePicker} from "../systemDesign/DatePicker/DatePicker";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
+import {ReusableInput} from "../systemDesign/ReusableInput/ReusableInput";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -21,6 +22,8 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
     const [flightDate, setFlightDate] = useState<Date>(new Date());
+    const [price, setPrice] = useState<number>(0);
+
     const isSelectingOrigin = findedCityOfOrigin.length === 0;
     const isSelectingDestiny = airports.length === 0 && !isSelectingOrigin;
     const isSelectingAirports = airports.length > 0;
@@ -160,7 +163,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                     <div>
                         {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
                         {isSelectingAirports &&
-                            <ul className={'selected-airports-list'} >
+                            <ul className={'selected-airports-list'}>
                                 {selectedAirportsList}
                             </ul>}
                     </div>
@@ -169,12 +172,17 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                 {isSelectingAirports &&
                     <section className={'checkbox-container'}>
                         {checkBoxes}
-                        <ReusableDatePicker onChange={(date) => setFlightDate(date)}/>
-                        <ReusableButton
-                            description={'Preço máximo:'}
-                            label={'Preço máximo:'}
+                        <ReusableDatePicker
+                            onChange={(date) => setFlightDate(date)}
+                        />
+                        <ReusableInput
+                            error={''}
+                            label={'Preço máximo'}
                             placeholder={'Sem preço máximo:'}
-                            callback={() => {}}
+                            value={price.toString()}
+                            handleChange={(e) => setPrice(Number(e.target.value))}
+                            type={'number'}
+                            id={'price'}
                         />
                     </section>
                 }

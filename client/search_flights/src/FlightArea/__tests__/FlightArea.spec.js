@@ -756,4 +756,34 @@ describe(('FlightArea'), () => {
             expect(await screen.findByLabelText('Preço máximo:')).toBeInTheDocument()
             expect(await screen.findByPlaceholderText('Sem preço máximo:')).toBeInTheDocument()
     })
+
+    it('should change the price input when the user select at least one airport', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        const limit = 30;
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'MAD',
+                    name: 'Aeroporto de Madrid',
+                    city: 'Madrid',
+                    country: 'Espanha',
+                    distance: 0
+                }
+            ]
+        })
+        render(<FlightArea selectedAirportLimit={limit}/>);
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
+        userEvent.click(checkbox)
+
+        const priceInput = screen.getByLabelText('Preço máximo:')
+        userEvent.type(priceInput, '1000')
+
+        expect(screen.getByLabelText('Preço máximo:')).toHaveValue(1000)
+    })
 })
