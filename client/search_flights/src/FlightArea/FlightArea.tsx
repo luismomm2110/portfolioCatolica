@@ -12,7 +12,6 @@ interface CreateFlightAreaProps {
 
 const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
     const [formData, setFormData] = useState({
-        flightAreaName: '', flightAreaNameError: '',
         cityOfOrigin: '', cityOfOriginError: '',
         flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
     })
@@ -23,18 +22,6 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     const [flightDate, setFlightDate] = useState<Date>(new Date());
     const isSelectingAirports = airports.length > 0;
     const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
-
-    const validateField = (id: string, value: string) => {
-        if (id === 'flightAreaName') {
-            if (value === '') {
-                return 'Campo obrigatório';
-            }
-            if (value.length > 50) {
-                return 'O nome da área de voo deve ter no máximo 50 caracteres';
-            }
-        }
-        return '';
-    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -61,8 +48,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {id, value} = e.target;
-        const error = validateField(id, value);
-        setFormData({...formData, [id]: value, [id + 'Error']: error});
+        setFormData({...formData, [id]: value, [id + 'Error']: ''});
     }
 
     const handleSelectingAirport = (airport: Airport) => {
@@ -91,15 +77,6 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     ));
 
     const flightAreaFields = [
-        {
-            id: 'flightAreaName',
-            label: 'Nome da área de voo',
-            name: 'flightAreaName',
-            type: 'text',
-            placeholder: 'Insira o nome da área de voo',
-            value: formData.flightAreaName,
-            error: formData.flightAreaNameError,
-        },
         {
             id: 'cityOfOrigin',
             label: 'Cidade de origem',
@@ -153,7 +130,8 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     return (
         <div className={'flight-area-container'}>
             <header>
-                <h1>Crie sua área de voo</h1>
+                // Todo aqui eu mudo conforme vai por etapa
+                <h1>asadads</h1>
             </header>
             <main
                 className={'create-flight-area'}
@@ -181,7 +159,6 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                         {checkBoxes}
                         <ReusableDatePicker onChange={(date) => setFlightDate(date)}/>
                     </section>
-
                 }
             </main>
         </div>
