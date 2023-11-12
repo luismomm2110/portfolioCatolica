@@ -5,6 +5,7 @@ import {Airport} from "./types";
 import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableDatePicker} from "../systemDesign/DatePicker/DatePicker";
+import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -169,6 +170,12 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                     <section className={'checkbox-container'}>
                         {checkBoxes}
                         <ReusableDatePicker onChange={(date) => setFlightDate(date)}/>
+                        <ReusableButton
+                            description={'Preço máximo:'}
+                            label={'Preço máximo:'}
+                            placeholder={'Sem preço máximo:'}
+                            callback={() => {}}
+                        />
                     </section>
                 }
             </main>
