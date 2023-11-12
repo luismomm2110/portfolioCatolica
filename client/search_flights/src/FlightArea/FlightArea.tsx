@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 import {searchAirportGateway} from "./gateways/searchAirportGateway";
-import DatePicker from "react-datepicker";
 import {Airport} from "./types";
 import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
+import {ReusableDatePicker} from "../systemDesign/DatePicker/DatePicker";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -178,13 +178,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                 {isSelectingAirports &&
                     <section className={'checkbox-container'}>
                         {checkBoxes}
-                        <div>
-                            <label htmlFor="flightDate">Data do Voo:</label>
-                            <DatePicker
-                                onChange={(date) => console.log(date)}
-                                dateFormat="dd/MM/yyyy"
-                            />
-                        </div>
+                        <ReusableDatePicker onChange={(date) => console.log(date)}/>
                     </section>
 
                 }
