@@ -20,6 +20,8 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
     const [flightDate, setFlightDate] = useState<Date>(new Date());
+    const isSelectingOrigin = findedCityOfOrigin.length === 0;
+    const isSelectingDestiny = airports.length === 0 && !isSelectingOrigin;
     const isSelectingAirports = airports.length > 0;
     const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
 
@@ -127,11 +129,20 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
         </>
     ));
 
+    const getHeaderTitle = () => {
+        if (isSelectingOrigin) {
+            return 'Selecione a origem';
+        }
+        if (isSelectingDestiny) {
+            return 'Selecione o destino';
+        }
+        return 'Selecione os aeroportos';
+    }
+
     return (
         <div className={'flight-area-container'}>
             <header>
-                // Todo aqui eu mudo conforme vai por etapa
-                <h1>asadads</h1>
+                <h1>{getHeaderTitle()}</h1>
             </header>
             <main
                 className={'create-flight-area'}

@@ -9,6 +9,12 @@ jest.mock('../gateways/cityOfOriginGateway')
 
 
 describe(('FlightArea'), () => {
+    it('Should change initially the heading with "Selecione a origem"', () => {
+        render(<FlightArea/>)
+
+        expect(screen.getByRole('heading', {name: 'Selecione a origem'})).toBeInTheDocument()
+    })
+
     it('Should not display the airports input before finding an origin airport', () => {
         render(<FlightArea/>)
 
@@ -491,6 +497,43 @@ describe(('FlightArea'), () => {
         userEvent.click(checkbox)
 
         expect(await screen.findByText('Aeroporto de Guarulhos')).toBeInTheDocument()
+    })
+
+    it ('should display heading "selecione o destino" when the user select an origin', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        render(<FlightArea/>);
+
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+
+        expect(await screen.findByRole('heading', {name: 'Selecione o destino'})).toBeInTheDocument()
+    })
+
+    it ('should display heading "selecione os aeroportos" when the user selected an destiny', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    'code': 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                }
+            ]
+        })
+        render(<FlightArea/>);
+
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
+        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo');
+        userEvent.type(screen.getByRole('button', {name: 'Submit'}));
+
+        expect(await screen.findByRole('heading', {name: 'Selecione os aeroportos'})).toBeInTheDocument()
     })
 
     it('Should remove the airport from the list when the user click on the remove button', async () => {
