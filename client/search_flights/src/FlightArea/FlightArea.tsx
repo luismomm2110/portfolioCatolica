@@ -14,7 +14,7 @@ interface CreateFlightAreaProps {
 const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
     const [formData, setFormData] = useState({
         cityOfOrigin: '', cityOfOriginError: '',
-        flightAreaOriginalAirport: '', flightAreaOriginalAirportError: '',
+        originalDestinyAirport: '', originalDestinyAirportError: '',
         price: '', priceError: ''
     })
     const [findedCityOfOrigin, setFindedCityOfOrigin] = useState('');
@@ -31,7 +31,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (findedCityOfOrigin.length === 0) {
+        if (isSelectingOrigin) {
             try {
                 const response = await cityOfOriginGateway(formData.cityOfOrigin);
                 setFindedCityOfOrigin(response.data);
@@ -42,7 +42,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             }
         } else {
             try {
-                const response = await searchAirportGateway(formData.flightAreaOriginalAirport);
+                const response = await searchAirportGateway(formData.originalDestinyAirport);
                 setAirports(response.data);
             } catch (error: unknown) {
                 if (error instanceof Error) {
@@ -81,26 +81,6 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             </label>
         </div>
     ));
-
-    const cityOfOriginFields = {
-            id: 'cityOfOrigin',
-            label: 'Cidade de origem',
-            name: 'Cidade de origem',
-            type: 'text',
-            placeholder: 'Insira a cidade de origem',
-            value: formData.cityOfOrigin,
-            error: formData.cityOfOriginError,
-        }
-
-    const originalDestinyAirport = {
-        id: 'flightAreaOriginalAirport',
-        label: 'Aeroporto de destino',
-        name: 'Aeroporto de destino',
-        type: 'text',
-        placeholder: 'Insira o nome do aeroporto de destino',
-        value: formData.flightAreaOriginalAirport,
-        error: formData.flightAreaOriginalAirportError,
-    }
 
     const selectedAirportsMessage = () => {
         if (isAirportLimitReached) {
@@ -142,6 +122,26 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     }
 
     const currentFormFields = () => {
+        const cityOfOriginFields = {
+            id: 'cityOfOrigin',
+            label: 'Cidade de origem',
+            name: 'Cidade de origem',
+            type: 'text',
+            placeholder: 'Insira a cidade de origem',
+            value: formData.cityOfOrigin,
+            error: formData.cityOfOriginError,
+        }
+
+        const originalDestinyAirport = {
+            id: 'originalDestinyAirport',
+            label: 'Aeroporto de destino',
+            name: 'Aeroporto de destino',
+            type: 'text',
+            placeholder: 'Insira o nome do aeroporto de destino',
+            value: formData.originalDestinyAirport,
+            error: formData.originalDestinyAirportError
+        }
+
         if (isSelectingOrigin) {
             return [cityOfOriginFields];
         }
