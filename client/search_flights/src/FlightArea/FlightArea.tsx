@@ -168,7 +168,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             return 'Buscar cidade de origem';
         }
         if (isSelectingDestiny) {
-            return 'Submit';
+            return 'Buscar aeroporto de destino';
         }
         return 'Submit';
     }

@@ -57,7 +57,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Varsovia')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         expect(searchAirportGateway).toHaveBeenCalledWith("Varsovia")
     })
@@ -97,7 +97,7 @@ describe(('FlightArea'), () => {
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
 
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         expect(await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')).toBeInTheDocument()
         expect(await screen.findByLabelText('Aeroporto de Congonhas: 30 km')).toBeInTheDocument()
@@ -138,7 +138,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         expect(await screen.findByText('Nenhum aeroporto selecionado')).toBeInTheDocument()
     })
@@ -176,7 +176,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -217,7 +217,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -260,7 +260,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -305,7 +305,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -349,7 +349,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -392,7 +392,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -433,7 +433,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -491,7 +491,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -531,7 +531,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo');
-        userEvent.type(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.type(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         expect(await screen.findByRole('heading', {name: 'Selecione os aeroportos'})).toBeInTheDocument()
     })
@@ -569,7 +569,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -612,7 +612,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
@@ -623,7 +623,7 @@ describe(('FlightArea'), () => {
         })
     })
 
-    it('Should keep the submit button text to "Submit" when the user doesnt have any selected airports', async () => {
+    it('Should keep the submit button text to "Buscar aeroporto de destino" when the user doesnt have any selected airports', async () => {
         cityOfOriginGateway.mockResolvedValueOnce({
             data: 'São Paulo'
         })
@@ -656,14 +656,14 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
         const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
         userEvent.click(checkbox)
         userEvent.click(screen.getByRole('button', {name: 'X'}))
 
         await waitFor(() => {
-            expect(screen.getByRole('button', {name: 'Submit'})).toBeInTheDocument()
+            expect(screen.getByRole('button', {name: 'Buscar aeroporto de destino'})).toBeInTheDocument()
         })
         expect(screen.queryByRole('button', {name: 'Salvar'})).not.toBeInTheDocument()
     })
@@ -688,7 +688,7 @@ describe(('FlightArea'), () => {
             userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
             userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
             userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
-            userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+            userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
             const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
             userEvent.click(checkbox)
@@ -717,7 +717,7 @@ describe(('FlightArea'), () => {
             userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
             userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
             userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
-            userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+            userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
             const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
             userEvent.click(checkbox)
 
@@ -748,13 +748,13 @@ describe(('FlightArea'), () => {
             userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
             userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
             userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
-            userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+            userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
             const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
             userEvent.click(checkbox)
 
             expect(await screen.findByLabelText('Preço máximo:')).toBeInTheDocument()
-            expect(await screen.findByPlaceholderText('Sem preço máximo:')).toBeInTheDocument()
+            expect(await screen.findByPlaceholderText('Sem preço máximo')).toBeInTheDocument()
     })
 
     it('should change the price input when the user select at least one airport', async () => {
@@ -777,7 +777,7 @@ describe(('FlightArea'), () => {
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
-        userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
         const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
         userEvent.click(checkbox)
 
