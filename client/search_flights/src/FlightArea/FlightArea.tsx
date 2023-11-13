@@ -5,7 +5,6 @@ import {Airport} from "./types";
 import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableDatePicker} from "../systemDesign/DatePicker/DatePicker";
-import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {ReusableInput} from "../systemDesign/ReusableInput/ReusableInput";
 
 interface CreateFlightAreaProps {
@@ -15,7 +14,8 @@ interface CreateFlightAreaProps {
 const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
     const [formData, setFormData] = useState({
         cityOfOrigin: '', cityOfOriginError: '',
-        flightAreaOriginalAirport: '', flightAreaOriginalAirportError: ''
+        flightAreaOriginalAirport: '', flightAreaOriginalAirportError: '',
+        price: '', priceError: ''
     })
     const [findedCityOfOrigin, setFindedCityOfOrigin] = useState('');
     const [airports, setAirports] = useState<Airport[]>([])
@@ -82,8 +82,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
         </div>
     ));
 
-    const flightAreaFields = [
-        {
+    const cityOfOriginFields = {
             id: 'cityOfOrigin',
             label: 'Cidade de origem',
             name: 'Cidade de origem',
@@ -92,9 +91,8 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             value: formData.cityOfOrigin,
             error: formData.cityOfOriginError,
         }
-    ]
 
-    const fieldAreaOriginalAirport = {
+    const originalDestinyAirport = {
         id: 'flightAreaOriginalAirport',
         label: 'Aeroporto de destino',
         name: 'Aeroporto de destino',
@@ -143,6 +141,19 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
         return 'Selecione os aeroportos';
     }
 
+    const currentFormFields = () => {
+        if (isSelectingOrigin) {
+            return [cityOfOriginFields];
+        }
+        if (isSelectingDestiny) {
+            return [cityOfOriginFields, originalDestinyAirport]
+        }
+        if (isSelectingAirports) {
+            return [cityOfOriginFields, originalDestinyAirport]
+        }
+        return [];
+    }
+
     return (
         <div className={'flight-area-container'}>
             <header>
@@ -154,9 +165,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                 <div className={'select-airports'}>
                     <ReusableForm
                         formTitle=""
-                        fields={findedCityOfOrigin.length === 0
-                            ? flightAreaFields :
-                            [...flightAreaFields, fieldAreaOriginalAirport]}
+                        fields = {currentFormFields()}
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
                     />
