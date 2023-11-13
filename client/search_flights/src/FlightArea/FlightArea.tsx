@@ -5,7 +5,6 @@ import {Airport} from "./types";
 import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableDatePicker} from "../systemDesign/DatePicker/DatePicker";
-import {ReusableInput} from "../systemDesign/ReusableInput/ReusableInput";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -142,6 +141,16 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             error: formData.originalDestinyAirportError
         }
 
+        const maxPrice = {
+            id: 'price',
+            label: 'Preço máximo',
+            name: 'Preço máximo',
+            type: 'number',
+            placeholder: 'Insira o preço máximo',
+            value: formData.price,
+            error: formData.priceError
+        }
+
         if (isSelectingOrigin) {
             return [cityOfOriginFields];
         }
@@ -149,9 +158,19 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             return [cityOfOriginFields, originalDestinyAirport]
         }
         if (isSelectingAirports) {
-            return [cityOfOriginFields, originalDestinyAirport]
+            return [cityOfOriginFields, originalDestinyAirport, maxPrice]
         }
         return [];
+    }
+
+    const selectSubmitButtonText = () => {
+        if (isSelectingOrigin) {
+            return 'Buscar cidade de origem';
+        }
+        if (isSelectingDestiny) {
+            return 'Submit';
+        }
+        return 'Submit';
     }
 
     return (
@@ -168,6 +187,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                         fields = {currentFormFields()}
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
+                        submitText={selectSubmitButtonText()}
                     />
                     <div>
                         {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
@@ -183,15 +203,6 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                         {checkBoxes}
                         <ReusableDatePicker
                             onChange={(date) => setFlightDate(date)}
-                        />
-                        <ReusableInput
-                            error={''}
-                            label={'Preço máximo'}
-                            placeholder={'Sem preço máximo:'}
-                            value={price.toString()}
-                            handleChange={(e) => setPrice(Number(e.target.value))}
-                            type={'number'}
-                            id={'price'}
                         />
                     </section>
                 }
