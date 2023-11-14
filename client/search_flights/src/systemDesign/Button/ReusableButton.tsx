@@ -15,7 +15,6 @@ export const ReusableButton: React.FC<Props> = ({description, label, callback, d
         type="submit"
         aria-label={label ?? description}
         onClick={callback}
-        placeholder={placeholder ?? ''}
         disabled={disabled ?? false}
     >
         {description}

@@ -400,7 +400,7 @@ describe(('FlightArea'), () => {
         expect(screen.getByLabelText('Aeroporto de Guarulhos: 0 km')).not.toBeDisabled()
     })
 
-    it('Should allow user to select more airports when change airport', async () => {
+    it('Should allow user to select more airports when change destiny Airport', async () => {
         cityOfOriginGateway.mockResolvedValueOnce({
             data: 'São Paulo'
         })
@@ -434,12 +434,8 @@ describe(('FlightArea'), () => {
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
+        userEvent.click(await screen.findByLabelText('Aeroporto de Guarulhos: 0 km'))
 
-        const checkbox = await screen.findByLabelText('Aeroporto de Guarulhos: 0 km')
-        userEvent.click(checkbox)
-        const input3 = screen.getByRole('textbox', {name: 'Aeroporto de destino:'})
-        userEvent.clear(input3)
-        userEvent.type(input3, 'João Pessoa')
         searchAirportGateway.mockResolvedValueOnce({
             data: [
                 {
@@ -451,7 +447,9 @@ describe(('FlightArea'), () => {
                 },
             ]
         })
-        userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
+        userEvent.clear(screen.getByRole('textbox', {name: 'Aeroporto de destino:'}))
+        userEvent.type(screen.getByRole('textbox', {name: 'Aeroporto de destino:'}), 'João Pessoa')
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
         const checkbox2 = await screen.findByLabelText('Aeroporto de João Pessoa: 0 km')
         userEvent.click(checkbox2)
 
@@ -785,5 +783,38 @@ describe(('FlightArea'), () => {
         userEvent.type(priceInput, '1000')
 
         expect(screen.getByLabelText('Preço máximo:')).toHaveValue(1000)
+    })
+
+    it('it should display the Buscar voos button when the user select at least one airport and insert price and date', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        const limit = 30;
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'MAD',
+                    name: 'Aeroporto de Madrid',
+                    city: 'Madrid',
+                    country: 'Espanha',
+                    distance: 0
+                }
+            ]
+        })
+        render(<FlightArea selectedAirportLimit={limit}/>);
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
+        userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
+        userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
+        const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
+        userEvent.click(checkbox)
+
+        const priceInput = screen.getByLabelText('Preço máximo:')
+        userEvent.type(priceInput, '1000')
+
+        const dateInput = screen.getByLabelText(/Data do Voo/i);
+        userEvent.type(dateInput, '2021-10-10');
+
+        expect(screen.getByRole('button', {name: 'Buscar voos'})).toBeInTheDocument()
     })
 })
