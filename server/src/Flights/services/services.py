@@ -1,27 +1,21 @@
 from datetime import datetime
+from decimal import Decimal
 from typing import List, Optional
 
 from server.src.Airports.repositories.repository import AbstractRepository
 from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
 from server.src.Flights.models.model import Flight
-from server.src.Airports.models.model import get_possible_airports
-
-
-def find_flights_within_range(iata_source: str, iata_destination: str, departure: datetime, desired_range: int,
-                              repository: AbstractRepository, gateway: AbstractGateway) -> List[Flight]:
-    airports = repository.fetch_airports()
-    iata_source = repository.fetch_airport(iata_source)
-    iata_destination = repository.fetch_airport(iata_destination)
-    possible_airports = get_possible_airports(iata_source, iata_destination, airports, desired_range)
-    flights = gateway.get(iata_source, possible_airports, departure)
-
-    return flights
 
 
 def find_all_flights_from_airports(city_source: str,
-                                   airports_destinations: list[str],
-                                   departure: datetime,
-                                   price: Optional[int],
-                                   repository: AbstractRepository, gateway: AbstractGateway) -> List[Flight]:
+                                   iata_airports_destinations: list[str],
+                                   departure: str,
+                                   price: Optional[Decimal],
+                                   airport_repository: AbstractRepository, flight_gateway: AbstractGateway) -> List[Flight]:
 
-    pass
+    airport_from_the_source = airport_repository.fetch_airports_by_municipality(city_source)[0]
+
+    flights = flight_gateway.get(airport_from_the_source, iata_airports_destinations, departure, price)
+
+    return flights
+
