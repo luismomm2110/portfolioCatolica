@@ -7,7 +7,6 @@ from server.src.Airports.repositories.repository import FakeRepository
 from server.src.Flights.gateways.gateway_amadeus import FakeGateway
 from server.src.Flights.models.model import Flight
 from server.src.Flights.services.services import find_flights_within_range
-from server.src.Airports.services.services import find_nearest_airports_by_city
 from server.tests.utils import source, destination, destinations
 
 default_date = datetime(2020, 1, 1)
@@ -42,15 +41,6 @@ def test_when_search_for_a_date_without_flights_then_return_empty_list(fake_repo
                                         repository=fake_repository, gateway=fake_gateway)
 
     assert flights == []
-
-
-def test_when_search_for_a_city_then_return_the_nearest_fifty_airports(fake_repository):
-    city = 'São Paulo'
-    limit = 50
-
-    airports = find_nearest_airports_by_city(city, limit, fake_repository)
-
-    assert len(airports) == limit
 
 
 @pytest.fixture

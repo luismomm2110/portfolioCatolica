@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 from server.src.Airports.repositories.repository import AbstractRepository
 from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
@@ -17,3 +17,11 @@ def find_flights_within_range(iata_source: str, iata_destination: str, departure
 
     return flights
 
+
+def find_all_flights_from_airports(city_source: str,
+                                   airports_destinations: list[str],
+                                   departure: datetime,
+                                   price: Optional[int],
+                                   repository: AbstractRepository, gateway: AbstractGateway) -> List[Flight]:
+
+    pass

@@ -48,7 +48,15 @@ def test_when_search_for_a_city_untrimmed(fake_repository):
 
     assert returned_city == 'São Paulo'
 
+def test_when_search_for_a_city_then_return_the_nearest_fifty_airports(fake_repository):
+    city = 'São Paulo'
+    limit = 50
+
+    airports = find_nearest_airports_by_city(city, limit, fake_repository)
+
+    assert len(airports) == limit
 
 @pytest.fixture
 def fake_repository():
     return FakeRepository(airports=[source, destination, *destinations])
+
