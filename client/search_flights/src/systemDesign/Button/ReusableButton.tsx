@@ -5,7 +5,7 @@ import './ReusableButton.css'
 type Props = {
     description: string
     label?: string
-    callback?: () => void
+    callback?: any
     disabled?: boolean
     placeholder?: string
 }

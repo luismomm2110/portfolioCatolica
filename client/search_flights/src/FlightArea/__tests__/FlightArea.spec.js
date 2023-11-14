@@ -3,9 +3,11 @@ import {render, screen, waitFor} from '@testing-library/react'
 import FlightArea from '../FlightArea'
 import {searchAirportGateway} from '../gateways/searchAirportGateway'
 import {cityOfOriginGateway} from '../gateways/cityOfOriginGateway'
+import {searchFlightGateway} from '../gateways/searchFlightGateway'
 
 jest.mock('../gateways/searchAirportGateway')
 jest.mock('../gateways/cityOfOriginGateway')
+jest.mock('../gateways/searchFlightGateway')
 
 
 describe(('FlightArea'), () => {
@@ -785,7 +787,7 @@ describe(('FlightArea'), () => {
         expect(screen.getByLabelText('Preço máximo:')).toHaveValue(1000)
     })
 
-    it('it should display the Buscar voos button when the user select at least one airport and insert price and date', async () => {
+    it('it should search flights when the user select at least one airport and insert price and date', async () => {
         cityOfOriginGateway.mockResolvedValueOnce({
             data: 'São Paulo'
         })
@@ -814,7 +816,11 @@ describe(('FlightArea'), () => {
 
         const dateInput = screen.getByLabelText(/Data do Voo/i);
         userEvent.type(dateInput, '2021-10-10');
+        userEvent.click(screen.getByRole('button', {name: 'Buscar voos'}));
 
-        expect(screen.getByRole('button', {name: 'Buscar voos'})).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(searchFlightGateway).toHaveBeenCalledWith('São Paulo', ['MAD'], '1000', '2021-10-10')
+        })
     })
 })

@@ -6,6 +6,7 @@ import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableDatePicker} from "../systemDesign/DatePicker/DatePicker";
 import { ReusableButton } from "../systemDesign/Button/ReusableButton";
+import {searchFlightGateway} from "./gateways/searchFlightGateway";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -186,6 +187,25 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             && flightDate !== undefined;
     }
 
+    const handleFindFlights = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const airportsCodes = selectedAirports.map((airport) => airport.code);
+        const isoDateWithoutHours = flightDate.toISOString().split('T')[0];
+        try {
+            const response = await searchFlightGateway(
+                findedCityOfOrigin,
+                airportsCodes,
+                String(formData.price),
+                isoDateWithoutHours
+            )
+            console.log(response.data);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setGatewayError(error.message);
+            }
+        }
+    }
+
     return (
         <div className={'flight-area-container'}>
             <header>
@@ -221,7 +241,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
                 }
                     {hasSufficientDataForSearchingFlights() &&
                      <ReusableButton
-                         callback={() => {}}
+                         callback={handleFindFlights}
                          label={'Buscar voos'}
                          description={'Buscar voos'}
                      />
