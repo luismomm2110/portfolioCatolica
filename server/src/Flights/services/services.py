@@ -52,11 +52,10 @@ def _present_flights(raw_flights: List[Flight], currencies_mapping) -> List[Flig
         currency = raw_flight.currency_code
         if currency in currencies_mapping:
             price = price * currencies_mapping[currency]
-            currency = 'BRL'
         flights.append(Flight(source=raw_flight.source,
                               destination=raw_flight.destination,
                               departure=raw_flight.departure,
                               price=price,
-                              currency_code=currency))
+                              currency_code='BRL'))
 
     return flights

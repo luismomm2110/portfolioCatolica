@@ -27,9 +27,11 @@ def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flig
     assert flights[0].source == source
     assert flights[0].destination == destinations[1]
     assert flights[0].departure == departure
+    assert flights[0].price == Decimal('100.00')
     assert flights[1].source == source
     assert flights[1].destination == destinations[2]
     assert flights[1].departure == departure
+    assert flights[1].price == Decimal('100.00')
 
 
 def test_when_dont_find_city_source_then_should_return_error(fake_repository, fake_gateway):
