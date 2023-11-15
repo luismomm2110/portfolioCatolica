@@ -12,7 +12,7 @@ app = Flask(__name__)
 @app.route('/flights', methods=['GET'])
 def flights_endpoint():
     source = request.args['source']
-    destinations = request.args.getlist('destinations')
+    destinations = request.args.getlist('destination')
     departure = request.args['departure']
     price = request.args.get('price', None)
     repository = IataRepository()

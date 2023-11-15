@@ -14,11 +14,15 @@ def find_all_flights_from_airports(city_source: str,
     if not city_source:
         return [], 'City not found'
 
+    ## TODO Invalidar se é no passado
+    ## TODO currency
     airport_from_the_source = airport_repository.fetch_airports_by_municipality(city_source)
     if not airport_from_the_source:
         return [], 'City not found'
-    airport_from_the_source = airport_from_the_source[0]
+    airport_from_the_source = airport_from_the_source[0].code
 
     flights = flight_gateway.get(airport_from_the_source, iata_airports_destinations, departure, price)
+
+    ### TODO Formatar os dados
 
     return flights, ''

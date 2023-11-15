@@ -46,11 +46,14 @@ class AmadeusGateway(AbstractGateway):
         result = []
 
         for destination in destinations:
-            result.append(amadeus.shopping.flight_offers_search.get(
-                originLocationCode=iata_code_origin,
-                destinationLocationCode=destination,
-                departureDate=departure_date,
-                maxPrice=max_price,
-            ).data)
-
+            try:
+                result.append(amadeus.shopping.flight_offers_search.get(
+                    originLocationCode=iata_code_origin,
+                    destinationLocationCode=destination,
+                    departureDate=departure_date, ## TODO Que formato é esse?
+                    maxPrice=max_price,
+                    adults=1,
+                ).data)
+            except Exception as e:
+                print(e)
         return result
