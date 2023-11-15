@@ -58,6 +58,7 @@ def test_dont_find_flights_when_departure_is_not_available(fake_repository, fake
 
     assert len(flights) == 0
 
+
 def test_when_dont_send_price_then_it_should_no_cap_by_price(fake_repository, fake_gateway):
     city_source = 'São Paulo'
     iata_airports_destinations = ['LAX', 'SAN']
@@ -70,6 +71,8 @@ def test_when_dont_send_price_then_it_should_no_cap_by_price(fake_repository, fa
 
     assert len(flights) == 2
 
+def test_converter_para_dolar():
+    raise NotImplementedError
 
 @pytest.fixture
 def fake_repository():
