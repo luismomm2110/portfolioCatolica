@@ -9,7 +9,7 @@ from server.src.Flights.models.model import Flight
 
 def find_all_flights_from_airports(city_source: str, iata_airports_destinations: list[str], departure: str,
                                    airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
-                                   max_price: Optional[int] = None, currency_rate=None) -> [List[Flight], str]:
+                                   max_price: Optional[int] = None, currency_rate_mapping=None) -> [List[Flight], str]:
 
     airport_from_the_source = next(airport_repository.fetch_airports_by_municipality(city_source), None)
 
@@ -19,7 +19,7 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
     if invalid_date_message := _validate_date(departure):
         return [], invalid_date_message
 
-    currencies_mapping = _get_currencies_mapping(currency_rate)
+    currencies_mapping = _get_currencies_mapping(currency_rate_mapping)
     max_price_converted_to_euros = _get_max_price_converted_to_euros(currencies_mapping, max_price)
 
     raw_flights = flight_gateway.get(airport_from_the_source,

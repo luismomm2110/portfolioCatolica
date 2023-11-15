@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 
 from server.src.Airports.repositories.repository import IataRepository
+from server.src.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
 from server.src.Flights.gateways.gateway_amadeus import AmadeusGateway
 from server.src.Flights.services.services import find_all_flights_from_airports
 
@@ -17,9 +18,9 @@ def flights_endpoint():
     price = request.args.get('price', None)
     repository = IataRepository()
     gateway = AmadeusGateway()
-    currency_rate_mapping = CurrencyRateGateway()
+    currency_rate_mapping = FakeCurrencyRateGateway()
 
-    flights, error = find_all_flights_from_airports(source, destinations, departure, repository, gateway, price)
+    flights, error = find_all_flights_from_airports(source, destinations, departure, repository, gateway, price, currency_rate_mapping)
     if error:
         return jsonify({'error': error}), 400
 

@@ -10,6 +10,6 @@ class CurrencyRate:
 
 
 @dataclass(frozen=True)
-class CurrenRateMapping:
-    mapping: dict[CurrencyRate.currency, CurrencyRate]
+class CurrencyRateMapping:
+    mapping: dict[CurrencyRate.currency, CurrencyRate.rate]
 
