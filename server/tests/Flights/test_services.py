@@ -100,8 +100,22 @@ def test_when_departure_is_not_at_iso_format_yyyy_mm_dd_then_should_return_error
 
     assert error == 'Invalid departure date'
 
-def test_converter_para_dolar():
-    raise NotImplementedError
+
+def test_converter_para_reais(fake_repository, fake_gateway):
+    city_source = 'São Paulo'
+    iata_airports_destinations = ['LAX', 'SAN']
+    departure = default_date
+    price = 100
+    currency_rates = {'EUR': Decimal('6.00')}
+
+    flights, _ = find_all_flights_from_airports(city_source=city_source,
+                                                iata_airports_destinations=iata_airports_destinations,
+                                                departure=departure, airport_repository=fake_repository,
+                                                flight_gateway=fake_gateway, max_price=price, currency_rate=currency_rates)
+
+    assert flights[0].price == Decimal('600.00')
+    assert flights[0].currency_code == 'BRL'
+
 
 @pytest.fixture
 def fake_repository():
@@ -111,8 +125,8 @@ def fake_repository():
 @pytest.fixture
 def fake_gateway():
     flights = [
-        Flight(source=source, destination=destinations[1], departure=default_date, price=Decimal('100.00')),
-        Flight(source=source, destination=destinations[2], departure=default_date, price=Decimal('100.00')),
+        Flight(source=source, destination=destinations[1], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
+        Flight(source=source, destination=destinations[2], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
     ]
 
     return FakeGateway(flights=flights)

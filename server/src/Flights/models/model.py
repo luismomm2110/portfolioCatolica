@@ -8,5 +8,6 @@ class Flight:
     destination: dict
     price: Decimal
     departure: str
+    currency_code: str
 
 
