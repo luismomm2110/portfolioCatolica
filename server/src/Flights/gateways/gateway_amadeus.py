@@ -26,6 +26,8 @@ class FakeGateway(AbstractGateway):
             max_price: Optional[int] = None) -> \
             List[Flight]:
 
+        max_price = 999999999999999 if max_price is None else max_price
+
         results = []
         for flight in self.flights:
             if flight.source['code'] == origin.code and flight.destination['code'] in destinations and \
@@ -33,6 +35,7 @@ class FakeGateway(AbstractGateway):
                 results.append(flight)
 
         return results
+
 
 class AmadeusGateway(AbstractGateway):
     def get(self, iata_code_origin: str, destinations: List[str], departure_date: str, max_price: Optional[int] = None):
