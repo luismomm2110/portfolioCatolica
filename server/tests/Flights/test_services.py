@@ -12,13 +12,14 @@ from server.tests.utils import source, destinations
 
 default_date = (datetime.now() + timedelta(days=1)).isoformat().split('T')[0]
 
+currency_rate_mapping = FakeCurrencyRateGateway().get_currency_rate_mapping()
+price = 100*Decimal(currency_rate_mapping.mapping.get('EUR'))
+city_source = 'São Paulo'
+iata_airports_destinations = ['LAX', 'SAN']
 
-def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flights(fake_repository, fake_gateway, fake_currency_rate_gateway):
-    city_source = 'São Paulo'
-    iata_airports_destinations = ['LAX', 'SAN']
+
+def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flights(fake_repository, fake_gateway):
     departure = default_date
-    currency_rate_mapping = fake_currency_rate_gateway.get_currency_rate_mapping()
-    price = 100*Decimal(currency_rate_mapping.mapping.get('EUR'))
 
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
@@ -38,12 +39,10 @@ def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flig
 
 
 def test_when_dont_find_city_source_then_should_return_error(fake_repository, fake_gateway):
-    city_source = 'Missing city'
-    iata_airports_destinations = ['LAX', 'SAN']
+    wrong_city_source = 'Missing city'
     departure = default_date
-    price = 100
 
-    _, error = find_all_flights_from_airports(city_source=city_source,
+    _, error = find_all_flights_from_airports(city_source=wrong_city_source,
                                               iata_airports_destinations=iata_airports_destinations,
                                               departure=departure, airport_repository=fake_repository,
                                               flight_gateway=fake_gateway, max_price=price, currency_rate_mapping=None)
@@ -51,56 +50,42 @@ def test_when_dont_find_city_source_then_should_return_error(fake_repository, fa
     assert error == 'City not found'
 
 
-def test_dont_find_flights_when_departure_is_not_available(fake_repository, fake_gateway, fake_currency_rate_gateway):
-    city_source = 'São Paulo'
-    iata_airports_destinations = ['LAX', 'SAN']
+def test_dont_find_flights_when_departure_is_not_available(fake_repository, fake_gateway):
     departure = (datetime.now() + timedelta(days=100)).isoformat().split('T')[0]
-    currency_mapping = fake_currency_rate_gateway.get_currency_rate_mapping()
-    price = 100*Decimal(currency_mapping.mapping.get('EUR'))
 
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
                                                 departure=departure, airport_repository=fake_repository,
                                                 flight_gateway=fake_gateway, max_price=price,
-                                                currency_rate_mapping=currency_mapping)
+                                                currency_rate_mapping=currency_rate_mapping)
 
     assert len(flights) == 0
 
 
-def test_when_dont_send_price_then_it_should_no_cap_by_price(fake_repository, fake_gateway, fake_currency_rate_gateway):
-    city_source = 'São Paulo'
-    iata_airports_destinations = ['LAX', 'SAN']
+def test_when_dont_send_price_then_it_should_no_cap_by_price(fake_repository, fake_gateway):
     departure = default_date
-    currency_mapping = fake_currency_rate_gateway.get_currency_rate_mapping()
 
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
                                                 departure=departure, airport_repository=fake_repository,
-                                                flight_gateway=fake_gateway, currency_rate_mapping=currency_mapping)
+                                                flight_gateway=fake_gateway, currency_rate_mapping=currency_rate_mapping)
 
     assert len(flights) == 2
 
 
-def test_when_date_is_in_the_past_then_should_return_error(fake_repository, fake_gateway, fake_currency_rate_gateway):
-    city_source = 'São Paulo'
-    iata_airports_destinations = ['LAX', 'SAN']
+def test_when_date_is_in_the_past_then_should_return_error(fake_repository, fake_gateway):
     departure = (datetime.now() - timedelta(days=1)).isoformat().split('T')[0]
-    currency_mapping = fake_currency_rate_gateway.get_currency_rate_mapping()
-    price = 100*Decimal(currency_mapping.mapping.get('EUR'))
 
     _, error = find_all_flights_from_airports(city_source=city_source,
                                               iata_airports_destinations=iata_airports_destinations,
                                               departure=departure, airport_repository=fake_repository,
-                                              flight_gateway=fake_gateway, max_price=price, currency_rate_mapping=None)
+                                              flight_gateway=fake_gateway, max_price=price, currency_rate_mapping=currency_rate_mapping)
 
     assert error == 'Departure date is in the past'
 
 
 def test_when_departure_is_not_at_iso_format_yyyy_mm_dd_then_should_return_error(fake_repository, fake_gateway):
-    city_source = 'São Paulo'
-    iata_airports_destinations = ['LAX', 'SAN']
     departure = (datetime.now() + timedelta(days=1)).isoformat()
-    price = 100
 
     _, error = find_all_flights_from_airports(city_source=city_source,
                                               iata_airports_destinations=iata_airports_destinations,
@@ -110,18 +95,14 @@ def test_when_departure_is_not_at_iso_format_yyyy_mm_dd_then_should_return_error
     assert error == 'Invalid departure date'
 
 
-def test_converter_para_reais(fake_repository, fake_gateway, fake_currency_rate_gateway):
-    city_source = 'São Paulo'
-    iata_airports_destinations = ['LAX', 'SAN']
+def test_it_should_convert_it_back_to_brl_when_send(fake_repository, fake_gateway):
     departure = default_date
-    currencies_mapping = fake_currency_rate_gateway.get_currency_rate_mapping()
-    price = 100*Decimal(currencies_mapping.mapping.get('EUR'))
 
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
                                                 departure=departure, airport_repository=fake_repository,
                                                 flight_gateway=fake_gateway, max_price=price,
-                                                currency_rate_mapping=currencies_mapping)
+                                                currency_rate_mapping=currency_rate_mapping)
 
     assert flights[0].price == price
     assert flights[0].currency_code == 'BRL'
