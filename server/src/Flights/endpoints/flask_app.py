@@ -9,7 +9,6 @@ from server.src.Flights.services.services import find_all_flights_from_airports
 app = Flask(__name__)
 
 
-## TODO proteger rota
 @app.route('/flights', methods=['GET'])
 def flights_endpoint():
     source = request.args['source']
@@ -18,7 +17,7 @@ def flights_endpoint():
     price = request.args.get('price', None)
     repository = IataRepository()
     gateway = AmadeusGateway()
-    currency_rate_mapping = FakeCurrencyRateGateway()
+    currency_rate_mapping = FakeCurrencyRateGateway().get_currency_rate_mapping()
 
     flights, error = find_all_flights_from_airports(source, destinations, departure, repository, gateway, price,
                                                     currency_rate_mapping)
