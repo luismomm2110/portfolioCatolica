@@ -71,6 +71,20 @@ def test_when_dont_send_price_then_it_should_no_cap_by_price(fake_repository, fa
 
     assert len(flights) == 2
 
+
+def test_when_date_is_in_the_past_then_should_return_error(fake_repository, fake_gateway):
+    city_source = 'São Paulo'
+    iata_airports_destinations = ['LAX', 'SAN']
+    departure = (datetime.now() - timedelta(days=1)).isoformat().split('T')[0]
+    price = 100
+
+    _, error = find_all_flights_from_airports(city_source=city_source,
+                                              iata_airports_destinations=iata_airports_destinations,
+                                              departure=departure, price=price, airport_repository=fake_repository,
+                                              flight_gateway=fake_gateway)
+
+    assert error == 'Departure date is in the past'
+
 def test_converter_para_dolar():
     raise NotImplementedError
 
