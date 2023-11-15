@@ -20,8 +20,8 @@ def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flig
 
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
-                                                departure=departure, price=price, airport_repository=fake_repository,
-                                                flight_gateway=fake_gateway)
+                                                departure=departure, airport_repository=fake_repository,
+                                                flight_gateway=fake_gateway, max_price=price)
 
     assert len(flights) == 2
     assert flights[0].source == source
@@ -40,8 +40,8 @@ def test_when_dont_find_city_source_then_should_return_error(fake_repository, fa
 
     _, error = find_all_flights_from_airports(city_source=city_source,
                                               iata_airports_destinations=iata_airports_destinations,
-                                              departure=departure, price=price, airport_repository=fake_repository,
-                                              flight_gateway=fake_gateway)
+                                              departure=departure, airport_repository=fake_repository,
+                                              flight_gateway=fake_gateway, max_price=price)
 
     assert error == 'City not found'
 
@@ -54,8 +54,8 @@ def test_dont_find_flights_when_departure_is_not_available(fake_repository, fake
 
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
-                                                departure=departure, price=price, airport_repository=fake_repository,
-                                                flight_gateway=fake_gateway)
+                                                departure=departure, airport_repository=fake_repository,
+                                                flight_gateway=fake_gateway, max_price=price)
 
     assert len(flights) == 0
 
@@ -81,8 +81,8 @@ def test_when_date_is_in_the_past_then_should_return_error(fake_repository, fake
 
     _, error = find_all_flights_from_airports(city_source=city_source,
                                               iata_airports_destinations=iata_airports_destinations,
-                                              departure=departure, price=price, airport_repository=fake_repository,
-                                              flight_gateway=fake_gateway)
+                                              departure=departure, airport_repository=fake_repository,
+                                              flight_gateway=fake_gateway, max_price=price)
 
     assert error == 'Departure date is in the past'
 
@@ -95,8 +95,8 @@ def test_when_departure_is_not_at_iso_format_yyyy_mm_dd_then_should_return_error
 
     _, error = find_all_flights_from_airports(city_source=city_source,
                                               iata_airports_destinations=iata_airports_destinations,
-                                              departure=departure, price=price, airport_repository=fake_repository,
-                                              flight_gateway=fake_gateway)
+                                              departure=departure, airport_repository=fake_repository,
+                                              flight_gateway=fake_gateway, max_price=price)
 
     assert error == 'Invalid departure date'
 

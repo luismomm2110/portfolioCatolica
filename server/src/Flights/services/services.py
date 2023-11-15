@@ -6,11 +6,9 @@ from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
 from server.src.Flights.models.model import Flight
 
 
-def find_all_flights_from_airports(city_source: str,
-                                   iata_airports_destinations: list[str],
-                                   departure: str,
+def find_all_flights_from_airports(city_source: str, iata_airports_destinations: list[str], departure: str,
                                    airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
-                                   price: Optional[int] = None) -> [List[Flight], str]:
+                                   max_price: Optional[int] = None) -> [List[Flight], str]:
 
     if not city_source:
         return [], 'City not found'
@@ -23,10 +21,7 @@ def find_all_flights_from_airports(city_source: str,
     if invalid_message := _validate_date(departure):
         return [], invalid_message
 
-    if departure < datetime.now().isoformat().split('T')[0]:
-        return [], 'Departure date is in the past'
-
-    flights = flight_gateway.get(airport_from_the_source, iata_airports_destinations, departure, price)
+    flights = flight_gateway.get(airport_from_the_source, iata_airports_destinations, departure, max_price)
 
     return flights, ''
 
