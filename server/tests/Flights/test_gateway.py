@@ -1,8 +1,9 @@
+import json
 from datetime import datetime, timedelta
 
 import pytest
 
-from server.src.Flights.gateways.gateway_amadeus import AmadeusGateway
+from server.src.Flights.gateways.gateway_amadeus import AmadeusGateway, presenter_raws_flights
 
 
 @pytest.mark.skip(reason='Prevents from making requests to Amadeus API')
@@ -17,3 +18,12 @@ def test_gateway_can_search_a_flight():
     result = amadeus_gateway.get(source, destinations, current_date, one_month_from_now)
 
     assert result is not None
+
+
+def test_presenter_can_convert_from_amadeus_model_to_domain_model():
+    with open('./example.json') as f:
+        amadeus_response = json.load(f)
+
+        result = presenter_raws_flights(amadeus_response)
+
+        assert result is not None
