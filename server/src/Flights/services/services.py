@@ -20,11 +20,22 @@ def find_all_flights_from_airports(city_source: str,
         return [], 'City not found'
     airport_from_the_source = airport_from_the_source[0].code
 
+    if invalid_message := _validate_date(departure):
+        return [], invalid_message
+
     if departure < datetime.now().isoformat().split('T')[0]:
         return [], 'Departure date is in the past'
 
     flights = flight_gateway.get(airport_from_the_source, iata_airports_destinations, departure, price)
 
-    ### TODO Formatar os dados
-
     return flights, ''
+
+
+def _validate_date(date: str):
+    try:
+        datetime.strptime(date, '%Y-%m-%d')
+        if date < datetime.now().isoformat().split('T')[0]:
+            return 'Departure date is in the past'
+        return ''
+    except ValueError:
+        return 'Invalid departure date'
