@@ -1,9 +1,9 @@
-from dataclasses import field
+
 from datetime import datetime
+from decimal import Decimal
 from typing import List, Optional
 
 from server.src.Airports.repositories.repository import AbstractRepository
-from server.src.CurrencyRate.gateways.gateways import AbstractCurrencyRateGateway
 from server.src.CurrencyRate.models.models import CurrencyRateMapping
 from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
 from server.src.Flights.models.model import Flight
@@ -11,7 +11,7 @@ from server.src.Flights.models.model import Flight
 
 def find_all_flights_from_airports(city_source: str, iata_airports_destinations: list[str], departure: str,
                                    airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
-                                   max_price: Optional[int] = None, currency_rate_mapping: CurrencyRateMapping = None) -> [List[Flight], str]:
+                                   max_price: Optional[Decimal] = None, currency_rate_mapping: CurrencyRateMapping = None) -> [List[Flight], str]:
 
     try:
         airport_from_the_source = airport_repository.fetch_airports_by_municipality(city_source)[0]
