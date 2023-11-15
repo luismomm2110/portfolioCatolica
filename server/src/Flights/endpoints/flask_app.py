@@ -17,6 +17,7 @@ def flights_endpoint():
     price = request.args.get('price', None)
     repository = IataRepository()
     gateway = AmadeusGateway()
+    currency_rate_mapping = CurrencyRateGateway()
 
     flights, error = find_all_flights_from_airports(source, destinations, departure, repository, gateway, price)
     if error:

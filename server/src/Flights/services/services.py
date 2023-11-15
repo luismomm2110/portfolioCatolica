@@ -11,22 +11,28 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
                                    airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
                                    max_price: Optional[int] = None, currency_rate=None) -> [List[Flight], str]:
 
+    airport_from_the_source = next(airport_repository.fetch_airports_by_municipality(city_source), None)
+
+    if not city_source or not airport_from_the_source:
+        return [], 'City not found'
+
+    if invalid_date_message := _validate_date(departure):
+        return [], invalid_date_message
+
     currencies_mapping = _get_currencies_mapping(currency_rate)
+    max_price_converted_to_euros = _get_max_price_converted_to_euros(currencies_mapping, max_price)
 
-    if not city_source:
-        return [], 'City not found'
-
-    airport_from_the_source = airport_repository.fetch_airports_by_municipality(city_source)
-    if not airport_from_the_source:
-        return [], 'City not found'
-    airport_from_the_source = airport_from_the_source[0].code
-
-    if invalid_message := _validate_date(departure):
-        return [], invalid_message
-
-    raw_flights = flight_gateway.get(airport_from_the_source, iata_airports_destinations, departure, max_price)
+    raw_flights = flight_gateway.get(airport_from_the_source,
+                                     iata_airports_destinations,
+                                     departure,
+                                     max_price_converted_to_euros)
 
     return _present_flights(raw_flights, currencies_mapping), ''
+
+
+def _get_max_price_converted_to_euros(currencies_mapping, max_price):
+    max_price_converted_to_euros = max_price / currencies_mapping['EUR'] if max_price else None
+    return max_price_converted_to_euros
 
 
 def _get_currencies_mapping(currency_rate):
