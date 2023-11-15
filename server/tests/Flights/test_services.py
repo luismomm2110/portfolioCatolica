@@ -16,11 +16,10 @@ currency_rate_mapping = FakeCurrencyRateGateway().get_currency_rate_mapping()
 price = 100*Decimal(currency_rate_mapping.mapping.get('EUR'))
 city_source = 'São Paulo'
 iata_airports_destinations = ['LAX', 'SAN']
+departure = default_date
 
 
 def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flights(fake_repository, fake_gateway):
-    departure = default_date
-
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
                                                 departure=departure, airport_repository=fake_repository,
@@ -38,9 +37,20 @@ def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flig
     assert flights[1].price == price
 
 
+def test_when_send_missing_destinations_then_it_should_not_find(fake_repository, fake_gateway):
+    missing_iata_airports_destinations = ['FOO', 'BAR']
+
+    flights, _ = find_all_flights_from_airports(city_source=city_source,
+                                                iata_airports_destinations=missing_iata_airports_destinations,
+                                                departure=departure, airport_repository=fake_repository,
+                                                flight_gateway=fake_gateway, max_price=price,
+                                                currency_rate_mapping=currency_rate_mapping)
+
+    assert len(flights) == 0
+
+
 def test_when_dont_find_city_source_then_should_return_error(fake_repository, fake_gateway):
     wrong_city_source = 'Missing city'
-    departure = default_date
 
     _, error = find_all_flights_from_airports(city_source=wrong_city_source,
                                               iata_airports_destinations=iata_airports_destinations,
@@ -51,11 +61,11 @@ def test_when_dont_find_city_source_then_should_return_error(fake_repository, fa
 
 
 def test_dont_find_flights_when_departure_is_not_available(fake_repository, fake_gateway):
-    departure = (datetime.now() + timedelta(days=100)).isoformat().split('T')[0]
+    date_in_the_far_future = (datetime.now() + timedelta(days=100)).isoformat().split('T')[0]
 
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
-                                                departure=departure, airport_repository=fake_repository,
+                                                departure=date_in_the_far_future, airport_repository=fake_repository,
                                                 flight_gateway=fake_gateway, max_price=price,
                                                 currency_rate_mapping=currency_rate_mapping)
 
@@ -63,41 +73,40 @@ def test_dont_find_flights_when_departure_is_not_available(fake_repository, fake
 
 
 def test_when_dont_send_price_then_it_should_no_cap_by_price(fake_repository, fake_gateway):
-    departure = default_date
+    missing_max_price = None
 
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
                                                 departure=departure, airport_repository=fake_repository,
-                                                flight_gateway=fake_gateway, currency_rate_mapping=currency_rate_mapping)
+                                                flight_gateway=fake_gateway, max_price=missing_max_price,
+                                                currency_rate_mapping=currency_rate_mapping)
 
     assert len(flights) == 2
 
 
 def test_when_date_is_in_the_past_then_should_return_error(fake_repository, fake_gateway):
-    departure = (datetime.now() - timedelta(days=1)).isoformat().split('T')[0]
+    departure_in_the_past = (datetime.now() - timedelta(days=1)).isoformat().split('T')[0]
 
     _, error = find_all_flights_from_airports(city_source=city_source,
                                               iata_airports_destinations=iata_airports_destinations,
-                                              departure=departure, airport_repository=fake_repository,
+                                              departure=departure_in_the_past, airport_repository=fake_repository,
                                               flight_gateway=fake_gateway, max_price=price, currency_rate_mapping=currency_rate_mapping)
 
     assert error == 'Departure date is in the past'
 
 
 def test_when_departure_is_not_at_iso_format_yyyy_mm_dd_then_should_return_error(fake_repository, fake_gateway):
-    departure = (datetime.now() + timedelta(days=1)).isoformat()
+    departure_in_the_wrong_format = (datetime.now() + timedelta(days=1)).isoformat()
 
     _, error = find_all_flights_from_airports(city_source=city_source,
                                               iata_airports_destinations=iata_airports_destinations,
-                                              departure=departure, airport_repository=fake_repository,
+                                              departure=departure_in_the_wrong_format, airport_repository=fake_repository,
                                               flight_gateway=fake_gateway, max_price=price, currency_rate_mapping=None)
 
     assert error == 'Invalid departure date'
 
 
-def test_it_should_convert_it_back_to_brl_when_send(fake_repository, fake_gateway):
-    departure = default_date
-
+def test_it_should_convert_it_back_to_brl_when_return(fake_repository, fake_gateway):
     flights, _ = find_all_flights_from_airports(city_source=city_source,
                                                 iata_airports_destinations=iata_airports_destinations,
                                                 departure=departure, airport_repository=fake_repository,
