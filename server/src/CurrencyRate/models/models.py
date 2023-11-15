@@ -11,5 +11,5 @@ class CurrencyRate:
 
 @dataclass(frozen=True)
 class CurrencyRateMapping:
-    mapping: dict[CurrencyRate.currency, CurrencyRate.rate]
+    mapping: dict[str, Decimal]
 

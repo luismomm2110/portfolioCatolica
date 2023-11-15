@@ -11,7 +11,7 @@ from server.src.Airports.models.model import Airport
 
 class AbstractGateway(abc.ABC):
     @abc.abstractmethod
-    def get(self, origin: Airport, destinations: List[str], departure_date: str, max_price: Optional[int] = None):
+    def get(self, iata_code_origin: Airport, destinations: List[str], departure_date: str, max_price: Optional[int] = None):
         raise NotImplementedError
 
 
@@ -20,7 +20,7 @@ class FakeGateway(AbstractGateway):
         self.flights = flights
 
     def get(self, iata_code_origin: str, destinations: List[str],
-            departure: str, adults: int = 1, max_price: Optional[int] = None) -> \
+            departure_date: str, max_price: Optional[int] = None) -> \
             List[Flight]:
 
         max_price = 999999999999999 if max_price is None else max_price
@@ -28,7 +28,7 @@ class FakeGateway(AbstractGateway):
         results = []
         for flight in self.flights:
             if flight.source['code'] == iata_code_origin and flight.destination['code'] in destinations and \
-               flight.departure == departure and flight.price <= max_price:
+               flight.departure == departure_date and flight.price <= max_price:
                 results.append(flight)
 
         return results

@@ -11,7 +11,6 @@ class AbstractCurrencyRateGateway(ABC):
 
 
 class FakeCurrencyRateGateway(AbstractCurrencyRateGateway):
-    @property
     def get_currency_rate_mapping(self) -> CurrencyRateMapping:
         euro = CurrencyRate(currency='EUR', rate=Decimal('5.6'), last_update='2021-01-01')
         usd = CurrencyRate(currency='USD', rate=Decimal('4.8'), last_update='2021-01-01')

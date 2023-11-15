@@ -20,7 +20,8 @@ def flights_endpoint():
     gateway = AmadeusGateway()
     currency_rate_mapping = FakeCurrencyRateGateway()
 
-    flights, error = find_all_flights_from_airports(source, destinations, departure, repository, gateway, price, currency_rate_mapping)
+    flights, error = find_all_flights_from_airports(source, destinations, departure, repository, gateway, price,
+                                                    currency_rate_mapping)
     if error:
         return jsonify({'error': error}), 400
 
