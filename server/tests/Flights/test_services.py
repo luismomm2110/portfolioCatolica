@@ -6,64 +6,129 @@ import pytest
 from server.src.Airports.repositories.repository import FakeRepository
 from server.src.Flights.gateways.gateway_amadeus import FakeGateway
 from server.src.Flights.models.model import Flight
-from server.src.Flights.services.services import find_flights_within_range
-from server.src.Airports.services.services import find_nearest_airports_by_city
-from server.tests.utils import source, destination, destinations
+from server.src.Flights.services.services import find_all_flights_from_airports
+from server.tests.utils import source, destinations
 
-default_date = datetime(2020, 1, 1)
-original_flight = Flight(source=source, destination=destination, departure=default_date, price=Decimal('100.00'))
+default_date = (datetime.now() + timedelta(days=1)).isoformat().split('T')[0]
 
 
-def test_returns_list_of_flights(fake_repository, fake_gateway):
-    distance = 375000
+def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flights(fake_repository, fake_gateway):
+    city_source = 'São Paulo'
+    iata_airports_destinations = ['LAX', 'SAN']
+    departure = default_date
+    price = 100
 
-    flights = find_flights_within_range(iata_source=source['code'], iata_destination=destination['code'],
-                                        departure=default_date, desired_range=distance, repository=fake_repository,
-                                        gateway=fake_gateway)
+    flights, _ = find_all_flights_from_airports(city_source=city_source,
+                                                iata_airports_destinations=iata_airports_destinations,
+                                                departure=departure, airport_repository=fake_repository,
+                                                flight_gateway=fake_gateway, max_price=price)
 
-    assert len(flights) == 3
-
-
-def test_when_no_there_is_no_airport_within_range_then_return_only_original_destination(fake_repository, fake_gateway):
-    distance = 100
-
-    flights = find_flights_within_range(iata_source=source['code'], iata_destination=destination['code'],
-                                        departure=default_date, desired_range=distance, repository=fake_repository,
-                                        gateway=fake_gateway)
-
-    assert flights == [original_flight]
-
-
-def test_when_search_for_a_date_without_flights_then_return_empty_list(fake_repository, fake_gateway):
-    distance = 375000
-
-    flights = find_flights_within_range(iata_source=source['code'], iata_destination=destination['code'],
-                                        departure=default_date + timedelta(days=1), desired_range=distance,
-                                        repository=fake_repository, gateway=fake_gateway)
-
-    assert flights == []
+    assert len(flights) == 2
+    assert flights[0].source == source
+    assert flights[0].destination == destinations[1]
+    assert flights[0].departure == departure
+    assert flights[0].price == Decimal('100.00')
+    assert flights[1].source == source
+    assert flights[1].destination == destinations[2]
+    assert flights[1].departure == departure
+    assert flights[1].price == Decimal('100.00')
 
 
-def test_when_search_for_a_city_then_return_the_nearest_fifty_airports(fake_repository):
-    city = 'São Paulo'
-    limit = 50
+def test_when_dont_find_city_source_then_should_return_error(fake_repository, fake_gateway):
+    city_source = 'Missing city'
+    iata_airports_destinations = ['LAX', 'SAN']
+    departure = default_date
+    price = 100
 
-    airports = find_nearest_airports_by_city(city, limit, fake_repository)
+    _, error = find_all_flights_from_airports(city_source=city_source,
+                                              iata_airports_destinations=iata_airports_destinations,
+                                              departure=departure, airport_repository=fake_repository,
+                                              flight_gateway=fake_gateway, max_price=price)
 
-    assert len(airports) == limit
+    assert error == 'City not found'
+
+
+def test_dont_find_flights_when_departure_is_not_available(fake_repository, fake_gateway):
+    city_source = 'São Paulo'
+    iata_airports_destinations = ['LAX', 'SAN']
+    departure = (datetime.now() + timedelta(days=100)).isoformat().split('T')[0]
+    price = 100
+
+    flights, _ = find_all_flights_from_airports(city_source=city_source,
+                                                iata_airports_destinations=iata_airports_destinations,
+                                                departure=departure, airport_repository=fake_repository,
+                                                flight_gateway=fake_gateway, max_price=price)
+
+    assert len(flights) == 0
+
+
+def test_when_dont_send_price_then_it_should_no_cap_by_price(fake_repository, fake_gateway):
+    city_source = 'São Paulo'
+    iata_airports_destinations = ['LAX', 'SAN']
+    departure = default_date
+
+    flights, _ = find_all_flights_from_airports(city_source=city_source,
+                                                iata_airports_destinations=iata_airports_destinations,
+                                                departure=departure, airport_repository=fake_repository,
+                                                flight_gateway=fake_gateway)
+
+    assert len(flights) == 2
+
+
+def test_when_date_is_in_the_past_then_should_return_error(fake_repository, fake_gateway):
+    city_source = 'São Paulo'
+    iata_airports_destinations = ['LAX', 'SAN']
+    departure = (datetime.now() - timedelta(days=1)).isoformat().split('T')[0]
+    price = 100
+
+    _, error = find_all_flights_from_airports(city_source=city_source,
+                                              iata_airports_destinations=iata_airports_destinations,
+                                              departure=departure, airport_repository=fake_repository,
+                                              flight_gateway=fake_gateway, max_price=price)
+
+    assert error == 'Departure date is in the past'
+
+
+def test_when_departure_is_not_at_iso_format_yyyy_mm_dd_then_should_return_error(fake_repository, fake_gateway):
+    city_source = 'São Paulo'
+    iata_airports_destinations = ['LAX', 'SAN']
+    departure = (datetime.now() + timedelta(days=1)).isoformat()
+    price = 100
+
+    _, error = find_all_flights_from_airports(city_source=city_source,
+                                              iata_airports_destinations=iata_airports_destinations,
+                                              departure=departure, airport_repository=fake_repository,
+                                              flight_gateway=fake_gateway, max_price=price)
+
+    assert error == 'Invalid departure date'
+
+
+def test_converter_para_reais(fake_repository, fake_gateway):
+    city_source = 'São Paulo'
+    iata_airports_destinations = ['LAX', 'SAN']
+    departure = default_date
+    price = 100
+    currency_rates = {'EUR': Decimal('6.00')}
+
+    flights, _ = find_all_flights_from_airports(city_source=city_source,
+                                                iata_airports_destinations=iata_airports_destinations,
+                                                departure=departure, airport_repository=fake_repository,
+                                                flight_gateway=fake_gateway, max_price=price, currency_rate=currency_rates)
+
+    assert flights[0].price == Decimal('600.00')
+    assert flights[0].currency_code == 'BRL'
 
 
 @pytest.fixture
 def fake_repository():
-    return FakeRepository(airports=[source, destination, *destinations])
+    return FakeRepository(airports=[*destinations])
 
 
 @pytest.fixture
 def fake_gateway():
     flights = [
-        original_flight,
-        Flight(source=source, destination=destinations[0], departure=default_date, price=Decimal('100.00')),
-        Flight(source=source, destination=destinations[1], departure=default_date, price=Decimal('100.00')),
+        Flight(source=source, destination=destinations[1], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
+        Flight(source=source, destination=destinations[2], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
     ]
 
     return FakeGateway(flights=flights)
