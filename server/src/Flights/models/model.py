@@ -9,5 +9,3 @@ class Flight:
     price: Decimal
     departure: str
     currency_code: str
-
-

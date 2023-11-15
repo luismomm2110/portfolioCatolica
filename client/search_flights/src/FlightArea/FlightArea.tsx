@@ -24,7 +24,6 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
     const [flightDate, setFlightDate] = useState<Date>(new Date());
-    const [price, setPrice] = useState<number>(0);
 
     const isSelectingOrigin = findedCityOfOrigin.length === 0;
     const isSelectingDestiny = airports.length === 0 && !isSelectingOrigin;
