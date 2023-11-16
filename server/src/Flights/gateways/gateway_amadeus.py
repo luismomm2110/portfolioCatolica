@@ -1,11 +1,13 @@
 import abc
+import json
 from datetime import datetime
+from decimal import Decimal
 from typing import List, Optional
 
 from amadeus import Client
 
 from settings import get_api_key_amadeus, get_api_secret_amadeus
-from server.src.Flights.models.model import Flight
+from server.src.Flights.models.model import TripGoal, FoundFlight
 from server.src.Airports.models.model import Airport
 
 
@@ -16,12 +18,12 @@ class AbstractGateway(abc.ABC):
 
 
 class FakeGateway(AbstractGateway):
-    def __init__(self, flights: List[Flight]):
+    def __init__(self, flights: List[TripGoal]):
         self.flights = flights
 
     def get(self, iata_code_origin: str, destinations: List[str],
             departure_date: str, max_price: Optional[int] = None) -> \
-            List[Flight]:
+            List[TripGoal]:
 
         max_price = 999999999999999 if max_price is None else max_price
 
@@ -50,7 +52,32 @@ class AmadeusGateway(AbstractGateway):
                     departureDate=departure_date,  # YYYY-MM-DD
                     maxPrice=max_price,
                     adults=1,
-                ).data)
+                    max=5
+                ))
             except Exception as e:
                 print(e)
-        return result
+
+        cleaned_result = presenter_raws_flights(result)
+
+        return cleaned_result
+
+
+def presenter_raws_flights(single_amadeus_response: json) -> List[FoundFlight]:
+    result = []
+    data = single_amadeus_response['data']
+    mapping = single_amadeus_response['dictionaries']
+
+    for raw_flight in data:
+        flight = {}
+
+        first_segment = raw_flight['itineraries'][0]['segments'][0]
+        last_segment = raw_flight['itineraries'][0]['segments'][-1]
+        flight['departure'] = datetime.strptime(first_segment['departure']['at'], '%Y-%m-%dT%H:%M:%S')
+        flight['arrival'] = datetime.strptime(last_segment['arrival']['at'], '%Y-%m-%dT%H:%M:%S')
+        flight['total_price'] = str(raw_flight['price']['total'])
+        flight['currency'] = raw_flight['price']['currency']
+        carrier_code = first_segment['carrierCode']
+        flight['carrier'] = mapping['carriers'][carrier_code]
+        result.append(FoundFlight(**flight))
+
+    return result

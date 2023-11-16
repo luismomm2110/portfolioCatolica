@@ -6,7 +6,7 @@ import pytest
 from server.src.Airports.repositories.repository import FakeRepository
 from server.src.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
 from server.src.Flights.gateways.gateway_amadeus import FakeGateway
-from server.src.Flights.models.model import Flight
+from server.src.Flights.models.model import TripGoal
 from server.src.Flights.services.services import find_all_flights_from_airports
 from server.tests.utils import source, destinations
 
@@ -125,8 +125,8 @@ def fake_repository():
 @pytest.fixture
 def fake_gateway():
     flights = [
-        Flight(source=source, destination=destinations[1], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
-        Flight(source=source, destination=destinations[2], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
+        TripGoal(source=source, destination=destinations[1], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
+        TripGoal(source=source, destination=destinations[2], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
     ]
 
     return FakeGateway(flights=flights)
