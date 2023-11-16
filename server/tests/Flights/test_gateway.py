@@ -34,3 +34,5 @@ def test_presenter_can_convert_from_amadeus_model_to_domain_model():
         assert result[0]['total_price'] == '355.34'
         assert result[0]['currency'] == 'EUR'
         assert result[0]['carrier'] == 'PHILIPPINE AIRLINES'
+        assert result[0]['source'] == 'SYD'
+        assert result[0]['destination'] == 'BKK'
