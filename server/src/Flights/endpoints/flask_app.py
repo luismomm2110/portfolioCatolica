@@ -1,3 +1,4 @@
+from decimal import Decimal
 
 from flask import Flask, request, jsonify
 
@@ -11,15 +12,17 @@ app = Flask(__name__)
 
 @app.route('/flights', methods=['GET'])
 def flights_endpoint():
+    repository = IataRepository()
+    gateway = AmadeusGateway()
+
     source = request.args['source']
     destinations = request.args.getlist('destination')
     departure = request.args['departure']
-    price = request.args.get('price', None)
-    repository = IataRepository()
-    gateway = AmadeusGateway()
+    raw_max_price = request.args.get('price', None)
+    max_price = Decimal(raw_max_price) if raw_max_price else None
     currency_rate_mapping = FakeCurrencyRateGateway().get_currency_rate_mapping()
 
-    flights, error = find_all_flights_from_airports(source, destinations, departure, repository, gateway, price,
+    flights, error = find_all_flights_from_airports(source, destinations, departure, repository, gateway, max_price,
                                                     currency_rate_mapping)
     if error:
         return jsonify({'error': error}), 400

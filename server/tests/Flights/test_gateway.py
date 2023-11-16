@@ -28,9 +28,9 @@ def test_presenter_can_convert_from_amadeus_model_to_domain_model():
         result = presenter_raws_flights(amadeus_response)
 
         assert result[0]['departure'] == datetime.strptime('2021-11-01T11:35:00',
-                                                        '%Y-%m-%dT%H:%M:%S')
+                                                           '%Y-%m-%dT%H:%M:%S')
         assert result[0]['arrival'] == datetime.strptime('2021-11-01T21:50:00',
-                                                      '%Y-%m-%dT%H:%M:%S')
+                                                         '%Y-%m-%dT%H:%M:%S')
         assert result[0]['total_price'] == '355.34'
         assert result[0]['currency'] == 'EUR'
         assert result[0]['carrier'] == 'PHILIPPINE AIRLINES'

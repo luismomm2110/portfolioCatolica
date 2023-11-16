@@ -6,12 +6,12 @@ from typing import List, Optional
 from server.src.Airports.repositories.repository import AbstractRepository
 from server.src.CurrencyRate.models.models import CurrencyRateMapping
 from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
-from server.src.Flights.models.model import Flight
+from server.src.Flights.models.model import TripGoal
 
 
 def find_all_flights_from_airports(city_source: str, iata_airports_destinations: list[str], departure: str,
                                    airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
-                                   max_price: Optional[Decimal] = None, currency_rate_mapping: CurrencyRateMapping = None) -> [List[Flight], str]:
+                                   max_price: Optional[Decimal] = None, currency_rate_mapping: CurrencyRateMapping = None) -> [List[TripGoal], str]:
 
     try:
         airport_from_the_source = airport_repository.fetch_airports_by_municipality(city_source)[0]
@@ -37,7 +37,7 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
 
 def _get_max_price_converted_to_euros(currencies_mapping: CurrencyRateMapping, max_price):
     max_price_converted_to_euros = max_price / currencies_mapping.mapping.get('EUR') if max_price else None
-    return max_price_converted_to_euros
+    return int(max_price_converted_to_euros)
 
 
 def _get_currencies_mapping(currency_rate):
@@ -56,17 +56,17 @@ def _validate_date(date: str):
         return 'Invalid departure date'
 
 
-def _present_flights(raw_flights: List[Flight], currencies_mapping) -> List[Flight]:
+def _present_flights(raw_flights: List[TripGoal], currencies_mapping) -> List[TripGoal]:
     flights = []
     for raw_flight in raw_flights:
         price = raw_flight.price
         currency = raw_flight.currency_code
         if currency in currencies_mapping.mapping:
             price = price * currencies_mapping.mapping.get(currency)
-        flights.append(Flight(source=raw_flight.source,
-                              destination=raw_flight.destination,
-                              departure=raw_flight.departure,
-                              price=price,
-                              currency_code='BRL'))
+        flights.append(TripGoal(source=raw_flight.source,
+                                destination=raw_flight.destination,
+                                departure=raw_flight.departure,
+                                price=price,
+                                currency_code='BRL'))
 
     return flights
