@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from decimal import Decimal
 from typing import List, Optional
@@ -12,7 +11,6 @@ from server.src.Flights.models.model import TripGoal
 def find_all_flights_from_airports(city_source: str, iata_airports_destinations: list[str], departure: str,
                                    airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
                                    max_price: Optional[Decimal] = None, currency_rate_mapping: CurrencyRateMapping = None) -> [List[TripGoal], str]:
-
     try:
         airport_from_the_source = airport_repository.fetch_airports_by_municipality(city_source)[0]
     except IndexError:
@@ -27,12 +25,12 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
     currencies_mapping = _get_currencies_mapping(currency_rate_mapping)
     max_price_converted_to_euros = _get_max_price_converted_to_euros(currencies_mapping, max_price)
 
-    raw_flights = flight_gateway.get(airport_from_the_source.code,
-                                     iata_airports_destinations,
-                                     departure,
-                                     max_price_converted_to_euros)
+    flights = flight_gateway.get(airport_from_the_source.code,
+                                 iata_airports_destinations,
+                                 departure,
+                                 max_price_converted_to_euros)
 
-    return _present_flights(raw_flights, currencies_mapping), ''
+    return _present_flights(flights, currencies_mapping), ''
 
 
 def _get_max_price_converted_to_euros(currencies_mapping: CurrencyRateMapping, max_price):

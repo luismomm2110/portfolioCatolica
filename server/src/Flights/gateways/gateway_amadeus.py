@@ -62,7 +62,7 @@ class AmadeusGateway(AbstractGateway):
         return cleaned_result
 
 
-def presenter_raws_flights(single_amadeus_response: json) -> List[dict]:
+def presenter_raws_flights(single_amadeus_response: json) -> List[FoundFlight]:
     result = []
     data = single_amadeus_response['data']
     mapping = single_amadeus_response['dictionaries']
@@ -76,10 +76,10 @@ def presenter_raws_flights(single_amadeus_response: json) -> List[dict]:
         flight['destination'] = last_segment['arrival']['iataCode']
         flight['departure'] = datetime.strptime(first_segment['departure']['at'], '%Y-%m-%dT%H:%M:%S')
         flight['arrival'] = datetime.strptime(last_segment['arrival']['at'], '%Y-%m-%dT%H:%M:%S')
-        flight['total_price'] = str(raw_flight['price']['total'])
+        flight['total_price'] = Decimal(raw_flight['price']['total'])
         flight['currency'] = raw_flight['price']['currency']
         carrier_code = first_segment['carrierCode']
         flight['carrier'] = mapping['carriers'][carrier_code]
-        result.append(flight)
+        result.append(FoundFlight(**flight))
 
     return result
