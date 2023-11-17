@@ -17,7 +17,7 @@ class FoundFlight:
     source: str
     destination: str
     total_price: Decimal
-    departure: datetime # Isoformat
-    arrival: datetime # Isoformat
+    departure_date: datetime # Isoformat
+    arrival_date: datetime # Isoformat
     currency: str
     carrier: str

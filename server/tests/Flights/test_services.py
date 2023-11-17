@@ -6,17 +6,15 @@ import pytest
 from server.src.Airports.repositories.repository import FakeRepository
 from server.src.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
 from server.src.Flights.gateways.gateway_amadeus import FakeGateway
-from server.src.Flights.models.model import TripGoal
+from server.src.Flights.models.model import TripGoal, FoundFlight
 from server.src.Flights.services.services import find_all_flights_from_airports
 from server.tests.utils import source, destinations
-
-default_date = (datetime.now() + timedelta(days=1)).isoformat().split('T')[0]
 
 currency_rate_mapping = FakeCurrencyRateGateway().get_currency_rate_mapping()
 price = 100*Decimal(currency_rate_mapping.mapping.get('EUR'))
 city_source = 'São Paulo'
 iata_airports_destinations = ['LAX', 'SAN']
-departure = default_date
+departure = datetime.now().isoformat().split('T')[0]
 
 
 def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flights(fake_repository, fake_gateway):
@@ -29,12 +27,12 @@ def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flig
     assert len(flights) == 2
     assert flights[0].source == source
     assert flights[0].destination == destinations[1]
-    assert flights[0].departure == departure
-    assert flights[0].price == price
+    assert flights[0].departure_date == departure
+    assert flights[0].total_price == price
     assert flights[1].source == source
     assert flights[1].destination == destinations[2]
-    assert flights[1].departure == departure
-    assert flights[1].price == price
+    assert flights[1].departure_date == departure
+    assert flights[1].total_price == price
 
 
 def test_when_send_missing_destinations_then_it_should_not_find(fake_repository, fake_gateway):
@@ -124,9 +122,23 @@ def fake_repository():
 
 @pytest.fixture
 def fake_gateway():
+    departure_date = datetime.now()
+    arrival_date = departure_date + timedelta(hours=2)
     flights = [
-        TripGoal(source=source, destination=destinations[1], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
-        TripGoal(source=source, destination=destinations[2], departure=default_date, price=Decimal('100.00'), currency_code='EUR'),
+        FoundFlight(source=source['code'],
+                    destination=destinations[1]['code'],
+                    departure_date=departure_date,
+                    arrival_date=arrival_date,
+                    carrier='Carrier',
+                    total_price=Decimal('100.00'),
+                    currency='EUR'),
+        FoundFlight(source=source['code'],
+                    destination=destinations[2]['code'],
+                    departure_date=departure_date,
+                    arrival_date=arrival_date,
+                    carrier='Carrier',
+                    total_price=Decimal('100.00'),
+                    currency='EUR')
     ]
 
     return FakeGateway(flights=flights)

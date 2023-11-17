@@ -5,13 +5,12 @@ from typing import List, Optional
 from server.src.Airports.repositories.repository import AbstractRepository
 from server.src.CurrencyRate.models.models import CurrencyRateMapping
 from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
-from server.src.Flights.models.model import TripGoal
+from server.src.Flights.models.model import TripGoal, FoundFlight
 
 
 def find_all_flights_from_airports(city_source: str, iata_airports_destinations: list[str], departure: str,
                                    airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
                                    currency_rate_mapping: CurrencyRateMapping, max_price: Optional[Decimal] = None) -> [List[TripGoal], str]:
-
     airport_from_the_source = next(iter(airport_repository.fetch_airports_by_municipality(city_source)), None)
     if not airport_from_the_source:
         return [], 'City not found'
@@ -19,19 +18,23 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
     if invalid_date_message := _verify_if_departure_is_in_past(departure):
         return [], invalid_date_message
 
-    max_price_converted_to_euros = _get_max_price_converted_to_euros(currency_rate_mapping, max_price)
+    max_price_converted_to_euros = currency_rate_mapping.convert_to('EUR', max_price) if max_price else None
 
-    flights = flight_gateway.get(airport_from_the_source.code,
-                                 iata_airports_destinations,
-                                 departure,
-                                 max_price_converted_to_euros)
+    flights_in_euro = flight_gateway.get(airport_from_the_source.code,
+                                         iata_airports_destinations,
+                                         departure,
+                                         max_price_converted_to_euros)
 
-    return _present_flights(flights, currency_rate_mapping), ''
+    flights_in_real = [FoundFlight(source=city_source,
+                                   destination=flight.destination,
+                                   total_price=currency_rate_mapping.convert_to('BRL', flight.total_price),
+                                   departure_date=flight.departure_date,
+                                   arrival_date=flight.arrival_date,
+                                   currency='BRL',
+                                   carrier=flight.carrier)
+                       for flight in flights_in_euro]
 
-
-def _get_max_price_converted_to_euros(currencies_mapping: CurrencyRateMapping, max_price):
-    max_price_converted_to_euros = max_price / currencies_mapping.mapping.get('EUR') if max_price else None
-    return int(max_price_converted_to_euros) if max_price_converted_to_euros else None
+    return flights_in_real, ''
 
 
 def _verify_if_departure_is_in_past(date: str):
@@ -42,19 +45,3 @@ def _verify_if_departure_is_in_past(date: str):
         return ''
     except ValueError:
         return 'Invalid departure date'
-
-
-def _present_flights(raw_flights: List[TripGoal], currencies_mapping) -> List[TripGoal]:
-    flights = []
-    for raw_flight in raw_flights:
-        price = raw_flight.price
-        currency = raw_flight.currency_code
-        if currency in currencies_mapping.mapping:
-            price = price * currencies_mapping.mapping.get(currency)
-        flights.append(TripGoal(source=raw_flight.source,
-                                destination=raw_flight.destination,
-                                departure=raw_flight.departure,
-                                price=price,
-                                currency_code='BRL'))
-
-    return flights

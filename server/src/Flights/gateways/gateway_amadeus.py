@@ -18,22 +18,28 @@ class AbstractGateway(abc.ABC):
 
 
 class FakeGateway(AbstractGateway):
-    def __init__(self, flights: List[TripGoal]):
+    def __init__(self, flights: List[FoundFlight]):
         self.flights = flights
 
     def get(self, iata_code_origin: str, destinations: List[str],
             departure_date: str, max_price: Optional[int] = None) -> \
-            List[TripGoal]:
+            List[FoundFlight]:
 
         max_price = 999999999999999 if max_price is None else max_price
 
         results = []
         for flight in self.flights:
-            if flight.source['code'] == iata_code_origin and flight.destination['code'] in destinations and \
-               flight.departure == departure_date and flight.price <= max_price:
+            if flight.source == iata_code_origin and flight.destination in destinations and \
+               _compare_timestap(flight.departure_date, departure_date) and flight.total_price <= max_price:
                 results.append(flight)
 
         return results
+
+
+def _compare_timestap(timestamp: datetime, departure_date: str) -> bool:
+    date_to_compare = datetime.strptime(departure_date, '%Y-%m-%d')
+
+    return timestamp.date() == date_to_compare.date()
 
 
 class AmadeusGateway(AbstractGateway):
@@ -74,8 +80,8 @@ def presenter_raws_flights(single_amadeus_response: json) -> List[FoundFlight]:
         last_segment = raw_flight['itineraries'][0]['segments'][-1]
         flight['source'] = first_segment['departure']['iataCode']
         flight['destination'] = last_segment['arrival']['iataCode']
-        flight['departure'] = datetime.strptime(first_segment['departure']['at'], '%Y-%m-%dT%H:%M:%S')
-        flight['arrival'] = datetime.strptime(last_segment['arrival']['at'], '%Y-%m-%dT%H:%M:%S')
+        flight['departure_date'] = datetime.strptime(first_segment['departure']['at'], '%Y-%m-%dT%H:%M:%S')
+        flight['arrival_date'] = datetime.strptime(last_segment['arrival']['at'], '%Y-%m-%dT%H:%M:%S')
         flight['total_price'] = Decimal(raw_flight['price']['total'])
         flight['currency'] = raw_flight['price']['currency']
         carrier_code = first_segment['carrierCode']
