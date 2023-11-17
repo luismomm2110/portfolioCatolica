@@ -55,7 +55,7 @@ def test_when_dont_find_city_source_then_should_return_error(fake_repository, fa
     _, error = find_all_flights_from_airports(city_source=wrong_city_source,
                                               iata_airports_destinations=iata_airports_destinations,
                                               departure=departure, airport_repository=fake_repository,
-                                              flight_gateway=fake_gateway, max_price=price, currency_rate_mapping=None)
+                                              flight_gateway=fake_gateway, max_price=price, currency_rate_mapping=currency_rate_mapping)
 
     assert error == 'City not found'
 
@@ -101,7 +101,7 @@ def test_when_departure_is_not_at_iso_format_yyyy_mm_dd_then_should_return_error
     _, error = find_all_flights_from_airports(city_source=city_source,
                                               iata_airports_destinations=iata_airports_destinations,
                                               departure=departure_in_the_wrong_format, airport_repository=fake_repository,
-                                              flight_gateway=fake_gateway, max_price=price, currency_rate_mapping=None)
+                                              flight_gateway=fake_gateway, max_price=price, currency_rate_mapping=currency_rate_mapping)
 
     assert error == 'Invalid departure date'
 

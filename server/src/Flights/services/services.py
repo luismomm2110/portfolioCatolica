@@ -10,7 +10,7 @@ from server.src.Flights.models.model import TripGoal
 
 def find_all_flights_from_airports(city_source: str, iata_airports_destinations: list[str], departure: str,
                                    airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
-                                   max_price: Optional[Decimal] = None, currency_rate_mapping: CurrencyRateMapping = None) -> [List[TripGoal], str]:
+                                   currency_rate_mapping: CurrencyRateMapping, max_price: Optional[Decimal] = None) -> [List[TripGoal], str]:
 
     airport_from_the_source = next(iter(airport_repository.fetch_airports_by_municipality(city_source)), None)
     if not airport_from_the_source:
