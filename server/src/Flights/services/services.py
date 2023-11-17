@@ -19,7 +19,7 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
     if not city_source or not airport_from_the_source:
         return [], 'City not found'
 
-    if invalid_date_message := _validate_date(departure):
+    if invalid_date_message := _verify_if_departure_is_in_past(departure):
         return [], invalid_date_message
 
     currencies_mapping = _get_currencies_mapping(currency_rate_mapping)
@@ -44,7 +44,7 @@ def _get_currencies_mapping(currency_rate):
     return currency_rate
 
 
-def _validate_date(date: str):
+def _verify_if_departure_is_in_past(date: str):
     try:
         datetime.strptime(date, '%Y-%m-%d')
         if date < datetime.now().isoformat().split('T')[0]:

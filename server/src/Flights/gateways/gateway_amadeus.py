@@ -80,6 +80,7 @@ def presenter_raws_flights(single_amadeus_response: json) -> List[FoundFlight]:
         flight['currency'] = raw_flight['price']['currency']
         carrier_code = first_segment['carrierCode']
         flight['carrier'] = mapping['carriers'][carrier_code]
+
         result.append(FoundFlight(**flight))
 
     return result
