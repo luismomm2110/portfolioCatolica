@@ -24,7 +24,7 @@ def find_nearest_airports_by_city(city: str, limit: int, repository: AbstractRep
 
 
 def find_city(city: str, repository: AbstractRepository):
-    fetched_cities = repository.fetch_cities()
+    fetched_cities = repository.fetch_municipalities()
     normalized_input_city = city.strip().lower()
     normalized_input_city = _remove_accents(normalized_input_city)
     for fecthed_city in fetched_cities:
