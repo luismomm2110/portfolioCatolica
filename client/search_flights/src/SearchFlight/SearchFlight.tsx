@@ -43,6 +43,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
             }
         } else {
             try {
+                setLastSelectedDestiny(formData.originalDestinyAirport)
                 const response = await searchAirportGateway(formData.originalDestinyAirport);
                 setAirports(response.data);
             } catch (error: unknown) {
@@ -56,9 +57,6 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {id, value} = e.target;
         setFormData({...formData, [id]: value, [id + 'Error']: ''});
-        if (id === 'originalDestinyAirport') {
-            setLastSelectedDestiny(value);
-        }
     }
 
     const handleSelectingAirport = (airport: Airport) => {
@@ -170,8 +168,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     }
 
     const selectSubmitButtonText = () => {
-        const isChangingDestiny = formData.originalDestinyAirport !== lastSelectedDestiny;
-        if (isSelectingOrigin || isChangingDestiny) {
+        if (isSelectingOrigin) {
             return 'Buscar cidade de origem';
         }
         if (isSelectingDestiny || isSelectingAirports) {
@@ -208,6 +205,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
 
     const isFormDisabled = () => {
         if (isSelectingAirports)    {
+            console.log('foo')
             const currentOriginalDestinyAirport = formData.originalDestinyAirport;
             return currentOriginalDestinyAirport.length === 0 || currentOriginalDestinyAirport === lastSelectedDestiny;
         }
