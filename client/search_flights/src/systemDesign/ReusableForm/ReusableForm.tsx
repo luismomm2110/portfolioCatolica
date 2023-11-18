@@ -10,9 +10,10 @@ type ReusableFormProps = {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   submitText?: string;
+  disabled?: boolean;
 };
 
-const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSubmit, handleChange, submitText }) => {
+const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSubmit, handleChange, submitText, disabled }) => {
 
   const isDisabled = () => {
     const isThereAnError = fields.some((field) => field.error !== '');
@@ -42,7 +43,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSu
       <ReusableButton
           description={submitText ?? 'Submit'}
           label={submitText ?? 'Submit'}
-          disabled={isDisabled()}
+          disabled={disabled ?? isDisabled()}
       />
     </form>
   );
