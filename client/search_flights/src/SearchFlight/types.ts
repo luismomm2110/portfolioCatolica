@@ -9,7 +9,7 @@ export type Airport = {
     municipality: string;
 }
 
-export type FlightArea = {
+export type SearchFlight = {
     _id: string;
     name: string;
     airports: Airport[];

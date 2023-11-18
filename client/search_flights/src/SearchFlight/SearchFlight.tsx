@@ -12,7 +12,7 @@ interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
 }
 
-const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
+const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
     const [formData, setFormData] = useState({
         cityOfOrigin: '', cityOfOriginError: '',
         originalDestinyAirport: '', originalDestinyAirportError: '',
@@ -250,4 +250,4 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     );
 }
 
-export default FlightArea;
+export default SearchFlight;

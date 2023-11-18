@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event'
 import {render, screen, waitFor} from '@testing-library/react'
-import FlightArea from '../FlightArea'
+import SearchFlight from '../SearchFlight'
 import {searchAirportGateway} from '../gateways/searchAirportGateway'
 import {cityOfOriginGateway} from '../gateways/cityOfOriginGateway'
 import {searchFlightGateway} from '../gateways/searchFlightGateway'
@@ -10,15 +10,15 @@ jest.mock('../gateways/cityOfOriginGateway')
 jest.mock('../gateways/searchFlightGateway')
 
 
-describe(('FlightArea'), () => {
+describe(('SearchFlight'), () => {
     it('Should change initially the heading with "Selecione a origem"', () => {
-        render(<FlightArea/>)
+        render(<SearchFlight/>)
 
         expect(screen.getByRole('heading', {name: 'Selecione a origem'})).toBeInTheDocument()
     })
 
     it('Should not display the airports input before finding an origin airport', () => {
-        render(<FlightArea/>)
+        render(<SearchFlight/>)
 
         expect(screen.queryByRole('textbox', {name: 'Aeroporto de destino:'})).not.toBeInTheDocument()
     })
@@ -27,7 +27,7 @@ describe(('FlightArea'), () => {
         cityOfOriginGateway.mockResolvedValueOnce({
             data: []
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
 
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
@@ -39,7 +39,7 @@ describe(('FlightArea'), () => {
         searchAirportGateway.mockResolvedValueOnce({
             data: []
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
 
         const input2 = screen.getByRole('textbox', {name: 'Cidade de origem:'})
         userEvent.type(input2, 'São Paulo')
@@ -54,7 +54,7 @@ describe(('FlightArea'), () => {
         searchAirportGateway.mockResolvedValueOnce({
             data: []
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
 
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
@@ -93,7 +93,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
 
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
@@ -135,7 +135,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
 
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
@@ -174,7 +174,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -215,7 +215,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -258,7 +258,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -303,7 +303,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea selectedAirportLimit={limit}/>);
+        render(<SearchFlight selectedAirportLimit={limit}/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -347,7 +347,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea selectedAirportLimit={limit}/>);
+        render(<SearchFlight selectedAirportLimit={limit}/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -390,7 +390,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea selectedAirportLimit={limit}/>);
+        render(<SearchFlight selectedAirportLimit={limit}/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -431,7 +431,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -487,7 +487,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -503,7 +503,7 @@ describe(('FlightArea'), () => {
         cityOfOriginGateway.mockResolvedValueOnce({
             data: 'São Paulo'
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
 
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
@@ -526,7 +526,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
 
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
@@ -565,7 +565,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -608,7 +608,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -652,7 +652,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea/>);
+        render(<SearchFlight/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
@@ -684,7 +684,7 @@ describe(('FlightArea'), () => {
                     }
                 ]
             })
-            render(<FlightArea selectedAirportLimit={limit}/>);
+            render(<SearchFlight selectedAirportLimit={limit}/>);
             userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
             userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
             userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
@@ -713,7 +713,7 @@ describe(('FlightArea'), () => {
                     }
                 ]
             })
-            render(<FlightArea selectedAirportLimit={limit}/>);
+            render(<SearchFlight selectedAirportLimit={limit}/>);
             userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
             userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
             userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
@@ -744,7 +744,7 @@ describe(('FlightArea'), () => {
                     }
                 ]
             })
-            render(<FlightArea selectedAirportLimit={limit}/>);
+            render(<SearchFlight selectedAirportLimit={limit}/>);
             userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
             userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
             userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
@@ -773,7 +773,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea selectedAirportLimit={limit}/>);
+        render(<SearchFlight selectedAirportLimit={limit}/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
@@ -803,7 +803,7 @@ describe(('FlightArea'), () => {
                 }
             ]
         })
-        render(<FlightArea selectedAirportLimit={limit}/>);
+        render(<SearchFlight selectedAirportLimit={limit}/>);
         userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
         userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
