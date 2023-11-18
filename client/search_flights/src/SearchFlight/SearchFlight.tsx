@@ -38,7 +38,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                 setFoundCityOfOrigin(response.data);
             } catch (error: unknown) {
                 if (error instanceof Error) {
-                    setGatewayError(error.message);
+                    setFormData({...formData, cityOfOriginError: error.message});
                 }
             }
         } else {

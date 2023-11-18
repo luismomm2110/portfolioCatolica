@@ -586,7 +586,7 @@ describe(('SearchFlight'), () => {
         userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo');
         userEvent.type(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
 
-        expect(await screen.findByRole('heading', {name: 'Selecione os aeroportos'})).toBeInTheDocument()
+        expect(await screen.findByRole('heading', {name: 'Selecione até 10 aeroportos'})).toBeInTheDocument()
     })
 
     it('Should remove the airport from the list when the user click on the remove button', async () => {
