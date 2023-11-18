@@ -3,7 +3,7 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from server.src.Airports.repositories.repository import IataRepository
+from server.src.Airports.repositories.repository import IataAirportRepository
 from server.src.Airports.services.services import find_nearest_airports_by_city, find_city
 
 app = Flask(__name__)
@@ -18,7 +18,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 def airports_endpoint():
     city = request.args.get('city', type=str)
     limit = request.args.get('limit', default=10, type=int)
-    repository = IataRepository()
+    repository = IataAirportRepository()
 
     airports = find_nearest_airports_by_city(city, limit, repository)
     if not airports:
@@ -33,7 +33,7 @@ def airports_endpoint():
 @app.route('/cities', methods=['GET'])
 def cities_endpoint():
     city = request.args.get('city', type=str)
-    repository = IataRepository()
+    repository = IataAirportRepository()
 
     city = find_city(city, repository)
     if not city:

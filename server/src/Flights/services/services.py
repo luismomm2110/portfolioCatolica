@@ -1,41 +1,52 @@
-from dataclasses import field
 from datetime import datetime
+from decimal import Decimal
 from typing import List, Optional
 
-from server.src.Airports.repositories.repository import AbstractRepository
+from server.src.Airports.models.model import Airport
+from server.src.Airports.repositories.repository import AbstractAirportRepository
+from server.src.CurrencyRate.models.models import BRLCurrencyRateMapping
 from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
-from server.src.Flights.models.model import Flight
+from server.src.Flights.models.model import TripGoal, FoundFlight
 
 
-def find_all_flights_from_airports(city_source: str, iata_airports_destinations: list[str], departure: str,
-                                   airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
-                                   max_price: Optional[int] = None, currency_rate=None) -> [List[Flight], str]:
-
-    currencies_mapping = _get_currencies_mapping(currency_rate)
-
-    if not city_source:
-        return [], 'City not found'
-
-    airport_from_the_source = airport_repository.fetch_airports_by_municipality(city_source)
+def find_all_flights_from_airports(city_source: str, iata_airports_destinations: set[str], departure: str,
+                                   airport_repository: AbstractAirportRepository, flight_gateway: AbstractGateway,
+                                   currency_rate_mapping: BRLCurrencyRateMapping, max_price: Optional[Decimal] = None) -> [List[TripGoal], str]:
+    airport_from_the_source = next(iter(airport_repository.fetch_airports_by_municipality(city_source)), None)
     if not airport_from_the_source:
         return [], 'City not found'
-    airport_from_the_source = airport_from_the_source[0].code
 
-    if invalid_message := _validate_date(departure):
-        return [], invalid_message
+    airports_from_destinations = airport_repository.fetch_airports_by_iata_code(iata_airports_destinations)
+    if len(airports_from_destinations) != len(iata_airports_destinations):
+        return [], 'City not found for one or more destinations'
 
-    raw_flights = flight_gateway.get(airport_from_the_source, iata_airports_destinations, departure, max_price)
+    if invalid_date_message := _verify_if_departure_is_in_past(departure):
+        return [], invalid_date_message
 
-    return _present_flights(raw_flights, currencies_mapping), ''
+    max_price_converted_to_euros = currency_rate_mapping.convert_to('EUR', max_price) if max_price else None
+
+    flights_in_euro = flight_gateway.get(airport_from_the_source.code,
+                                         iata_airports_destinations,
+                                         departure,
+                                         max_price_converted_to_euros)
+
+    flights_in_real = [FoundFlight(city_source=city_source,
+                                   city_destination=_find_city_by_iata_code(flight.city_destination, airports_from_destinations),
+                                   total_price=currency_rate_mapping.convert_from('EUR', flight.total_price),
+                                   departure_date=flight.departure_date.date().strftime('%Y-%m-%d'),
+                                   arrival_date=flight.arrival_date.date().strftime('%Y-%m-%d'),
+                                   currency='BRL',
+                                   carrier=flight.carrier)
+                       for flight in flights_in_euro]
+
+    return flights_in_real, ''
 
 
-def _get_currencies_mapping(currency_rate):
-    if currency_rate is None:
-        currency_rate = dict()
-    return currency_rate
+def _find_city_by_iata_code(iata_code: str, airports: tuple[Airport]) -> str:
+    return next(iter(airport.municipality for airport in airports if airport.code == iata_code))
 
 
-def _validate_date(date: str):
+def _verify_if_departure_is_in_past(date: str):
     try:
         datetime.strptime(date, '%Y-%m-%d')
         if date < datetime.now().isoformat().split('T')[0]:
@@ -43,19 +54,3 @@ def _validate_date(date: str):
         return ''
     except ValueError:
         return 'Invalid departure date'
-
-
-def _present_flights(raw_flights: List[Flight], currencies_mapping) -> List[Flight]:
-    flights = []
-    for raw_flight in raw_flights:
-        price = raw_flight.price
-        currency = raw_flight.currency_code
-        if currency in currencies_mapping:
-            price = price * currencies_mapping[currency]
-        flights.append(Flight(source=raw_flight.source,
-                              destination=raw_flight.destination,
-                              departure=raw_flight.departure,
-                              price=price,
-                              currency_code='BRL'))
-
-    return flights

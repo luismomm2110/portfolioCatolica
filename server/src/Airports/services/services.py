@@ -2,10 +2,10 @@ import unicodedata
 from dataclasses import asdict
 
 from server.src.Airports.models.model import distance_in_km
-from server.src.Airports.repositories.repository import AbstractRepository
+from server.src.Airports.repositories.repository import AbstractAirportRepository
 
 
-def find_nearest_airports_by_city(city: str, limit: int, repository: AbstractRepository):
+def find_nearest_airports_by_city(city: str, limit: int, repository: AbstractAirportRepository):
     airports_of_city = repository.fetch_airports_by_municipality(city)
     if not airports_of_city:
         return []
@@ -23,8 +23,8 @@ def find_nearest_airports_by_city(city: str, limit: int, repository: AbstractRep
     return sorted(airports_data, key=lambda a: a['distance'])[:limit + len(airports_of_city)]
 
 
-def find_city(city: str, repository: AbstractRepository):
-    fetched_cities = repository.fetch_cities()
+def find_city(city: str, repository: AbstractAirportRepository):
+    fetched_cities = repository.fetch_municipalities()
     normalized_input_city = city.strip().lower()
     normalized_input_city = _remove_accents(normalized_input_city)
     for fecthed_city in fetched_cities:

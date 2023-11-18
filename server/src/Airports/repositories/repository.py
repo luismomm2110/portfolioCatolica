@@ -4,10 +4,10 @@ from typing import List, Tuple
 
 import pandas as pd
 
-from server.src.Airports.models.model import Airport, Municipality
+from server.src.Airports.models.model import Airport
 
 
-class AbstractRepository(abc.ABC):
+class AbstractAirportRepository(abc.ABC):
     @abc.abstractmethod
     def fetch_airports(self):
         raise NotImplementedError
@@ -18,11 +18,14 @@ class AbstractRepository(abc.ABC):
     def fetch_airports_by_municipality(self, city: str):
         raise NotImplementedError
 
-    def fetch_cities(self):
+    def fetch_municipalities(self):
+        raise NotImplementedError
+
+    def fetch_airports_by_iata_code(self, iata_codes: set[str]) -> Tuple[Airport]:
         raise NotImplementedError
 
 
-class FakeRepository(AbstractRepository):
+class FakeAirportRepository(AbstractAirportRepository):
     def __init__(self, airports: List[dict]):
         self.airports = [Airport(**airport) for airport in airports]
 
@@ -35,11 +38,14 @@ class FakeRepository(AbstractRepository):
     def fetch_airports_by_municipality(self, city: str) -> Tuple[Airport]:
         return tuple(airport for airport in self.airports if airport.municipality == city)
 
-    def fetch_cities(self) -> Tuple[Municipality]:
+    def fetch_municipalities(self) -> Tuple[str]:
         return tuple(set(airport.municipality for airport in self.airports))
 
+    def fetch_airports_by_iata_code(self, iata_codes: List[str]) -> Tuple[Airport]:
+        return tuple(airport for airport in self.airports if airport.code in iata_codes)
 
-class IataRepository(AbstractRepository):
+
+class IataAirportRepository(AbstractAirportRepository):
     def __init__(self):
         csv_path = os.path.join(os.path.dirname(__file__), '../../../resources/iata.csv')
         with open(csv_path) as csv_file:
@@ -60,5 +66,8 @@ class IataRepository(AbstractRepository):
     def fetch_airports_by_municipality(self, city: str):
         return tuple(airport for airport in self.airports if airport.municipality == city)
 
-    def fetch_cities(self) -> Tuple[Municipality]:
+    def fetch_municipalities(self) -> Tuple[str]:
         return tuple(set(airport.municipality for airport in self.airports if airport.municipality))
+
+    def fetch_airports_by_iata_code(self, iata_codes: List[str]) -> Tuple[Airport]:
+        return tuple(airport for airport in self.airports if airport.code in iata_codes)
