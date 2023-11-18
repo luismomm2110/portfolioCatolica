@@ -18,14 +18,14 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
         originalDestinyAirport: '', originalDestinyAirportError: '',
         price: '', priceError: ''
     })
-    const [findedCityOfOrigin, setFindedCityOfOrigin] = useState('');
+    const [foundCityOfOrigin, setFoundCityOfOrigin] = useState('');
     const [currentDestiny, setCurrentDestiny] = useState('');
     const [airports, setAirports] = useState<Airport[]>([])
     const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
     const [flightDate, setFlightDate] = useState<Date>(new Date());
 
-    const isSelectingOrigin = findedCityOfOrigin.length === 0;
+    const isSelectingOrigin = foundCityOfOrigin.length === 0;
     const isSelectingDestiny = airports.length === 0 && !isSelectingOrigin;
     const isSelectingAirports = airports.length > 0;
     const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
@@ -35,7 +35,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
         if (isSelectingOrigin) {
             try {
                 const response = await cityOfOriginGateway(formData.cityOfOrigin);
-                setFindedCityOfOrigin(response.data);
+                setFoundCityOfOrigin(response.data);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     setGatewayError(error.message);
@@ -151,6 +151,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
             label: 'Preço máximo',
             name: 'Preço máximo',
             type: 'number',
+            required: false,
             placeholder: 'Insira o preço máximo',
             value: formData.price,
             error: formData.priceError
@@ -192,7 +193,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
         const isoDateWithoutHours = flightDate.toISOString().split('T')[0];
         try {
             const response = await searchFlightGateway(
-                findedCityOfOrigin,
+                foundCityOfOrigin,
                 airportsCodes,
                 String(formData.price),
                 isoDateWithoutHours

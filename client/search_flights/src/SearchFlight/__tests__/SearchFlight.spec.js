@@ -458,6 +458,59 @@ describe(('SearchFlight'), () => {
         expect(await screen.findByText('2 aeroportos selecionados')).toBeInTheDocument()
     })
 
+     it('Should not allow to search for another airport when user doesnt change selected airport', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'GRU',
+                    name: 'Aeroporto de Guarulhos',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 0
+                },
+                {
+                    'code': 'CGH',
+                    name: 'Aeroporto de Congonhas',
+                    city: 'São Paulo',
+                    country: 'Brasil',
+                    distance: 30
+                },
+                {
+                    code: 'VCP',
+                    name: 'Aeroporto de Viracopos',
+                    municipality: 'Campinas',
+                    country: 'Brasil',
+                    distance: 80
+                }
+            ]
+        })
+        render(<SearchFlight/>);
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo')
+        userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
+        userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'São Paulo')
+        const buttonDestiny = screen.getByRole('button', {name: 'Buscar aeroporto de destino'})
+        userEvent.click(buttonDestiny);
+        userEvent.click(await screen.findByLabelText('Aeroporto de Guarulhos: 0 km'))
+
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'JPA',
+                    name: 'Aeroporto de João Pessoa',
+                    city: 'João Pessoa',
+                    country: 'Brasil',
+                    distance: 0
+                },
+            ]
+        })
+        userEvent.clear(screen.getByRole('textbox', {name: 'Aeroporto de destino:'}))
+
+        expect(buttonDestiny).toBeDisabled()
+    })
+
     it('Should display the selected airports as a list', async () => {
         cityOfOriginGateway.mockResolvedValueOnce({
             data: 'São Paulo'

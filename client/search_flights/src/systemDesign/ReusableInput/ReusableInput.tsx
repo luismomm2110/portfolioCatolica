@@ -8,6 +8,7 @@ export type Input = {
     label: string;
     value: string;
     error: string;
+    required?: boolean;
     disabled?: boolean;
     handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
