@@ -1,5 +1,7 @@
 import React from "react";
 
+import './styles.css';
+
 export type Input = {
     id: string;
     type: string;
@@ -15,18 +17,20 @@ export type Input = {
 
 export const ReusableInput: React.FC<Input> = (props) => {
     return (
-    <>
-        <label htmlFor={props.id}>{props.label}:</label><input
-        id={props.id}
-        type={props.type}
-        placeholder={props.placeholder}
-        name={props.name}
-        value={props.value || ''}
-        onChange={props.handleChange}
-        disabled={props.disabled ?? false}/>
-        <div className="error">
-            {props.error && <span>{props.error}</span>}
-        </div>
-    </>
+        <>
+            <label htmlFor={props.id}>{props.label}:</label>
+            <input
+                className={props.error ? 'error' : ''}
+                id={props.id}
+                type={props.type}
+                placeholder={props.placeholder}
+                name={props.name}
+                value={props.value || ''}
+                onChange={props.handleChange}
+                disabled={props.disabled ?? false}/>
+            <div className="error">
+                {props.error && <span>{props.error}</span>}
+            </div>
+        </>
     )
 }

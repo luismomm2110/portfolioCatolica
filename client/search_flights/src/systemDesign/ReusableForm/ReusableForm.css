@@ -8,15 +8,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 400px;
     margin-bottom: 10px;
-
-    & input {
-        height: 35px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        width: 90%;
-        padding-left: 5px;
-        font-size: 16px;
-    }
 }
 
 .error {
@@ -33,4 +24,5 @@
 .error span {
     margin: 0;
 }
+
 
