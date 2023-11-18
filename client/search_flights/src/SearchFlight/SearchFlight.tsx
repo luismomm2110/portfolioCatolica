@@ -150,7 +150,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
             name: 'Preço máximo',
             type: 'number',
             required: false,
-            placeholder: 'Insira o preço máximo',
+            placeholder: 'Sem limite de preço',
             value: formData.price,
             error: formData.priceError
         }

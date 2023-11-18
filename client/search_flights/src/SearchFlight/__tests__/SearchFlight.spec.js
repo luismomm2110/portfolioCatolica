@@ -807,7 +807,7 @@ describe(('SearchFlight'), () => {
             userEvent.click(checkbox)
 
             expect(await screen.findByLabelText('Preço máximo:')).toBeInTheDocument()
-            expect(await screen.findByPlaceholderText('Sem preço máximo')).toBeInTheDocument()
+            expect(await screen.findByPlaceholderText('Sem limite de preço')).toBeInTheDocument()
     })
 
     it('should change the price input when the user select at least one airport', async () => {
