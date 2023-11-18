@@ -16,6 +16,10 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
     if not airport_from_the_source:
         return [], 'City not found'
 
+    airports_from_destinations = airport_repository.fetch_airports_by_iata_code(iata_airports_destinations)
+    if len(airports_from_destinations) != len(iata_airports_destinations):
+        return [], 'City not found for one or more destinations'
+
     if invalid_date_message := _verify_if_departure_is_in_past(departure):
         return [], invalid_date_message
 
@@ -26,9 +30,6 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
                                          departure,
                                          max_price_converted_to_euros)
 
-    airports_from_destinations = airport_repository.fetch_airports_by_iata_code(iata_airports_destinations)
-    if len(airports_from_destinations) != len(iata_airports_destinations):
-        return [], 'City not found for one or more destinations'
 
     flights_in_real = [FoundFlight(city_source=city_source,
                                    city_destination=_find_city_by_iata_code(flight.city_destination, airports_from_destinations),

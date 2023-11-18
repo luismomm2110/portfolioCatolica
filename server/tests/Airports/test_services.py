@@ -1,6 +1,6 @@
 from server.src.Airports.services.services import find_nearest_airports_by_city, find_city
 from server.src.Airports.repositories.repository import FakeRepository
-from server.tests.utils import source, destination, all_flights
+from server.tests.utils import source, destination, all_airports
 
 import pytest
 
@@ -55,9 +55,9 @@ def test_when_search_for_a_city_then_return_the_nearest_fifty_airports(fake_repo
 
     airports = find_nearest_airports_by_city(city, limit, fake_repository)
 
-    assert len(airports) == len(all_flights)
+    assert len(airports) == len(all_airports)
 
 @pytest.fixture
 def fake_repository():
-    return FakeRepository(airports=[source, destination, *all_flights])
+    return FakeRepository(airports=[source, destination, *all_airports])
 

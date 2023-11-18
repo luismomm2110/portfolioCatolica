@@ -8,14 +8,14 @@ from server.src.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
 from server.src.Flights.gateways.gateway_amadeus import FakeGateway
 from server.src.Flights.models.model import FoundFlight
 from server.src.Flights.services.services import find_all_flights_from_airports
-from server.tests.utils import source, all_flights
+from server.tests.utils import source, all_airports
 
 currency_rate_mapping = FakeCurrencyRateGateway().get_currency_rate_mapping()
 price = Decimal('100')
 city_source = 'São Paulo'
 iata_airports_destinations = {'LAX', 'SAN'}
 departure = datetime.now().isoformat().split('T')[0]
-airport_repository = FakeRepository(airports=[*all_flights])
+airport_repository = FakeRepository(airports=[*all_airports])
 
 
 def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flights(fake_repository, fake_gateway):
@@ -27,12 +27,12 @@ def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flig
 
     assert len(flights) == 2
     assert flights[0].city_source == city_source
-    assert flights[0].city_destination == all_flights[1]['municipality']
+    assert flights[0].city_destination == all_airports[1]['municipality']
     assert flights[0].departure_date == departure
     assert flights[0].total_price == price
     assert flights[0].currency == 'BRL'
     assert flights[1].city_source == city_source
-    assert flights[1].city_destination == all_flights[2]['municipality']
+    assert flights[1].city_destination == all_airports[2]['municipality']
     assert flights[1].departure_date == departure
     assert flights[1].total_price == price
     assert flights[0].currency == 'BRL'
@@ -107,9 +107,22 @@ def test_when_departure_is_not_at_iso_format_yyyy_mm_dd_then_should_return_error
     assert error == 'Invalid departure date'
 
 
+def test_when_dont_find_city_destination_then_should_return_error(fake_repository, fake_gateway):
+    fake_repository = FakeRepository(airports=[source])
+    fake_gateway = FakeGateway(flights=[])
+
+    _, error = find_all_flights_from_airports(city_source=city_source,
+                                              iata_airports_destinations=iata_airports_destinations,
+                                              departure=departure, airport_repository=fake_repository,
+                                              flight_gateway=fake_gateway, max_price=price,
+                                              currency_rate_mapping=currency_rate_mapping)
+
+    assert error == 'City not found for one or more destinations'
+
+
 @pytest.fixture
 def fake_repository():
-    return FakeRepository(airports=[*all_flights])
+    return FakeRepository(airports=[*all_airports])
 
 
 @pytest.fixture
@@ -118,14 +131,14 @@ def fake_gateway():
     arrival_date = departure_date + timedelta(hours=2)
     flights = [
         FoundFlight(city_source=source['code'],
-                    city_destination=all_flights[1]['code'],
+                    city_destination=all_airports[1]['code'],
                     departure_date=departure_date,
                     arrival_date=arrival_date,
                     carrier='Carrier',
                     total_price=Decimal('560.00'),
                     currency='EUR'),
         FoundFlight(city_source=source['code'],
-                    city_destination=all_flights[2]['code'],
+                    city_destination=all_airports[2]['code'],
                     departure_date=departure_date,
                     arrival_date=arrival_date,
                     carrier='Carrier',
