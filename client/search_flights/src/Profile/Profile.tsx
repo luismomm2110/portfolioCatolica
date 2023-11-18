@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import './Profile.css'
 import flightAreaGateway from "./gateways/flightAreaGateway";
-import {FlightArea} from "../FlightArea/types";
+import {FlightArea} from "../SearchFlight/types";
 import CardFlightArea from "../CardFlightArea/CardFlightArea";
 import {deleteFlightAreaGateway} from "./gateways/deleteFlightAreaGateway";
 
@@ -60,7 +60,7 @@ const Profile: React.FC = () => {
                     <ReusableButton
                         description={'Criar área de voos'}
                         label={'Criar área de voos'}
-                        callback={() => navigate('/FlightArea')}
+                        callback={() => navigate('/SearchFlight')}
                     />
                     <ul>
                         {listFlightAreas()}
