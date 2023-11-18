@@ -78,8 +78,8 @@ def presenter_raws_flights(single_amadeus_response: json) -> List[FoundFlight]:
 
         first_segment = raw_flight['itineraries'][0]['segments'][0]
         last_segment = raw_flight['itineraries'][0]['segments'][-1]
-        flight['source'] = first_segment['departure']['iataCode']
-        flight['destination'] = last_segment['arrival']['iataCode']
+        flight['city_source'] = first_segment['departure']['iataCode']
+        flight['city_destination'] = last_segment['arrival']['iataCode']
         flight['departure_date'] = datetime.strptime(first_segment['departure']['at'], '%Y-%m-%dT%H:%M:%S')
         flight['arrival_date'] = datetime.strptime(last_segment['arrival']['at'], '%Y-%m-%dT%H:%M:%S')
         flight['total_price'] = Decimal(raw_flight['price']['total'])
