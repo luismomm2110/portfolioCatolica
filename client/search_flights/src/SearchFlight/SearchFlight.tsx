@@ -48,7 +48,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                 setAirports(response.data);
             } catch (error: unknown) {
                 if (error instanceof Error) {
-                    setGatewayError(error.message);
+                    setFormData({...formData, originalDestinyAirportError: error.message});
                 }
             }
         }
@@ -205,7 +205,6 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
 
     const isFormDisabled = () => {
         if (isSelectingAirports)    {
-            console.log('foo')
             const currentOriginalDestinyAirport = formData.originalDestinyAirport;
             return currentOriginalDestinyAirport.length === 0 || currentOriginalDestinyAirport === lastSelectedDestiny;
         }
