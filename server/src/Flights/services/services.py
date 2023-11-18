@@ -30,7 +30,6 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
                                          departure,
                                          max_price_converted_to_euros)
 
-
     flights_in_real = [FoundFlight(city_source=city_source,
                                    city_destination=_find_city_by_iata_code(flight.city_destination, airports_from_destinations),
                                    total_price=currency_rate_mapping.convert_from('EUR', flight.total_price),
