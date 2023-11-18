@@ -27,7 +27,7 @@
 
 .select-airports {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-top: 30px;
     gap: 50px;
 

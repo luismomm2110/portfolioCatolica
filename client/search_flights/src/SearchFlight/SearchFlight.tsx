@@ -120,7 +120,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
         if (isSelectingDestiny) {
             return 'Selecione o destino';
         }
-        return 'Selecione os aeroportos';
+        return `Selecione até ${selectedAirportLimit} aeroportos`;
     }
 
     const currentFormFields = () => {
@@ -228,13 +228,12 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                         submitText={selectSubmitButtonText()}
                         disabled={isFormDisabled()}
                     />
-                    <div>
-                        {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
-                        {isSelectingAirports &&
-                            <ul className={'selected-airports-list'}>
-                                {selectedAirportsList}
-                            </ul>}
-                    </div>
+                    {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
+                    {isSelectingAirports &&
+                        <ul className={'selected-airports-list'}>
+                            {selectedAirportsList}
+                        </ul>
+                    }
                 </div>
                 {gatewayError && <p className={'error-message'}>{gatewayError}</p>}
                 {isSelectingAirports &&
