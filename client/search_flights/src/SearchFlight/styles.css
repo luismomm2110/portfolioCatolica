@@ -41,17 +41,19 @@
     padding: 0;
 
     & li {
-        padding-inline-start: 0;
+        width: 100%;
+        padding: 5px 10px;
+        border-radius: 10px;
+        background-color: #f3e9e9;
         list-style: none;
-        padding: 0;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
 
         & span {
             margin-right: 10px;
         }
 
         & button {
-            padding: 5px;
+            padding: 8px;
             font-size: 15px;
             border-radius: 10px;
         }
