@@ -13,7 +13,7 @@ from server.src.Airports.models.model import Airport
 
 class AbstractGateway(abc.ABC):
     @abc.abstractmethod
-    def get(self, iata_code_origin: Airport, destinations: List[str], departure_date: str, max_price: Optional[int] = None):
+    def get(self, iata_code_origin: Airport, destinations: set[str], departure_date: str, max_price: Optional[int] = None):
         raise NotImplementedError
 
 
@@ -21,7 +21,7 @@ class FakeGateway(AbstractGateway):
     def __init__(self, flights: List[FoundFlight]):
         self.flights = flights
 
-    def get(self, iata_code_origin: str, destinations: List[str],
+    def get(self, iata_code_origin: str, destinations: set[str],
             departure_date: str, max_price: Optional[int] = None) -> \
             List[FoundFlight]:
 
@@ -29,21 +29,21 @@ class FakeGateway(AbstractGateway):
 
         results = []
         for flight in self.flights:
-            if flight.source == iata_code_origin and flight.destination in destinations and \
-               _compare_timestap(flight.departure_date, departure_date) and flight.total_price <= max_price:
+            if flight.city_source == iata_code_origin and flight.city_destination in destinations and \
+               _compare_timestamp(flight.departure_date, departure_date) and flight.total_price <= max_price:
                 results.append(flight)
 
         return results
 
 
-def _compare_timestap(timestamp: datetime, departure_date: str) -> bool:
+def _compare_timestamp(timestamp: datetime, departure_date: str) -> bool:
     date_to_compare = datetime.strptime(departure_date, '%Y-%m-%d')
 
     return timestamp.date() == date_to_compare.date()
 
 
 class AmadeusGateway(AbstractGateway):
-    def get(self, iata_code_origin: str, destinations: List[str], departure_date: str, max_price: Optional[int] = None):
+    def get(self, iata_code_origin: str, destinations: set[str], departure_date: str, max_price: Optional[int] = None):
         amadeus = Client(
             client_id=get_api_key_amadeus(),
             client_secret=get_api_secret_amadeus(),

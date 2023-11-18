@@ -10,9 +10,11 @@ class CurrencyRate:
 
 
 @dataclass(frozen=True)
-class CurrencyRateMapping:
+class BRLCurrencyRateMapping:
     mapping: dict[str, Decimal]
 
     def convert_to(self, currency: str, amount: Decimal) -> Decimal:
         return amount * self.mapping.get(currency)
 
+    def convert_from(self, currency: str, amount: Decimal) -> Decimal:
+        return amount / self.mapping.get(currency)

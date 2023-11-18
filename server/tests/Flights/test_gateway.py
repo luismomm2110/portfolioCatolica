@@ -24,8 +24,8 @@ def test_gateway_can_search_a_flight():
 
 def test_presenter_can_convert_from_amadeus_model_to_domain_model():
     expected_first_flight = FoundFlight(
-        source='SYD',
-        destination='BKK',
+        city_source='SYD',
+        city_destination='BKK',
         total_price=Decimal('355.34'),
         departure_date=datetime.strptime('2021-11-01T11:35:00', '%Y-%m-%dT%H:%M:%S'),
         arrival_date=datetime.strptime('2021-11-01T21:50:00', '%Y-%m-%dT%H:%M:%S'),

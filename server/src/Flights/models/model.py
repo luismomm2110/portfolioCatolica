@@ -2,6 +2,8 @@ from _decimal import Decimal
 from dataclasses import dataclass
 from datetime import datetime
 
+from server.src.Airports.models.model import Municipality
+
 
 @dataclass(frozen=True)
 class TripGoal:
@@ -14,8 +16,8 @@ class TripGoal:
 
 @dataclass(frozen=True)
 class FoundFlight:
-    source: str
-    destination: str
+    city_source: Municipality
+    city_destination: Municipality
     total_price: Decimal
     departure_date: datetime # Isoformat
     arrival_date: datetime # Isoformat

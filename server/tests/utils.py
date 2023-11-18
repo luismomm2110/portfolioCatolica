@@ -1,6 +1,6 @@
 source = {'code': 'GRU', 'coordinates': '-23.4355556, -46.4730556', 'municipality': 'São Paulo', 'name': 'Guarulhos - Governador André Franco Montoro International Airport'}
 destination = {'code': 'LAX', 'coordinates': '33.9425361, -118.4080751', 'municipality': 'Los Angeles', 'name': 'Los Angeles International Airport'}
-destinations = [
+all_flights = [
     source, destination,
     {'code': 'SAN', 'coordinates': '32.733556, -117.189657', 'municipality': 'San Diego', 'name': 'San Diego Intl'},
     {'code': 'SFO', 'coordinates': '37.618972, -122.374889', 'municipality': 'San Francisco', 'name': 'San Francisco Intl'},

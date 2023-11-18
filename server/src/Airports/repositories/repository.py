@@ -21,6 +21,8 @@ class AbstractRepository(abc.ABC):
     def fetch_cities(self):
         raise NotImplementedError
 
+    def fetch_airports_by_iata_code(self, iata_codes: set[str]) -> Tuple[Airport]:
+        raise NotImplementedError
 
 class FakeRepository(AbstractRepository):
     def __init__(self, airports: List[dict]):
@@ -37,6 +39,9 @@ class FakeRepository(AbstractRepository):
 
     def fetch_cities(self) -> Tuple[Municipality]:
         return tuple(set(airport.municipality for airport in self.airports))
+
+    def fetch_airports_by_iata_code(self, iata_codes: List[str]) -> Tuple[Airport]:
+        return tuple(airport for airport in self.airports if airport.code in iata_codes)
 
 
 class IataRepository(AbstractRepository):
@@ -62,3 +67,6 @@ class IataRepository(AbstractRepository):
 
     def fetch_cities(self) -> Tuple[Municipality]:
         return tuple(set(airport.municipality for airport in self.airports if airport.municipality))
+
+    def fetch_airports_by_iata_code(self, iata_codes: List[str]) -> Tuple[Airport]:
+        return tuple(airport for airport in self.airports if airport.code in iata_codes)
