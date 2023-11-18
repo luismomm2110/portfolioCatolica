@@ -3,14 +3,14 @@ from decimal import Decimal
 from typing import List, Optional
 
 from server.src.Airports.models.model import Airport
-from server.src.Airports.repositories.repository import AbstractRepository
+from server.src.Airports.repositories.repository import AbstractAirportRepository
 from server.src.CurrencyRate.models.models import BRLCurrencyRateMapping
 from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
 from server.src.Flights.models.model import TripGoal, FoundFlight
 
 
 def find_all_flights_from_airports(city_source: str, iata_airports_destinations: set[str], departure: str,
-                                   airport_repository: AbstractRepository, flight_gateway: AbstractGateway,
+                                   airport_repository: AbstractAirportRepository, flight_gateway: AbstractGateway,
                                    currency_rate_mapping: BRLCurrencyRateMapping, max_price: Optional[Decimal] = None) -> [List[TripGoal], str]:
     airport_from_the_source = next(iter(airport_repository.fetch_airports_by_municipality(city_source)), None)
     if not airport_from_the_source:

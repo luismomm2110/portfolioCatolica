@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from server.src.Airports.repositories.repository import FakeRepository
+from server.src.Airports.repositories.repository import FakeAirportRepository
 from server.src.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
 from server.src.Flights.gateways.gateway_amadeus import FakeGateway
 from server.src.Flights.models.model import FoundFlight
@@ -15,7 +15,7 @@ price = Decimal('100')
 city_source = 'São Paulo'
 iata_airports_destinations = {'LAX', 'SAN'}
 departure = datetime.now().isoformat().split('T')[0]
-airport_repository = FakeRepository(airports=[*all_airports])
+airport_repository = FakeAirportRepository(airports=[*all_airports])
 
 
 def test_when_search_for_flights_with_all_inputs_then_should_return_correct_flights(fake_repository, fake_gateway):
@@ -108,7 +108,7 @@ def test_when_departure_is_not_at_iso_format_yyyy_mm_dd_then_should_return_error
 
 
 def test_when_dont_find_city_destination_then_should_return_error(fake_repository, fake_gateway):
-    fake_repository = FakeRepository(airports=[source])
+    fake_repository = FakeAirportRepository(airports=[source])
     fake_gateway = FakeGateway(flights=[])
 
     _, error = find_all_flights_from_airports(city_source=city_source,
@@ -122,7 +122,7 @@ def test_when_dont_find_city_destination_then_should_return_error(fake_repositor
 
 @pytest.fixture
 def fake_repository():
-    return FakeRepository(airports=[*all_airports])
+    return FakeAirportRepository(airports=[*all_airports])
 
 
 @pytest.fixture

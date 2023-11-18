@@ -7,7 +7,7 @@ import pandas as pd
 from server.src.Airports.models.model import Airport
 
 
-class AbstractRepository(abc.ABC):
+class AbstractAirportRepository(abc.ABC):
     @abc.abstractmethod
     def fetch_airports(self):
         raise NotImplementedError
@@ -25,7 +25,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
 
-class FakeRepository(AbstractRepository):
+class FakeAirportRepository(AbstractAirportRepository):
     def __init__(self, airports: List[dict]):
         self.airports = [Airport(**airport) for airport in airports]
 
@@ -45,7 +45,7 @@ class FakeRepository(AbstractRepository):
         return tuple(airport for airport in self.airports if airport.code in iata_codes)
 
 
-class IataRepository(AbstractRepository):
+class IataAirportRepository(AbstractAirportRepository):
     def __init__(self):
         csv_path = os.path.join(os.path.dirname(__file__), '../../../resources/iata.csv')
         with open(csv_path) as csv_file:

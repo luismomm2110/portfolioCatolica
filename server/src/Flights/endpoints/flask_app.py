@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from flask import Flask, request, jsonify
 
-from server.src.Airports.repositories.repository import IataRepository
+from server.src.Airports.repositories.repository import IataAirportRepository
 from server.src.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
 from server.src.Flights.gateways.gateway_amadeus import AmadeusGateway
 from server.src.Flights.services.services import find_all_flights_from_airports
@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route('/flights', methods=['GET'])
 def flights_endpoint():
-    repository = IataRepository()
+    repository = IataAirportRepository()
     gateway = AmadeusGateway()
 
     source = request.args['source']
