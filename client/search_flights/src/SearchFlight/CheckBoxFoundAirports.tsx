@@ -16,20 +16,22 @@ const CheckBoxesFoundAirports: React.FC<CheckBoxesFoundAirportsProps> = ({
 }) => {
     return (
         <>
-            {airports.map((airport) => (
-                <section key={airport.code} className={'checkbox-container'}>
-                    <label htmlFor={airport.code}>{`${airport.name}: ${airport.distance} km`}</label>
-                    <input
-                        type="checkbox"
-                        id={airport.code}
-                        name="airport"
-                        value={airport.name}
-                        onClick={() => handleSelectingAirport(airport)}
-                        disabled={isAirportLimitReached && !selectedAirports.includes(airport)}
-                        checked={selectedAirports.includes(airport)}
-                    />
-                </section>
-            ))}
+            <ul className={'checkbox-container'}>
+                {airports.map((airport) => (
+                    <li key={airport.code}>
+                        <label htmlFor={airport.code}>{`${airport.name}: ${airport.distance} km`}</label>
+                        <input
+                            type="checkbox"
+                            id={airport.code}
+                            name="airport"
+                            value={airport.name}
+                            onClick={() => handleSelectingAirport(airport)}
+                            disabled={isAirportLimitReached && !selectedAirports.includes(airport)}
+                            checked={selectedAirports.includes(airport)}
+                        />
+                    </li>
+                ))}
+            </ul>
         </>
     );
 };
