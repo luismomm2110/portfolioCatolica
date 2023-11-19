@@ -5,7 +5,7 @@ const LoadingPage = () => {
   return (
     <div className="loadingPage">
       <div className="spinner"></div>
-      <h1 style={{ marginLeft: '10px' }}>Loading...</h1>
+      <h1 style={{ marginLeft: '10px' }}>Carregando...</h1>
     </div>
   );
 };
