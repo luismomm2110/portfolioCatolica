@@ -9,10 +9,9 @@ export type Airport = {
     municipality: string;
 }
 
-export type SearchFlight = {
+export type TripGoal = {
     _id: string;
     name: string;
     airports: Airport[];
-    travel_agent_id: string;
     city_origin: string;
 }

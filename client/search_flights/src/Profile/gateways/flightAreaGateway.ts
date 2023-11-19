@@ -1,6 +1,6 @@
-import {SearchFlight} from "../../SearchFlight/types";
+import {TripGoal} from "../../SearchFlight/types";
 
-const flightAreaGateway = async (): Promise<SearchFlight[]> => {
+const flightAreaGateway = async (): Promise<TripGoal[]> => {
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:5001/flight_area', {
         method: 'GET',
