@@ -7,10 +7,9 @@ type Props = {
     label?: string
     callback?: any
     disabled?: boolean
-    placeholder?: string
 }
 
-export const ReusableButton: React.FC<Props> = ({description, label, callback, disabled, placeholder}) =>
+export const ReusableButton: React.FC<Props> = ({description, label, callback, disabled}) =>
     <button
         type="submit"
         aria-label={label ?? description}

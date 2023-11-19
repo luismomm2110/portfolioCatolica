@@ -4,7 +4,7 @@ import {searchAirportGateway} from "./gateways/searchAirportGateway";
 import {Airport} from "./types";
 import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
-import { ReusableButton } from "../systemDesign/Button/ReusableButton";
+import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
 
 interface CreateFlightAreaProps {
@@ -23,7 +23,6 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     const [foundCityOfOrigin, setFoundCityOfOrigin] = useState('');
     const [lastSelectedDestiny, setLastSelectedDestiny] = useState('');
     const [airports, setAirports] = useState<Airport[]>([])
-    const [gatewayError, setGatewayError] = useState('');
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
 
     const isSelectingOrigin = foundCityOfOrigin.length === 0;
@@ -208,14 +207,12 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                 formData.departureDate
             )
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                setGatewayError(error.message);
-            }
+            console.log(error)
         }
     }
 
     const isFormDisabled = () => {
-        if (isSelectingAirports)    {
+        if (isSelectingAirports) {
             const currentOriginalDestinyAirport = formData.originalDestinyAirport;
             return currentOriginalDestinyAirport.length === 0 || currentOriginalDestinyAirport === lastSelectedDestiny;
         }
@@ -232,12 +229,19 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                 <div className={'select-airports'}>
                     <ReusableForm
                         formTitle=""
-                        fields = {currentFormFields()}
+                        fields={currentFormFields()}
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
                         submitText={selectSubmitButtonText()}
                         disabled={isFormDisabled()}
                     />
+                    {hasSufficientDataForSearchingFlights() &&
+                        <ReusableButton
+                            callback={handleFindFlights}
+                            label={'Buscar voos'}
+                            description={'Buscar voos'}
+                        />
+                    }
                     {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
                     {isSelectingAirports &&
                         <ul className={'selected-airports-list'}>
@@ -245,19 +249,11 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                         </ul>
                     }
                 </div>
-                {gatewayError && <p className={'error-message'}>{gatewayError}</p>}
                 {isSelectingAirports &&
                     <section className={'checkbox-container'}>
                         {checkBoxes}
                     </section>
                 }
-                    {hasSufficientDataForSearchingFlights() &&
-                     <ReusableButton
-                         callback={handleFindFlights}
-                         label={'Buscar voos'}
-                         description={'Buscar voos'}
-                     />
-                    }
             </main>
         </div>
     );
