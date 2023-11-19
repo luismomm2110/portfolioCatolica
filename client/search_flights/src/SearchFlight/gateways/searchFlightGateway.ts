@@ -1,11 +1,11 @@
-export const searchFlightGateway = async (origin: string, flights: string[], price: string, date: string)=> {
-    const url =  new URL('http://localhost:5001/flights')
-    url.searchParams.append('origin', origin)
-    for (let i = 0; i < flights.length; i++) {
-        url.searchParams.append('flights', flights[i])
+export const searchFlightGateway = async (cityOrigin: string, destinations: string[], price: string, departure: string)=> {
+    const url =  new URL('http://localhost:5003/flights')
+    url.searchParams.append('city_origin', cityOrigin)
+    for (let i = 0; i < destinations.length; i++) {
+        url.searchParams.append('destination', destinations[i])
     }
     url.searchParams.append('price', String(price))
-    url.searchParams.append('date', date)
+    url.searchParams.append('departure', departure)
 
     const response = await fetch(url.toString(), {
         method: 'GET',
