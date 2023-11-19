@@ -6,6 +6,7 @@ import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
+import CheckBoxesFoundAirports from "./CheckBoxFoundAirports";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -67,22 +68,6 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
             setSelectedAirports([...selectedAirports, airport]);
         }
     }
-
-    const checkBoxes = airports.map((airport) => (
-        <div key={airport.code}>
-            <input
-                type="checkbox"
-                id={airport.code}
-                name="airport" value={airport.name}
-                onClick={() => handleSelectingAirport(airport)}
-                disabled={isAirportLimitReached && !selectedAirports.includes(airport)}
-                checked={selectedAirports.includes(airport)}
-            />
-            <label
-                htmlFor={airport.code}>{`${airport.name}: ${airport.distance} km`}
-            </label>
-        </div>
-    ));
 
     const selectedAirportsMessage = () => {
         if (isAirportLimitReached) {
@@ -250,9 +235,12 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                     }
                 </div>
                 {isSelectingAirports &&
-                    <section className={'checkbox-container'}>
-                        {checkBoxes}
-                    </section>
+                    <CheckBoxesFoundAirports
+                        airports={airports}
+                        handleSelectingAirport={handleSelectingAirport}
+                        selectedAirports={selectedAirports}
+                        isAirportLimitReached={selectedAirports.length >= selectedAirportLimit}
+                    />
                 }
             </main>
         </div>
