@@ -11,6 +11,24 @@
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    & li {
+        width: 100%;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
+
+
+        & label {
+            width: 100%;
+        }
+
+        & input {
+            height: 20px;
+        }
+    }
 }
 
 .error-message {
