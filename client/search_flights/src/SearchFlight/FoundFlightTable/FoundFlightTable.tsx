@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 type Decimal = number;
 
@@ -17,20 +17,48 @@ interface FlightTableProps {
 }
 
 const FlightTable: React.FC<FlightTableProps> = ({ flights }) => {
+    const [sortedFlights, setSortedFlights] = useState(flights);
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const [sortType, setSortType] = useState<'price' |  'arrival' | 'airline'>('price');
+
+    const sortFlights = (type: 'price' | 'arrival'| 'airline') => {
+        const sorted = [...sortedFlights].sort((a, b) => {
+            if (type === 'price') {
+                return sortOrder === 'asc' ? a.total_price - b.total_price : b.total_price - a.total_price;
+            } else if (type === 'arrival') {
+                const dateA = new Date(a.arrival_date);
+                const dateB = new Date(b.arrival_date);
+                return sortOrder === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
+            } else {
+                return sortOrder === 'asc' ? a.carrier.localeCompare(b.carrier) : b.carrier.localeCompare(a.carrier);
+            }
+        });
+
+        setSortedFlights(sorted);
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        setSortType(type);
+    };
+
     return (
         <table>
             <thead>
                 <tr>
-                    <th>Source City</th>
-                    <th>Destination City</th>
-                    <th>Total Price</th>
-                    <th>Departure Date</th>
-                    <th>Arrival Date</th>
-                    <th>Carrier</th>
+                    <th>Origem</th>
+                    <th>Destino</th>
+                    <th onClick={() => sortFlights('price')} style={{ cursor: 'pointer' }}>
+                        Preço Total {sortType === 'price' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+                    </th>
+                    <th>
+                        Data de Partida
+                    </th>
+                    <th onClick={() => sortFlights('arrival')} style={{ cursor: 'pointer' }}>
+                        Data de Chegada {sortType === 'arrival' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+                    </th>
+                    <th>Companhia Aérea</th>
                 </tr>
             </thead>
             <tbody>
-                {flights.map((flight, index) => (
+                {sortedFlights.map((flight, index) => (
                     <tr key={index}>
                         <td>{flight.city_source}</td>
                         <td>{flight.city_destination}</td>
