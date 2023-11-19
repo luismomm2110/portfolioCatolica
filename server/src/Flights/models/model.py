@@ -5,8 +5,8 @@ from datetime import datetime
 
 @dataclass(frozen=True)
 class TripGoal:
-    source: dict
-    destination: dict
+    source: str
+    destination: str
     price: Decimal
     departure: str # YYYY-MM-DD
     currency_code: str
