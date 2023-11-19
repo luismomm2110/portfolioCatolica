@@ -193,8 +193,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     const hasSufficientDataForSearchingFlights = () => {
         return formData.cityOfOrigin.length > 0
             && selectedAirports.length > 0
-            && Number(formData.price) > 0
-            && formData.departureDate !== undefined;
+            && formData.departureDate.length > 0;
     }
 
     const handleFindFlights = async (event: React.FormEvent<HTMLFormElement>) => {

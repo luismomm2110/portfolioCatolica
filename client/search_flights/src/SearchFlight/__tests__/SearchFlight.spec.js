@@ -876,4 +876,38 @@ describe(('SearchFlight'), () => {
             expect(searchFlightGateway).toHaveBeenCalledWith('São Paulo', ['MAD'], '1000', '2021-10-10')
         })
     })
+
+    it('should search flights when the user select at least one airport, insert date and not insert price', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        const limit = 30;
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'MAD',
+                    name: 'Aeroporto de Madrid',
+                    city: 'Madrid',
+                    country: 'Espanha',
+                    distance: 0
+                }
+            ]
+        })
+        render(<SearchFlight selectedAirportLimit={limit}/>);
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
+        userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
+        userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
+        const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
+        userEvent.click(checkbox)
+
+        const dateInput = screen.getByLabelText(/Data de partida:/i);
+        userEvent.type(dateInput, '2021-10-10');
+        userEvent.click(screen.getByRole('button', {name: 'Buscar voos'}));
+
+
+        await waitFor(() => {
+            expect(searchFlightGateway).toHaveBeenCalledWith('São Paulo', ['MAD'], '', '2021-10-10')
+        })
+    })
 })
