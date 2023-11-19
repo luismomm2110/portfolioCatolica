@@ -4,16 +4,16 @@ from datetime import datetime
 from decimal import Decimal
 from typing import List, Optional
 
-from amadeus import Client
+from amadeus import Client, Response
 
 from settings import get_api_key_amadeus, get_api_secret_amadeus
-from server.src.Flights.models.model import TripGoal, FoundFlight
+from server.src.Flights.models.model import FoundFlight
 from server.src.Airports.models.model import Airport
 
 
 class AbstractGateway(abc.ABC):
     @abc.abstractmethod
-    def get(self, iata_code_origin: Airport, destinations: set[str], departure_date: str, max_price: Optional[int] = None):
+    def get(self, iata_code_origin: Airport, destinations: set[str], departure_date: str, max_price: Optional[int] = None) -> List[FoundFlight]:
         raise NotImplementedError
 
 
@@ -43,7 +43,8 @@ def _compare_timestamp(timestamp: datetime, departure_date: str) -> bool:
 
 
 class AmadeusGateway(AbstractGateway):
-    def get(self, iata_code_origin: str, destinations: set[str], departure_date: str, max_price: Optional[int] = None):
+    def get(self, iata_code_origin: str, destinations: set[str], departure_date: str, max_price: Optional[int] = None) -> List[FoundFlight]:
+        max_price = 99999 if max_price is None else max_price
         amadeus = Client(
             client_id=get_api_key_amadeus(),
             client_secret=get_api_secret_amadeus(),
@@ -52,26 +53,27 @@ class AmadeusGateway(AbstractGateway):
 
         for destination in destinations:
             try:
-                result.append(amadeus.shopping.flight_offers_search.get(
-                    originLocationCode=iata_code_origin,
-                    destinationLocationCode=destination,
-                    departureDate=departure_date,  # YYYY-MM-DD
-                    maxPrice=max_price,
-                    adults=1,
-                    max=5
-                ))
+                result.extend(presenter_raws_flights(
+                    amadeus.shopping.flight_offers_search.get(
+                        originLocationCode=iata_code_origin,
+                        destinationLocationCode=destination,
+                        departureDate=departure_date,  # YYYY-MM-DD
+                        maxPrice=max_price,
+                        adults=1,
+                        max=5
+                    )))
+
             except Exception as e:
                 print(e)
 
-        cleaned_result = presenter_raws_flights(result)
-
-        return cleaned_result
+        return result
 
 
-def presenter_raws_flights(single_amadeus_response: json) -> List[FoundFlight]:
-    result = []
-    data = single_amadeus_response['data']
-    mapping = single_amadeus_response['dictionaries']
+def presenter_raws_flights(single_amadeus_response: Response) -> List[FoundFlight]:
+    amadeus_result = single_amadeus_response.result
+    clean_result = []
+    data = amadeus_result['data']
+    dictionaries = amadeus_result['dictionaries']
 
     for raw_flight in data:
         flight = {}
@@ -85,8 +87,8 @@ def presenter_raws_flights(single_amadeus_response: json) -> List[FoundFlight]:
         flight['total_price'] = Decimal(raw_flight['price']['total'])
         flight['currency'] = raw_flight['price']['currency']
         carrier_code = first_segment['carrierCode']
-        flight['carrier'] = mapping['carriers'][carrier_code]
+        flight['carrier'] = dictionaries['carriers'][carrier_code]
 
-        result.append(FoundFlight(**flight))
+        clean_result.append(FoundFlight(**flight))
 
-    return result
+    return clean_result

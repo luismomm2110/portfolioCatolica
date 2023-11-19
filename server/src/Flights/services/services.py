@@ -9,10 +9,9 @@ from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
 from server.src.Flights.models.model import TripGoal, FoundFlight
 
 
-def find_all_flights_from_airports(city_source: str, iata_airports_destinations: set[str], departure: str,
-                                   airport_repository: AbstractAirportRepository, flight_gateway: AbstractGateway,
-                                   currency_rate_mapping: BRLCurrencyRateMapping, max_price: Optional[Decimal] = None) -> [List[TripGoal], str]:
-    airport_from_the_source = next(iter(airport_repository.fetch_airports_by_municipality(city_source)), None)
+def find_all_flights_from_airports(city_origin: str, iata_airports_destinations: set[str], departure: str, airport_repository: AbstractAirportRepository,
+                                   flight_gateway: AbstractGateway, currency_rate_mapping: BRLCurrencyRateMapping, max_price: Optional[Decimal] = None) -> [List[TripGoal], str]:
+    airport_from_the_source = next(iter(airport_repository.fetch_airports_by_municipality(city_origin)), None)
     if not airport_from_the_source:
         return [], 'City not found'
 
@@ -30,7 +29,7 @@ def find_all_flights_from_airports(city_source: str, iata_airports_destinations:
                                          departure,
                                          max_price_converted_to_euros)
 
-    flights_in_real = [FoundFlight(city_source=city_source,
+    flights_in_real = [FoundFlight(city_source=city_origin,
                                    city_destination=_find_city_by_iata_code(flight.city_destination, airports_from_destinations),
                                    total_price=currency_rate_mapping.convert_from('EUR', flight.total_price),
                                    departure_date=flight.departure_date.date().strftime('%Y-%m-%d'),

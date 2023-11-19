@@ -4,8 +4,7 @@ import {ProtectedRoute} from "../auth/ProtectedRoute";
 import {PaginaInicial} from "../PaginaInicial/PaginaInicial";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Profile from "../Profile/Profile";
-import FlightArea from "../FlightArea/FlightArea";
+import SearchFlight from "../SearchFlight/SearchFlight";
 
 export const Routes: React.FC = () => {
 
@@ -17,12 +16,8 @@ export const Routes: React.FC = () => {
             element: <ProtectedRoute/>,
             children: [
                 {
-                    path: '/profile',
-                    element: <Profile />,
-                },
-                {
-                    path: '/FlightArea',
-                    element: <FlightArea/>,
+                    path: '/searchFlight',
+                    element: <SearchFlight/>,
                 }
             ]
         }

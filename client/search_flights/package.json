@@ -40,6 +40,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-datepicker": "^4.19.3"
+    "@types/react-datepicker": "^4.19.3",
+    "web-vitals": "^3.5.0"
   }
 }

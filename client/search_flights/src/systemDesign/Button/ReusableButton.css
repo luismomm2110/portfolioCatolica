@@ -13,3 +13,7 @@ button {
             cursor: not-allowed;
         }
 }
+
+button[type="submit"] {
+    width: 400px;
+}

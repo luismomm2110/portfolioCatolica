@@ -4,28 +4,31 @@ import {searchAirportGateway} from "./gateways/searchAirportGateway";
 import {Airport} from "./types";
 import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
-import {ReusableDatePicker} from "../systemDesign/DatePicker/DatePicker";
-import { ReusableButton } from "../systemDesign/Button/ReusableButton";
+import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
+import CheckBoxesFoundAirports from "./CheckBoxFoundAirports";
+import LoadingPage from "../systemDesign/LoadingPage/LoadingPage";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
 }
 
-const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
+const todayInString = new Date().toISOString().split('T')[0];
+
+const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}) => {
     const [formData, setFormData] = useState({
         cityOfOrigin: '', cityOfOriginError: '',
         originalDestinyAirport: '', originalDestinyAirportError: '',
-        price: '', priceError: ''
+        price: '', priceError: '',
+        departureDate: todayInString, departureDateError: ''
     })
-    const [findedCityOfOrigin, setFindedCityOfOrigin] = useState('');
-    const [currentDestiny, setCurrentDestiny] = useState('');
+    const [foundCityOfOrigin, setFoundCityOfOrigin] = useState('');
+    const [lastSelectedDestiny, setLastSelectedDestiny] = useState('');
     const [airports, setAirports] = useState<Airport[]>([])
-    const [gatewayError, setGatewayError] = useState('');
-    const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
-    const [flightDate, setFlightDate] = useState<Date>(new Date());
+    const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]); // TODO: adicionar isso como properidade de aerporto
+    const [isLoading, setIsLoading] = useState(false);
 
-    const isSelectingOrigin = findedCityOfOrigin.length === 0;
+    const isSelectingOrigin = foundCityOfOrigin.length === 0;
     const isSelectingDestiny = airports.length === 0 && !isSelectingOrigin;
     const isSelectingAirports = airports.length > 0;
     const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
@@ -35,19 +38,20 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
         if (isSelectingOrigin) {
             try {
                 const response = await cityOfOriginGateway(formData.cityOfOrigin);
-                setFindedCityOfOrigin(response.data);
+                setFoundCityOfOrigin(response.data);
             } catch (error: unknown) {
                 if (error instanceof Error) {
-                    setGatewayError(error.message);
+                    setFormData({...formData, cityOfOriginError: error.message});
                 }
             }
         } else {
             try {
+                setLastSelectedDestiny(formData.originalDestinyAirport)
                 const response = await searchAirportGateway(formData.originalDestinyAirport);
                 setAirports(response.data);
             } catch (error: unknown) {
                 if (error instanceof Error) {
-                    setGatewayError(error.message);
+                    setFormData({...formData, originalDestinyAirportError: error.message});
                 }
             }
         }
@@ -56,9 +60,6 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {id, value} = e.target;
         setFormData({...formData, [id]: value, [id + 'Error']: ''});
-        if (id === 'originalDestinyAirport') {
-            setCurrentDestiny(value);
-        }
     }
 
     const handleSelectingAirport = (airport: Airport) => {
@@ -69,22 +70,6 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             setSelectedAirports([...selectedAirports, airport]);
         }
     }
-
-    const checkBoxes = airports.map((airport) => (
-        <div key={airport.code}>
-            <input
-                type="checkbox"
-                id={airport.code}
-                name="airport" value={airport.name}
-                onClick={() => handleSelectingAirport(airport)}
-                disabled={isAirportLimitReached && !selectedAirports.includes(airport)}
-                checked={selectedAirports.includes(airport)}
-            />
-            <label
-                htmlFor={airport.code}>{`${airport.name}: ${airport.distance} km`}
-            </label>
-        </div>
-    ));
 
     const selectedAirportsMessage = () => {
         if (isAirportLimitReached) {
@@ -122,7 +107,7 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
         if (isSelectingDestiny) {
             return 'Selecione o destino';
         }
-        return 'Selecione os aeroportos';
+        return `Selecione até ${selectedAirportLimit} aeroportos`;
     }
 
     const currentFormFields = () => {
@@ -151,9 +136,22 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             label: 'Preço máximo',
             name: 'Preço máximo',
             type: 'number',
-            placeholder: 'Insira o preço máximo',
+            required: false,
+            placeholder: 'Sem limite de preço',
             value: formData.price,
             error: formData.priceError
+        }
+
+        const departureDate = {
+            id: 'departureDate',
+            label: 'Data de partida',
+            name: 'Data de partida',
+            min: todayInString,
+            type: 'date',
+            required: false,
+            placeholder: todayInString,
+            value: formData.departureDate,
+            error: formData.departureDateError
         }
 
         if (isSelectingOrigin) {
@@ -163,14 +161,13 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             return [cityOfOriginFields, originalDestinyAirport]
         }
         if (isSelectingAirports) {
-            return [cityOfOriginFields, originalDestinyAirport, maxPrice]
+            return [cityOfOriginFields, originalDestinyAirport, maxPrice, departureDate]
         }
         return [];
     }
 
     const selectSubmitButtonText = () => {
-        const isChangingDestiny = formData.originalDestinyAirport !== currentDestiny;
-        if (isSelectingOrigin || isChangingDestiny) {
+        if (isSelectingOrigin) {
             return 'Buscar cidade de origem';
         }
         if (isSelectingDestiny || isSelectingAirports) {
@@ -182,26 +179,32 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
     const hasSufficientDataForSearchingFlights = () => {
         return formData.cityOfOrigin.length > 0
             && selectedAirports.length > 0
-            && Number(formData.price) > 0
-            && flightDate !== undefined;
+            && formData.departureDate.length > 0;
     }
 
     const handleFindFlights = async (event: React.FormEvent<HTMLFormElement>) => {
+        debugger;
         event.preventDefault();
         const airportsCodes = selectedAirports.map((airport) => airport.code);
-        const isoDateWithoutHours = flightDate.toISOString().split('T')[0];
+        setIsLoading(true)
         try {
             const response = await searchFlightGateway(
-                findedCityOfOrigin,
+                foundCityOfOrigin,
                 airportsCodes,
                 String(formData.price),
-                isoDateWithoutHours
+                formData.departureDate
             )
-            console.log(response.data);
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                setGatewayError(error.message);
-            }
+            console.log(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const isFormDisabled = () => {
+        if (isSelectingAirports) {
+            const currentOriginalDestinyAirport = formData.originalDestinyAirport;
+            return currentOriginalDestinyAirport.length === 0 || currentOriginalDestinyAirport === lastSelectedDestiny;
         }
     }
 
@@ -210,44 +213,44 @@ const FlightArea: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 10}
             <header>
                 <h1>{getHeaderTitle()}</h1>
             </header>
-            <main
-                className={'create-flight-area'}
-            >
-                <div className={'select-airports'}>
-                    <ReusableForm
-                        formTitle=""
-                        fields = {currentFormFields()}
-                        handleSubmit={handleSubmit}
-                        handleChange={handleChange}
-                        submitText={selectSubmitButtonText()}
-                    />
-                    <div>
+            {isLoading ? <LoadingPage/> : (
+                <main
+                    className={'create-flight-area'}
+                >
+                    <div className={'select-airports'}>
+                        <ReusableForm
+                            formTitle=""
+                            fields={currentFormFields()}
+                            handleSubmit={handleSubmit}
+                            handleChange={handleChange}
+                            submitText={selectSubmitButtonText()}
+                            disabled={isFormDisabled()}
+                        />
+                        {hasSufficientDataForSearchingFlights() &&
+                            <ReusableButton
+                                callback={handleFindFlights}
+                                label={'Buscar voos'}
+                                description={'Buscar voos'}
+                            />
+                        }
                         {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
                         {isSelectingAirports &&
                             <ul className={'selected-airports-list'}>
                                 {selectedAirportsList}
-                            </ul>}
+                            </ul>
+                        }
                     </div>
-                </div>
-                {gatewayError && <p className={'error-message'}>{gatewayError}</p>}
-                {isSelectingAirports &&
-                    <section className={'checkbox-container'}>
-                        <ReusableDatePicker
-                            onChange={(date) => setFlightDate(date)}
+                    {isSelectingAirports &&
+                        <CheckBoxesFoundAirports
+                            airports={airports}
+                            handleSelectingAirport={handleSelectingAirport}
+                            selectedAirports={selectedAirports}
+                            isAirportLimitReached={selectedAirports.length >= selectedAirportLimit}
                         />
-                        {checkBoxes}
-                    </section>
-                }
-                    {hasSufficientDataForSearchingFlights() &&
-                     <ReusableButton
-                         callback={handleFindFlights}
-                         label={'Buscar voos'}
-                         description={'Buscar voos'}
-                     />
-                    }
-            </main>
+                    })
+                </main>)}
         </div>
     );
 }
 
-export default FlightArea;
+export default SearchFlight;

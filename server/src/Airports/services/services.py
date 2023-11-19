@@ -27,11 +27,13 @@ def find_city(city: str, repository: AbstractAirportRepository):
     fetched_cities = repository.fetch_municipalities()
     normalized_input_city = city.strip().lower()
     normalized_input_city = _remove_accents(normalized_input_city)
+
     for fecthed_city in fetched_cities:
-        normalized_city_in_repository = fecthed_city.lower()
-        normalized_city_in_repository = _remove_accents(normalized_city_in_repository)
-        if normalized_city_in_repository == normalized_input_city:
-            return fecthed_city
+        if isinstance(fecthed_city, str):
+            normalized_city_in_repository = fecthed_city.lower()
+            normalized_city_in_repository = _remove_accents(normalized_city_in_repository)
+            if normalized_city_in_repository == normalized_input_city:
+                return fecthed_city
     return None
 
 
