@@ -746,7 +746,7 @@ describe(('SearchFlight'), () => {
             const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
             userEvent.click(checkbox)
 
-            expect(await screen.findByText('Data do Voo:')).toBeInTheDocument()
+            expect(await screen.findByText('Data de partida:')).toBeInTheDocument()
         }
     )
 
@@ -774,10 +774,10 @@ describe(('SearchFlight'), () => {
             const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
             userEvent.click(checkbox)
 
-            const dateInput = screen.getByLabelText(/Data do Voo/i);
+            const dateInput = screen.getByLabelText(/Data de partida/i);
             userEvent.type(dateInput, '2021-10-10');
 
-            expect(screen.getByRole('textbox', {name: 'Data do Voo:'})).toHaveValue('2021-10-10')
+            expect(screen.getByLabelText('Data de partida:')).toHaveValue('2021-10-10')
         }
     )
 
@@ -867,7 +867,7 @@ describe(('SearchFlight'), () => {
         const priceInput = screen.getByLabelText('Preço máximo:')
         userEvent.type(priceInput, '1000')
 
-        const dateInput = screen.getByLabelText(/Data do Voo/i);
+        const dateInput = screen.getByLabelText(/Data de partida:/i);
         userEvent.type(dateInput, '2021-10-10');
         userEvent.click(screen.getByRole('button', {name: 'Buscar voos'}));
 

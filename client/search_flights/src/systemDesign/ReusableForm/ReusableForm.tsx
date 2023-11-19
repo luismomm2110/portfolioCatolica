@@ -34,6 +34,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({ formTitle, fields, handleSu
                 type={field.type}
                 placeholder={field.placeholder}
                 label={field.label}
+                min={field.min}
                 value={field.value}
                 error={field.error}
                 handleChange={handleChange}

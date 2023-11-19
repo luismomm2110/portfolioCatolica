@@ -9,6 +9,7 @@ export type Input = {
     name?: string;
     label: string;
     value: string;
+    min?: string;
     error: string;
     required?: boolean;
     disabled?: boolean;
@@ -23,6 +24,7 @@ export const ReusableInput: React.FC<Input> = (props) => {
                 className={props.error ? 'error' : ''}
                 id={props.id}
                 type={props.type}
+                min={props.min}
                 placeholder={props.placeholder}
                 name={props.name}
                 value={props.value || ''}
