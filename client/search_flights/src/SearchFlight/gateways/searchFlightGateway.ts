@@ -13,7 +13,7 @@ export const searchFlightGateway = async (cityOrigin: string, destinations: stri
             'Content-Type': 'application/json',
         },
     })
-    if (response.status === 404) throw new Error('Nenhum voo encontrado')
+    if (response.status === 404) throw new Error('Nenhum voo encontrado.')
     if (!response.ok) throw new Error('Error fetching flight')
     return await response.json()
 }

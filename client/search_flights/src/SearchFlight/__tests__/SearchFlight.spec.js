@@ -940,4 +940,38 @@ describe(('SearchFlight'), () => {
 
         expect(await screen.findByText('Carregando...')).toBeInTheDocument()
     })
+
+    it('should render a warning to change filters when receive an empty data from flights API', async () => {
+        cityOfOriginGateway.mockResolvedValueOnce({
+            data: 'São Paulo'
+        })
+        const limit = 30;
+        searchAirportGateway.mockResolvedValueOnce({
+            data: [
+                {
+                    code: 'MAD',
+                    name: 'Aeroporto de Madrid',
+                    city: 'Madrid',
+                    country: 'Espanha',
+                    distance: 0
+                }
+            ]
+        })
+        render(<SearchFlight selectedAirportLimit={limit}/>);
+        userEvent.type(screen.getByRole('textbox', {name: 'Cidade de origem:'}), 'São Paulo');
+        userEvent.click(screen.getByRole('button', {name: 'Buscar cidade de origem'}));
+        userEvent.type(await screen.findByRole('textbox', {name: 'Aeroporto de destino:'}), 'Madrid');
+        userEvent.click(screen.getByRole('button', {name: 'Buscar aeroporto de destino'}));
+        const checkbox = await screen.findByLabelText('Aeroporto de Madrid: 0 km')
+        userEvent.click(checkbox)
+
+        searchFlightGateway.mockResolvedValueOnce({
+            data: []
+        })
+        const dateInput = screen.getByLabelText(/Data de partida:/i);
+        userEvent.type(dateInput, '2021-10-10');
+        userEvent.click(screen.getByRole('button', {name: 'Buscar voos'}));
+
+        expect(await screen.findByText('Nenhum voo encontrado, por favor altere os filtros.')).toBeInTheDocument()
+    })
 })
