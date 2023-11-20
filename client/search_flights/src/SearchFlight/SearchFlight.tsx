@@ -8,6 +8,7 @@ import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
 import CheckBoxesFoundAirports from "./CheckBoxFoundAirports";
 import LoadingPage from "../systemDesign/LoadingPage/LoadingPage";
+import FlightTable from "./FoundFlightTable/FoundFlightTable";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -27,6 +28,8 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     const [airports, setAirports] = useState<Airport[]>([])
     const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]); // TODO: adicionar isso como properidade de aerporto
     const [isLoading, setIsLoading] = useState(false);
+    const [foundFlights, setFoundFlights] = useState([]);
+    const [gatewayError, setGatewayError] = useState('');
 
     const isSelectingOrigin = foundCityOfOrigin.length === 0;
     const isSelectingDestiny = airports.length === 0 && !isSelectingOrigin;
@@ -183,7 +186,6 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     }
 
     const handleFindFlights = async (event: React.FormEvent<HTMLFormElement>) => {
-        debugger;
         event.preventDefault();
         const airportsCodes = selectedAirports.map((airport) => airport.code);
         setIsLoading(true)
@@ -194,9 +196,13 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                 String(formData.price),
                 formData.departureDate
             )
+            setIsLoading(false)
+            console.log('foo')
+            if (response.data.length > 0) {
+                setFoundFlights(response.data);
+            }
+            setGatewayError('Nenhum voo encontrado, por favor altere os filtros.');
         } catch (error: unknown) {
-            console.log(error)
-        } finally {
             setIsLoading(false)
         }
     }
@@ -210,6 +216,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
 
     return (
         <div className={'flight-area-container'}>
+            {foundFlights.length > 0 && <FlightTable flights={foundFlights}/> }
             <header>
                 <h1>{getHeaderTitle()}</h1>
             </header>
@@ -233,6 +240,9 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                                 description={'Buscar voos'}
                             />
                         }
+                        <section>
+                            {gatewayError && <p>{gatewayError}</p>}
+                        </section>
                         {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
                         {isSelectingAirports &&
                             <ul className={'selected-airports-list'}>
@@ -247,7 +257,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                             selectedAirports={selectedAirports}
                             isAirportLimitReached={selectedAirports.length >= selectedAirportLimit}
                         />
-                    })
+                    }
                 </main>)}
         </div>
     );
