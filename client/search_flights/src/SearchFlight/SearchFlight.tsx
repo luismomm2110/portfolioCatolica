@@ -54,7 +54,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
             try {
                 setLastSelectedDestiny(formData.originalDestinyAirport)
                 const response = await searchAirportGateway(formData.originalDestinyAirport);
-                setAirports(response.data);
+                setAirports(prevState => [...response.data]);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     setFormData({...formData, originalDestinyAirportError: error.message});
