@@ -3,15 +3,16 @@ import React, {useState} from "react";
 
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 import {searchAirportGateway} from "./gateways/searchAirportGateway";
-import {Airport, FoundAirport} from "./types";
+import {Airport} from "./types";
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
 import LoadingPage from "../systemDesign/LoadingPage/LoadingPage";
-import {SelectingAirports} from "./SelectingAirports";
+import {FoundAirportsList} from "./SelectingAirports";
 import FoundFlightTable from "./FoundFlightTable/FoundFlightTable";
 
 import './styles.css';
+import SelectedAirportsList from "./SelectedAirportsList";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -29,11 +30,11 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     const [foundCityOfOrigin, setFoundCityOfOrigin] = useState('');
     const [lastSelectedDestiny, setLastSelectedDestiny] = useState('');
     const [airports, setAirports] = useState<Airport[]>([])
+    const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [foundFlights, setFoundFlights] = useState([]);
     const [gatewayError, setGatewayError] = useState('');
 
-    const selectedAirports = airports.filter((airport) => airport.selected);
     const isSelectingOrigin = foundCityOfOrigin.length === 0;
     const isSelectingDestiny = airports.length === 0 && !isSelectingOrigin;
     const isSelectingAirports = airports.length > 0;
@@ -53,11 +54,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
             try {
                 setLastSelectedDestiny(formData.originalDestinyAirport)
                 const response = await searchAirportGateway(formData.originalDestinyAirport);
-                const foundAirports = response.data as FoundAirport[];
-                const airports = foundAirports.map((foundAirport) => ({
-                    ...foundAirport, selected: false
-                }));
-                setAirports(airports);
+                setAirports(response.data);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     setFormData({...formData, originalDestinyAirportError: error.message});
@@ -71,29 +68,10 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
         setFormData({...formData, [id]: value, [id + 'Error']: ''});
     }
 
-    const handleSelectingAirport = (airport: Airport) => {
-        const updatedAirports = airports.map((airportElement) => {
-            if (airportElement.code === airport.code) {
-                return {...airportElement, selected: !airportElement.selected};
-            }
-            return airportElement;
-        });
-        setAirports(updatedAirports);
+    const handleRemoveSelectedAirport = (airport: Airport) => {
+        const newSelectedAirports = selectedAirports.filter((selectedAirport) => selectedAirport.code !== airport.code);
+        setSelectedAirports(newSelectedAirports);
     }
-
-    const selectedAirportsList = selectedAirports.map((airport) => (
-        <>
-            <li key={airport.code}>
-                <span>{airport.name}</span>
-                <button
-                    name={'Remover'}
-                    onClick={() => handleSelectingAirport(airport)}
-                >
-                    X
-                </button>
-            </li>
-        </>
-    ));
 
     const getHeaderTitle = () => {
         if (isSelectingOrigin) {
@@ -206,6 +184,13 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
         }
     }
 
+    const handleSelectingAirport = (airport: Airport) => {
+        const newSelectedAirports = selectedAirports.includes(airport)
+            ? selectedAirports.filter((selectedAirport) => selectedAirport.code !== airport.code)
+            : [...selectedAirports, airport];
+        setSelectedAirports(newSelectedAirports);
+    }
+
     return (
         <div className={'flight-area-container'}>
             <header>
@@ -239,12 +224,17 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                         }
                         {gatewayError && <p>{gatewayError}</p>}
                         {isSelectingAirports && (
-                            <SelectingAirports
-                                elements={selectedAirportsList}
-                                airports={airports}
-                                handleSelectingAirport={handleSelectingAirport}
-                                selectedAirportLimit={selectedAirportLimit}
-                            />
+                            <>
+                                <SelectedAirportsList
+                                    selectedAirports={selectedAirports}
+                                    handleRemoveSelectedAirport={handleRemoveSelectedAirport}/>
+                                <FoundAirportsList
+                                    airports={airports}
+                                    selectedAirports={selectedAirports}
+                                    handleSelectingAirport={handleSelectingAirport}
+                                    selectedAirportLimit={selectedAirportLimit}
+                                />
+                            </>
                         )}
                     </div>
                 </main>
