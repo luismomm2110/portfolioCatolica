@@ -1,14 +1,17 @@
 import React, {useState} from "react";
+
+
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 import {searchAirportGateway} from "./gateways/searchAirportGateway";
 import {Airport, FoundAirport} from "./types";
-import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
 import LoadingPage from "../systemDesign/LoadingPage/LoadingPage";
 import {SelectingAirports} from "./SelectingAirports";
 import FoundFlightTable from "./FoundFlightTable/FoundFlightTable";
+
+import './styles.css';
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
