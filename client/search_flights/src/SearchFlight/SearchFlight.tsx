@@ -6,8 +6,8 @@ import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
-import CheckBoxesFoundAirports from "./CheckBoxFoundAirports";
 import LoadingPage from "../systemDesign/LoadingPage/LoadingPage";
+import {SelectingAirports} from "./SelectingAirports";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -73,20 +73,6 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
         }
     }
 
-    const selectedAirportsMessage = () => {
-        if (isAirportLimitReached) {
-            return `Você atingiu o limite de ${selectedAirportLimit} aeroporto(s)`;
-        }
-
-        if (selectedAirports.length === 0) {
-            return 'Nenhum aeroporto selecionado';
-        }
-        if (selectedAirports.length === 1) {
-            return '1 aeroporto selecionado';
-        }
-
-        return `${selectedAirports.length} aeroportos selecionados`;
-    }
 
     const selectedAirportsList = selectedAirports.map((airport) => (
         <>
@@ -239,24 +225,15 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                                 description={'Buscar voos'}
                             />
                         }
-                        <section>
-                            {gatewayError && <p>{gatewayError}</p>}
-                        </section>
+                        {gatewayError && <p>{gatewayError}</p>}
                         {isSelectingAirports && (
-                            <>
-                                <div>
-                                    <p>{selectedAirportsMessage()}</p>
-                                    <ul className={'selected-airports-list'}>
-                                        {selectedAirportsList}
-                                    </ul>
-                                </div>
-                                <CheckBoxesFoundAirports
-                                    airports={airports}
-                                    handleSelectingAirport={handleSelectingAirport}
-                                    selectedAirports={selectedAirports}
-                                    isAirportLimitReached={selectedAirports.length >= selectedAirportLimit}
-                                />
-                            </>
+                            <SelectingAirports
+                                elements={selectedAirportsList}
+                                airports={airports}
+                                handleSelectingAirport={handleSelectingAirport}
+                                selectedAirports={selectedAirports}
+                                selectedAirportLimit={selectedAirportLimit}
+                            />
                         )}
                     </div>
                 </main>)
