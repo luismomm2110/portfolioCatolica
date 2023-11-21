@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 import {searchAirportGateway} from "./gateways/searchAirportGateway";
-import {Airport} from "./types";
+import {Airport, FoundAirport} from "./types";
 import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
@@ -26,15 +26,14 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     const [foundCityOfOrigin, setFoundCityOfOrigin] = useState('');
     const [lastSelectedDestiny, setLastSelectedDestiny] = useState('');
     const [airports, setAirports] = useState<Airport[]>([])
-    const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]); // TODO: adicionar isso como properidade de aerporto
     const [isLoading, setIsLoading] = useState(false);
     const [foundFlights, setFoundFlights] = useState([]);
     const [gatewayError, setGatewayError] = useState('');
 
+    const selectedAirports = airports.filter((airport) => airport.selected);
     const isSelectingOrigin = foundCityOfOrigin.length === 0;
     const isSelectingDestiny = airports.length === 0 && !isSelectingOrigin;
     const isSelectingAirports = airports.length > 0;
-    const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -51,7 +50,11 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
             try {
                 setLastSelectedDestiny(formData.originalDestinyAirport)
                 const response = await searchAirportGateway(formData.originalDestinyAirport);
-                setAirports(response.data);
+                const foundAirports = response.data as FoundAirport[];
+                const airports = foundAirports.map((foundAirport) => ({
+                    ...foundAirport, selected: false
+                }));
+                setAirports(airports);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     setFormData({...formData, originalDestinyAirportError: error.message});
@@ -66,14 +69,14 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     }
 
     const handleSelectingAirport = (airport: Airport) => {
-        if (selectedAirports.includes(airport)) {
-            setSelectedAirports(selectedAirports.filter((selectedAirport) =>
-                selectedAirport.code !== airport.code));
-        } else {
-            setSelectedAirports([...selectedAirports, airport]);
-        }
+        const updatedAirports = airports.map((airportElement) => {
+            if (airportElement.code === airport.code) {
+                return {...airportElement, selected: !airportElement.selected};
+            }
+            return airportElement;
+        });
+        setAirports(updatedAirports);
     }
-
 
     const selectedAirportsList = selectedAirports.map((airport) => (
         <>
@@ -237,7 +240,6 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                                 elements={selectedAirportsList}
                                 airports={airports}
                                 handleSelectingAirport={handleSelectingAirport}
-                                selectedAirports={selectedAirports}
                                 selectedAirportLimit={selectedAirportLimit}
                             />
                         )}

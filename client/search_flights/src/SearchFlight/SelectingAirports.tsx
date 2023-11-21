@@ -6,22 +6,23 @@ export const SelectingAirports = (props: {
     elements: React.JSX.Element[],
     airports: Airport[],
     handleSelectingAirport: (airport: Airport) => void,
-    selectedAirports: Airport[],
     selectedAirportLimit: number
 }) => {
+    const selectedAirports = props.airports.filter((airport) => airport.selected);
+
     const selectedAirportsMessage = () => {
-        if (props.selectedAirports.length >= props.selectedAirportLimit) {
+        if (selectedAirports.length >= props.selectedAirportLimit) {
             return `Você atingiu o limite de ${props.selectedAirportLimit} aeroporto(s)`;
         }
 
-        if (props.selectedAirports.length === 0) {
+        if (selectedAirports.length === 0) {
             return 'Nenhum aeroporto selecionado';
         }
-        if (props.selectedAirports.length === 1) {
+        if (selectedAirports.length === 1) {
             return '1 aeroporto selecionado';
         }
 
-        return `${props.selectedAirports.length} aeroportos selecionados`;
+        return `${selectedAirports.length} aeroportos selecionados`;
     }
 
     return <>
@@ -32,8 +33,8 @@ export const SelectingAirports = (props: {
         <CheckBoxesFoundAirports
             airports={props.airports}
             handleSelectingAirport={props.handleSelectingAirport}
-            selectedAirports={props.selectedAirports}
-            isAirportLimitReached={props.selectedAirports.length >= props.selectedAirportLimit}
+            selectedAirports={selectedAirports}
+            isAirportLimitReached={selectedAirports.length >= props.selectedAirportLimit}
         />
     </>;
 }
