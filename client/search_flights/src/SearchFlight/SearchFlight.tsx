@@ -8,6 +8,7 @@ import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
 import LoadingPage from "../systemDesign/LoadingPage/LoadingPage";
 import {SelectingAirports} from "./SelectingAirports";
+import FoundFlightTable from "./FoundFlightTable/FoundFlightTable";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -205,11 +206,16 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                 <h1>{getHeaderTitle()}</h1>
             </header>
             {isLoading ? <LoadingPage/> :
+                foundFlights.length > 0 ? (
+                    <FoundFlightTable
+                        flights={foundFlights}
+                    />
+                ) :
                 (
                 <main
                     className={'create-flight-area'}
                 >
-                    <div className={'select-airports'}>
+                    <div className={'search-flights'}>
                         <ReusableForm
                             formTitle=""
                             fields={currentFormFields()}
@@ -236,7 +242,8 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                             />
                         )}
                     </div>
-                </main>)
+                </main>
+                )
             }
         </div>
     );
