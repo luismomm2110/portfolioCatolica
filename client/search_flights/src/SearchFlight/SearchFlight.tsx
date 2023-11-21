@@ -8,7 +8,6 @@ import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
 import CheckBoxesFoundAirports from "./CheckBoxFoundAirports";
 import LoadingPage from "../systemDesign/LoadingPage/LoadingPage";
-import FlightTable from "./FoundFlightTable/FoundFlightTable";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -197,11 +196,11 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                 formData.departureDate
             )
             setIsLoading(false)
-            console.log('foo')
             if (response.data.length > 0) {
                 setFoundFlights(response.data);
+            } else {
+                setGatewayError('Nenhum voo encontrado, por favor altere os filtros.');
             }
-            setGatewayError('Nenhum voo encontrado, por favor altere os filtros.');
         } catch (error: unknown) {
             setIsLoading(false)
         }
@@ -216,11 +215,11 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
 
     return (
         <div className={'flight-area-container'}>
-            {foundFlights.length > 0 && <FlightTable flights={foundFlights}/> }
             <header>
                 <h1>{getHeaderTitle()}</h1>
             </header>
-            {isLoading ? <LoadingPage/> : (
+            {isLoading ? <LoadingPage/> :
+                (
                 <main
                     className={'create-flight-area'}
                 >
@@ -243,22 +242,25 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                         <section>
                             {gatewayError && <p>{gatewayError}</p>}
                         </section>
-                        {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
-                        {isSelectingAirports &&
-                            <ul className={'selected-airports-list'}>
-                                {selectedAirportsList}
-                            </ul>
-                        }
+                        {isSelectingAirports && (
+                            <>
+                                <div>
+                                    <p>{selectedAirportsMessage()}</p>
+                                    <ul className={'selected-airports-list'}>
+                                        {selectedAirportsList}
+                                    </ul>
+                                </div>
+                                <CheckBoxesFoundAirports
+                                    airports={airports}
+                                    handleSelectingAirport={handleSelectingAirport}
+                                    selectedAirports={selectedAirports}
+                                    isAirportLimitReached={selectedAirports.length >= selectedAirportLimit}
+                                />
+                            </>
+                        )}
                     </div>
-                    {isSelectingAirports &&
-                        <CheckBoxesFoundAirports
-                            airports={airports}
-                            handleSelectingAirport={handleSelectingAirport}
-                            selectedAirports={selectedAirports}
-                            isAirportLimitReached={selectedAirports.length >= selectedAirportLimit}
-                        />
-                    }
-                </main>)}
+                </main>)
+            }
         </div>
     );
 }
