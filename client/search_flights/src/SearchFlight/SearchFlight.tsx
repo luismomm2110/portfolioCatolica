@@ -193,9 +193,6 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
 
     return (
         <div className={'flight-area-container'}>
-            <header>
-                <h1>{getHeaderTitle()}</h1>
-            </header>
             {isLoading ? <LoadingPage/> :
                 foundFlights.length > 0 ? (
                     <FoundFlightTable
@@ -203,41 +200,42 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
                     />
                 ) :
                 (
-                <main
-                    className={'create-flight-area'}
-                >
-                    <div className={'search-flights'}>
-                        <ReusableForm
-                            formTitle=""
-                            fields={currentFormFields()}
-                            handleSubmit={handleSubmit}
-                            handleChange={handleChange}
-                            submitText={selectSubmitButtonText()}
-                            disabled={isFormDisabled()}
-                        />
-                        {hasSufficientDataForSearchingFlights() &&
-                            <ReusableButton
-                                callback={handleFindFlights}
-                                label={'Buscar voos'}
-                                description={'Buscar voos'}
-                            />
-                        }
-                        {gatewayError && <p>{gatewayError}</p>}
-                        {isSelectingAirports && (
-                            <>
-                                <SelectedAirportsList
-                                    selectedAirports={selectedAirports}
-                                    handleRemoveSelectedAirport={handleRemoveSelectedAirport}/>
-                                <FoundAirportsList
-                                    airports={airports}
-                                    selectedAirports={selectedAirports}
-                                    handleSelectingAirport={handleSelectingAirport}
-                                    selectedAirportLimit={selectedAirportLimit}
-                                />
-                            </>
-                        )}
-                    </div>
-                </main>
+                    <>
+                        <header>
+                            <h1>{getHeaderTitle()}</h1>
+                        </header>
+                        <main
+                            className={'create-flight-area'}
+                        >
+                            <div className={'search-flights'}>
+                                <ReusableForm
+                                    formTitle=""
+                                    fields={currentFormFields()}
+                                    handleSubmit={handleSubmit}
+                                    handleChange={handleChange}
+                                    submitText={selectSubmitButtonText()}
+                                    disabled={isFormDisabled()}/>
+                                {hasSufficientDataForSearchingFlights() &&
+                                    <ReusableButton
+                                        callback={handleFindFlights}
+                                        label={'Buscar voos'}
+                                        description={'Buscar voos'}/>}
+                                {gatewayError && <p>{gatewayError}</p>}
+                                {isSelectingAirports && (
+                                    <>
+                                        <SelectedAirportsList
+                                            selectedAirports={selectedAirports}
+                                            handleRemoveSelectedAirport={handleRemoveSelectedAirport}/>
+                                        <FoundAirportsList
+                                            airports={airports}
+                                            selectedAirports={selectedAirports}
+                                            handleSelectingAirport={handleSelectingAirport}
+                                            selectedAirportLimit={selectedAirportLimit}/>
+                                    </>
+                                )}
+                            </div>
+                        </main>
+                    </>
                 )
             }
         </div>

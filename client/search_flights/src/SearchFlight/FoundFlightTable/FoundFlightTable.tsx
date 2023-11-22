@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 
+import './FoundFlightTable.css';
+
 type Decimal = number;
 
 interface FoundFlight {
@@ -39,12 +41,22 @@ const FlightTable: React.FC<FlightTableProps> = ({ flights }) => {
         setSortType(type);
     };
 
+    const formatDateToDDMMYYYY = (date: string) => {
+        const dateObject = new Date(date);
+        const day = dateObject.getDate();
+        const month = dateObject.getMonth() + 1;
+        const year = dateObject.getFullYear();
+
+        return `${day}/${month}/${year}`;
+    }
+
     return (
-        <table>
+        <table className={'flight-table'}>
             <thead>
                 <tr>
                     <th>Origem</th>
                     <th>Destino</th>
+                    <th>Moeda</th>
                     <th onClick={() => sortFlights('price')} style={{ cursor: 'pointer' }}>
                         Preço Total {sortType === 'price' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
                     </th>
@@ -62,10 +74,10 @@ const FlightTable: React.FC<FlightTableProps> = ({ flights }) => {
                     <tr key={index}>
                         <td>{flight.city_source}</td>
                         <td>{flight.city_destination}</td>
-                        <td>{flight.total_price}</td>
-                        <td>{flight.departure_date}</td>
-                        <td>{flight.arrival_date}</td>
                         <td>{flight.currency}</td>
+                        <td>{flight.total_price}</td>
+                        <td>{formatDateToDDMMYYYY(flight.departure_date)}</td>
+                        <td>{formatDateToDDMMYYYY(flight.arrival_date)}</td>
                         <td>{flight.carrier}</td>
                     </tr>
                 ))}

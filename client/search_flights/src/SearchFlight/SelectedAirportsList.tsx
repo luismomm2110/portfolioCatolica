@@ -11,7 +11,7 @@ interface SelectedAirportsListProps {
 const SelectedAirportsList: React.FC<SelectedAirportsListProps> = ({selectedAirports, handleRemoveSelectedAirport}) =>
 (
     <>
-        <ul>
+        <ul className={'selected-airports-list'}>
             {selectedAirports.map((airport) => (
                 <li key={airport.code}>
                 <span>{airport.name}</span>
