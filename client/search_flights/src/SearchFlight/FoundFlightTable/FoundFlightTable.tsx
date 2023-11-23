@@ -42,10 +42,9 @@ const FlightTable: React.FC<FlightTableProps> = ({ flights }) => {
     };
 
     const formatDateToDDMMYYYY = (date: string) => {
-        const dateObject = new Date(date);
-        const day = dateObject.getDate();
-        const month = dateObject.getMonth() + 1;
-        const year = dateObject.getFullYear();
+        const day = date.split('-')[2];
+        const month = date.split('-')[1];
+        const year = date.split('-')[0];
 
         return `${day}/${month}/${year}`;
     }

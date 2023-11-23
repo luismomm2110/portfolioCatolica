@@ -60,7 +60,8 @@ const [formData, setFormData] = React.useState({
             placeholder: 'Nome',
             label: 'Nome',
             value: formData.name,
-            error: formData.nameError
+            error: formData.nameError,
+            required: true
         },
         {
             id: 'email',
@@ -68,7 +69,8 @@ const [formData, setFormData] = React.useState({
             placeholder: 'Email',
             label: 'Email',
             value: formData.email,
-            error: formData.emailError
+            error: formData.emailError,
+            required: true
         },
         {
             id: 'phone_number',
@@ -76,7 +78,8 @@ const [formData, setFormData] = React.useState({
             placeholder: 'Telefone',
             label: 'Telefone',
             value: formData.phone_number,
-            error: formData.phoneError
+            error: formData.phoneError,
+            required: true
         },
         {
             id: 'password',
@@ -84,7 +87,8 @@ const [formData, setFormData] = React.useState({
             placeholder: 'Password',
             label: 'Password',
             value: formData.password,
-            error: formData.passwordError
+            error: formData.passwordError,
+            required: true
         },
         {
             id: 'confirmPassword',
@@ -92,7 +96,8 @@ const [formData, setFormData] = React.useState({
             placeholder: 'Confirme sua senha',
             label: 'Confirme sua senha',
             value: formData.confirmPassword,
-            error: formData.confirmPasswordError
+            error: formData.confirmPasswordError,
+            required: true
         }
     ];
 
