@@ -25,7 +25,7 @@ class FakeGateway(AbstractGateway):
             departure_date: str, max_price: Optional[int] = None) -> \
             List[FoundFlight]:
 
-        max_price = 999999999999999 if max_price is None else max_price
+        max_price = 999999999999999 if max_price is None else int(max_price)
 
         results = []
         for flight in self.flights:
