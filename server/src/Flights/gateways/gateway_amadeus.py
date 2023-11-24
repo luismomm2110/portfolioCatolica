@@ -1,12 +1,11 @@
 import abc
-import json
 from datetime import datetime
 from decimal import Decimal
 from typing import List, Optional
 
 from amadeus import Client, Response
 
-from settings import get_api_key_amadeus, get_api_secret_amadeus
+from server.settings import get_api_key_amadeus, get_api_secret_amadeus
 from server.src.Flights.models.model import FoundFlight
 from server.src.Airports.models.model import Airport
 
@@ -44,7 +43,7 @@ def _compare_timestamp(timestamp: datetime, departure_date: str) -> bool:
 
 class AmadeusGateway(AbstractGateway):
     def get(self, iata_code_origin: str, destinations: set[str], departure_date: str, max_price: Optional[int] = None) -> List[FoundFlight]:
-        max_price = 99999 if max_price is None else int(max_price)
+        max_price = 99999999 if max_price is None else int(max_price)
         amadeus = Client(
             client_id=get_api_key_amadeus(),
             client_secret=get_api_secret_amadeus(),
