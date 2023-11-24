@@ -5,7 +5,7 @@ from typing import List, Optional
 
 from amadeus import Client, Response
 
-from server.settings import get_api_key_amadeus, get_api_secret_amadeus
+from server.settings import get_api_key_amadeus, get_secret_amadeus
 from server.src.Flights.models.model import FoundFlight
 from server.src.Airports.models.model import Airport
 
@@ -46,7 +46,7 @@ class AmadeusGateway(AbstractGateway):
         max_price = 99999999 if max_price is None else int(max_price)
         amadeus = Client(
             client_id=get_api_key_amadeus(),
-            client_secret=get_api_secret_amadeus(),
+            client_secret=get_secret_amadeus(),
         )
         result = []
 
