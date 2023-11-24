@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 from server.src.Airports.endpoints.endpoints import search_city, search_airports
 from server.src.Flights.endpoints.endpoints import search_flights
-from server.src.TravelAgents.endpoints.endpoint import create_flight_agent, login
+from server.src.TravelAgents.endpoints.endpoints import create_flight_agent, login
 
 app = Flask(__name__)
 CORS(app)

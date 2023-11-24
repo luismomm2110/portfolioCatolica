@@ -7,6 +7,7 @@ from flask_jwt_extended import JWTManager, create_access_token
 from http import HTTPStatus
 from pymongo import MongoClient
 
+from server.settings import get_jwt_key, get_mongo_url
 from server.src.TravelAgents.gateways.gateways import MongoTravelAgentGateway
 from server.src.TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
@@ -15,10 +16,8 @@ app = Flask(__name__)
 CORS(app)
 jwt = JWTManager(app)
 
-SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-print(SECRET_KEY)
-app.config['SECRET_KEY'] = SECRET_KEY
-mongo_client = MongoClient('localhost', 27017)
+app.config['SECRET_KEY'] = get_jwt_key()
+mongo_client = MongoClient(get_mongo_url(), 27017)
 travel_agent_client = mongo_client['search_flight_db']['travel_agent']
 gateway = MongoTravelAgentGateway(travel_agent_client)
 
