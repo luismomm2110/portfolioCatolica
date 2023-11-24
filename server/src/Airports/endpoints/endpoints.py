@@ -3,15 +3,14 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+from server.settings import get_jwt_key
 from server.src.Airports.repositories.repository import IataAirportRepository
 from server.src.Airports.services.services import find_nearest_airports_by_city, find_city
 
 app = Flask(__name__)
 CORS(app)
 
-SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-print(SECRET_KEY)
-app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECRET_KEY'] = get_jwt_key()
 
 
 @app.route('/airports', methods=['GET'])
