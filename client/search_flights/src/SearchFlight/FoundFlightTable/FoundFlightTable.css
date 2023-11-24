@@ -1,0 +1,32 @@
+.flight-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+.flight-table th, .flight-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.flight-table thead {
+    background-color: #7b98cc;
+    color: white;
+}
+
+.flight-table th {
+    cursor: pointer;
+}
+
+.flight-table th:hover {
+    background-color: #10508f;
+}
+
+.flight-table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.flight-table tbody tr:hover {
+    background-color: #ddd;
+}

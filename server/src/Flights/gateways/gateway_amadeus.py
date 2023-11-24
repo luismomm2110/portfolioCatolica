@@ -25,7 +25,7 @@ class FakeGateway(AbstractGateway):
             departure_date: str, max_price: Optional[int] = None) -> \
             List[FoundFlight]:
 
-        max_price = 999999999999999 if max_price is None else max_price
+        max_price = 999999999999999 if max_price is None else int(max_price)
 
         results = []
         for flight in self.flights:
@@ -44,7 +44,7 @@ def _compare_timestamp(timestamp: datetime, departure_date: str) -> bool:
 
 class AmadeusGateway(AbstractGateway):
     def get(self, iata_code_origin: str, destinations: set[str], departure_date: str, max_price: Optional[int] = None) -> List[FoundFlight]:
-        max_price = 99999 if max_price is None else max_price
+        max_price = 99999 if max_price is None else int(max_price)
         amadeus = Client(
             client_id=get_api_key_amadeus(),
             client_secret=get_api_secret_amadeus(),

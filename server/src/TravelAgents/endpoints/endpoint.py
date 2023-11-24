@@ -24,7 +24,7 @@ gateway = MongoTravelAgentGateway(travel_agent_client)
 
 
 @app.route('/travel_agent', methods=['POST'])
-def insert():
+def create_flight_agent():
     data = request.json
     try:
         create_travel_agent(gateway, data)
@@ -44,7 +44,3 @@ def login():
             return jsonify(access_token=access_token, name=travel_agent.name)
     except ValueError as e:
         abort(HTTPStatus.UNAUTHORIZED, description=e.args)
-
-
-if __name__ == '__main__':
-    app.run(port=5001, debug=True)

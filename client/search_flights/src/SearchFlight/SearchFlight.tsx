@@ -1,14 +1,18 @@
 import React, {useState} from "react";
+
+
 import ReusableForm from "../systemDesign/ReusableForm/ReusableForm";
 import {searchAirportGateway} from "./gateways/searchAirportGateway";
 import {Airport} from "./types";
-import './styles.css';
 import {cityOfOriginGateway} from "./gateways/cityOfOriginGateway";
 import {ReusableButton} from "../systemDesign/Button/ReusableButton";
 import {searchFlightGateway} from "./gateways/searchFlightGateway";
-import CheckBoxesFoundAirports from "./CheckBoxFoundAirports";
 import LoadingPage from "../systemDesign/LoadingPage/LoadingPage";
-import FlightTable from "./FoundFlightTable/FoundFlightTable";
+import {FoundAirportsList} from "./SelectingAirports";
+import FoundFlightTable from "./FoundFlightTable/FoundFlightTable";
+
+import './styles.css';
+import SelectedAirportsList from "./SelectedAirportsList";
 
 interface CreateFlightAreaProps {
     selectedAirportLimit?: number;
@@ -26,14 +30,14 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
     const [foundCityOfOrigin, setFoundCityOfOrigin] = useState('');
     const [lastSelectedDestiny, setLastSelectedDestiny] = useState('');
     const [airports, setAirports] = useState<Airport[]>([])
-    const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]); // TODO: adicionar isso como properidade de aerporto
+    const [selectedAirports, setSelectedAirports] = useState<Airport[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [foundFlights, setFoundFlights] = useState([]);
     const [gatewayError, setGatewayError] = useState('');
 
     const isSelectingOrigin = foundCityOfOrigin.length === 0;
     const isSelectingDestiny = airports.length === 0 && !isSelectingOrigin;
     const isSelectingAirports = airports.length > 0;
-    const isAirportLimitReached = selectedAirports.length >= selectedAirportLimit;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -50,7 +54,7 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
             try {
                 setLastSelectedDestiny(formData.originalDestinyAirport)
                 const response = await searchAirportGateway(formData.originalDestinyAirport);
-                setAirports(response.data);
+                setAirports(prevState => [...response.data]);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     setFormData({...formData, originalDestinyAirportError: error.message});
@@ -64,43 +68,10 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
         setFormData({...formData, [id]: value, [id + 'Error']: ''});
     }
 
-    const handleSelectingAirport = (airport: Airport) => {
-        if (selectedAirports.includes(airport)) {
-            setSelectedAirports(selectedAirports.filter((selectedAirport) =>
-                selectedAirport.code !== airport.code));
-        } else {
-            setSelectedAirports([...selectedAirports, airport]);
-        }
+    const handleRemoveSelectedAirport = (airport: Airport) => {
+        const newSelectedAirports = selectedAirports.filter((selectedAirport) => selectedAirport.code !== airport.code);
+        setSelectedAirports(newSelectedAirports);
     }
-
-    const selectedAirportsMessage = () => {
-        if (isAirportLimitReached) {
-            return `Você atingiu o limite de ${selectedAirportLimit} aeroporto(s)`;
-        }
-
-        if (selectedAirports.length === 0) {
-            return 'Nenhum aeroporto selecionado';
-        }
-        if (selectedAirports.length === 1) {
-            return '1 aeroporto selecionado';
-        }
-
-        return `${selectedAirports.length} aeroportos selecionados`;
-    }
-
-    const selectedAirportsList = selectedAirports.map((airport) => (
-        <>
-            <li key={airport.code}>
-                <span>{airport.name}</span>
-                <button
-                    name={'Remover'}
-                    onClick={() => handleSelectingAirport(airport)}
-                >
-                    X
-                </button>
-            </li>
-        </>
-    ));
 
     const getHeaderTitle = () => {
         if (isSelectingOrigin) {
@@ -197,9 +168,10 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
             )
             setIsLoading(false)
             if (response.data.length > 0) {
-                return (<FlightTable flights={response.data}/>)
+                setFoundFlights(response.data);
+            } else {
+                setGatewayError('Nenhum voo encontrado, por favor altere os filtros.');
             }
-            setGatewayError('Nenhum voo encontrado, por favor altere os filtros.');
         } catch (error: unknown) {
             setIsLoading(false)
         }
@@ -212,50 +184,60 @@ const SearchFlight: React.FC<CreateFlightAreaProps> = ({selectedAirportLimit = 1
         }
     }
 
+    const handleSelectingAirport = (airport: Airport) => {
+        const newSelectedAirports = selectedAirports.includes(airport)
+            ? selectedAirports.filter((selectedAirport) => selectedAirport.code !== airport.code)
+            : [...selectedAirports, airport];
+        setSelectedAirports(newSelectedAirports);
+    }
+
     return (
         <div className={'flight-area-container'}>
-            <header>
-                <h1>{getHeaderTitle()}</h1>
-            </header>
-            {isLoading ? <LoadingPage/> : (
-                <main
-                    className={'create-flight-area'}
-                >
-                    <div className={'select-airports'}>
-                        <ReusableForm
-                            formTitle=""
-                            fields={currentFormFields()}
-                            handleSubmit={handleSubmit}
-                            handleChange={handleChange}
-                            submitText={selectSubmitButtonText()}
-                            disabled={isFormDisabled()}
-                        />
-                        {hasSufficientDataForSearchingFlights() &&
-                            <ReusableButton
-                                callback={handleFindFlights}
-                                label={'Buscar voos'}
-                                description={'Buscar voos'}
-                            />
-                        }
-                        {isSelectingAirports && <p>{selectedAirportsMessage()}</p>}
-                        {isSelectingAirports &&
-                            <ul className={'selected-airports-list'}>
-                                {selectedAirportsList}
-                            </ul>
-                        }
-                    </div>
-                    <section>
-                        {gatewayError && <p>{gatewayError}</p>}
-                    </section>
-                    {isSelectingAirports &&
-                        <CheckBoxesFoundAirports
-                            airports={airports}
-                            handleSelectingAirport={handleSelectingAirport}
-                            selectedAirports={selectedAirports}
-                            isAirportLimitReached={selectedAirports.length >= selectedAirportLimit}
-                        />
-                    })
-                </main>)}
+            {isLoading ? <LoadingPage/> :
+                foundFlights.length > 0 ? (
+                    <FoundFlightTable
+                        flights={foundFlights}
+                    />
+                ) :
+                (
+                    <>
+                        <header>
+                            <h1>{getHeaderTitle()}</h1>
+                        </header>
+                        <main
+                            className={'create-flight-area'}
+                        >
+                            <div className={'search-flights'}>
+                                <ReusableForm
+                                    formTitle=""
+                                    fields={currentFormFields()}
+                                    handleSubmit={handleSubmit}
+                                    handleChange={handleChange}
+                                    submitText={selectSubmitButtonText()}
+                                    disabled={isFormDisabled()}/>
+                                {hasSufficientDataForSearchingFlights() &&
+                                    <ReusableButton
+                                        callback={handleFindFlights}
+                                        label={'Buscar voos'}
+                                        description={'Buscar voos'}/>}
+                                {gatewayError && <p>{gatewayError}</p>}
+                                {isSelectingAirports && (
+                                    <>
+                                        <SelectedAirportsList
+                                            selectedAirports={selectedAirports}
+                                            handleRemoveSelectedAirport={handleRemoveSelectedAirport}/>
+                                        <FoundAirportsList
+                                            airports={airports}
+                                            selectedAirports={selectedAirports}
+                                            handleSelectingAirport={handleSelectingAirport}
+                                            selectedAirportLimit={selectedAirportLimit}/>
+                                    </>
+                                )}
+                            </div>
+                        </main>
+                    </>
+                )
+            }
         </div>
     );
 }

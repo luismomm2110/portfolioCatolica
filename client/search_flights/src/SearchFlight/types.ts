@@ -1,4 +1,16 @@
+export type FoundAirport = {
+    name: string;
+    code: string;
+    distance: number;
+    coordinates: {
+        latitude: number;
+        longitude: number;
+    };
+    municipality: string;
+}
+
 export type Airport = {
+    selected: boolean;
     name: string;
     code: string;
     distance: number;
