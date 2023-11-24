@@ -15,7 +15,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 
 @app.route('/airports', methods=['GET'])
-def airports_endpoint():
+def search_airports():
     city = request.args.get('city', type=str)
     limit = request.args.get('limit', default=10, type=int)
     repository = IataAirportRepository()
@@ -30,8 +30,7 @@ def airports_endpoint():
                                                repository)}), 200
 
 
-@app.route('/cities', methods=['GET'])
-def cities_endpoint():
+def search_city():
     city = request.args.get('city', type=str)
     repository = IataAirportRepository()
 
@@ -40,8 +39,3 @@ def cities_endpoint():
         return jsonify({'error': 'No city found'}), 404
 
     return jsonify({'data': city}), 200
-
-
-if __name__ == '__main__':
-    app.debug = True
-    app.run(host='0.0.0.0', port=5001)
