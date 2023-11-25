@@ -30,10 +30,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token);
-            //todo aquele negocio default
         } else {
             localStorage.removeItem('token');
-            //todo aquele negocio default
         }
     }, [token]);
 
