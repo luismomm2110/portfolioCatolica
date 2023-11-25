@@ -2,10 +2,10 @@ from decimal import Decimal
 
 from flask import request, jsonify
 
-from server.src.Airports.repositories.repository import IataAirportRepository
-from server.src.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
-from server.src.Flights.gateways.gateway_amadeus import AmadeusGateway
-from server.src.Flights.services.services import find_all_flights_from_airports
+from Airports.repositories.repository import IataAirportRepository
+from CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
+from Flights.gateways.gateway_amadeus import AmadeusGateway
+from Flights.services.services import find_all_flights_from_airports
 
 
 def search_flights():

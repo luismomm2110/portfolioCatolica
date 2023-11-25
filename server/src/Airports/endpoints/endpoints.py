@@ -1,11 +1,9 @@
-import os
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from server.settings import get_jwt_key
-from server.src.Airports.repositories.repository import IataAirportRepository
-from server.src.Airports.services.services import find_nearest_airports_by_city, find_city
+from settings import get_jwt_key
+from Airports.repositories.repository import IataAirportRepository
+from Airports.services.services import find_nearest_airports_by_city, find_city
 
 app = Flask(__name__)
 CORS(app)

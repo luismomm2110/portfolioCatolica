@@ -1,6 +1,6 @@
 from typing import Optional
 
-from server.src.TravelAgents.models.models import TravelAgent
+from TravelAgents.models.models import TravelAgent
 
 
 class TravelAgentGateway:
