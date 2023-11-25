@@ -1,5 +1,3 @@
-import os
-
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token
@@ -7,9 +5,9 @@ from flask_jwt_extended import JWTManager, create_access_token
 from http import HTTPStatus
 from pymongo import MongoClient
 
-from server.settings import get_jwt_key, get_mongo_url
-from server.src.TravelAgents.gateways.gateways import MongoTravelAgentGateway
-from server.src.TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+from settings import get_jwt_key, get_mongo_url
+from TravelAgents.gateways.gateways import MongoTravelAgentGateway
+from TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
 
 app = Flask(__name__)

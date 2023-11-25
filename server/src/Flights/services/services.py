@@ -2,11 +2,11 @@ from datetime import datetime
 from decimal import Decimal
 from typing import List, Optional
 
-from server.src.Airports.models.model import Airport
-from server.src.Airports.repositories.repository import AbstractAirportRepository
-from server.src.CurrencyRate.models.models import BRLCurrencyRateMapping
-from server.src.Flights.gateways.gateway_amadeus import AbstractGateway
-from server.src.Flights.models.model import TripGoal, FoundFlight
+from Airports.models.model import Airport
+from Airports.repositories.repository import AbstractAirportRepository
+from CurrencyRate.models.models import BRLCurrencyRateMapping
+from Flights.gateways.gateway_amadeus import AbstractGateway
+from Flights.models.model import TripGoal, FoundFlight
 
 
 def find_all_flights_from_airports(city_origin: str, iata_airports_destinations: set[str], departure: str, airport_repository: AbstractAirportRepository,

@@ -3,8 +3,8 @@ from unittest.mock import patch
 
 import pytest
 
-from server.src.TravelAgents.gateways.gateways import FakeTravelAgentGateway
-from server.src.TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+from TravelAgents.gateways.gateways import FakeTravelAgentGateway
+from TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
 
 

@@ -3,12 +3,12 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from server.src.Airports.repositories.repository import FakeAirportRepository
-from server.src.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
-from server.src.Flights.gateways.gateway_amadeus import FakeGateway
-from server.src.Flights.models.model import FoundFlight
-from server.src.Flights.services.services import find_all_flights_from_airports
-from server.tests.utils import source, all_airports
+from Airports.repositories.repository import FakeAirportRepository
+from CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
+from Flights.gateways.gateway_amadeus import FakeGateway
+from Flights.models.model import FoundFlight
+from Flights.services.services import find_all_flights_from_airports
+from tests.utils import source, all_airports
 
 currency_rate_mapping = FakeCurrencyRateGateway().get_currency_rate_mapping()
 price_in_brl = Decimal('560.00')
