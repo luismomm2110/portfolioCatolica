@@ -1,19 +1,21 @@
 version: '3.8'
+
 services:
   app:
     build: .
-    container_name: app-container
     ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
+      - "5001:5001"
     depends_on:
       - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydatabase
 
   mongo:
     image: mongo:latest
-    container_name: mongo-container
     ports:
       - "27017:27017"
     volumes:
-      - ./data/db:/data/db
+      - mongodata:/data/db
+
+volumes:
+  mongodata:
