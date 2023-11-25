@@ -31,7 +31,7 @@ jobs:
       run: docker-compose up -d
 
     - name: Lint with flake8
-      run: docker-compose exec backend flake8 /app --count --select=E9,F63,F7,F82 --show-source --statistics
+      run: docker-compose exec backend flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
     - name: Test with pytest and coverage
       run: docker-compose exec backend pytest --cov-report xml --cov=.
