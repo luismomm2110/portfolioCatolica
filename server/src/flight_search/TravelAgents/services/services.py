@@ -1,8 +1,8 @@
 import uuid
 from datetime import datetime
 
-from TravelAgents.gateways.gateways import TravelAgentGateway
-from TravelAgents.models.models import TravelAgent, set_password
+from flight_search.TravelAgents.gateways.gateways import TravelAgentGateway
+from flight_search.TravelAgents.models.models import TravelAgent, set_password
 
 
 class TravelAgentAlreadyExistsException(ValueError):

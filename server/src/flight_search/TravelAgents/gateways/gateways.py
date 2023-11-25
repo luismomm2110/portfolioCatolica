@@ -1,6 +1,6 @@
 from typing import Optional
 
-from TravelAgents.models.models import TravelAgent
+from flight_search.TravelAgents.models.models import TravelAgent
 
 
 class TravelAgentGateway:

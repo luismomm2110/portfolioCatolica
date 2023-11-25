@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from Flights.gateways.gateway_amadeus import AmadeusGateway
+from flight_search.Flights.gateways.gateway_amadeus import AmadeusGateway
 
 
 @pytest.mark.skip(reason='Prevents from making requests to Amadeus API')

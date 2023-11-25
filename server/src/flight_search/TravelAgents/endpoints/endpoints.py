@@ -6,8 +6,8 @@ from http import HTTPStatus
 from pymongo import MongoClient
 
 from settings import get_jwt_key, get_mongo_url
-from TravelAgents.gateways.gateways import MongoTravelAgentGateway
-from TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+from flight_search.TravelAgents.gateways.gateways import MongoTravelAgentGateway
+from flight_search.TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
 
 app = Flask(__name__)

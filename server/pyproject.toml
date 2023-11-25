@@ -3,5 +3,5 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "flight-search-from-range"
+name = "flight-search"
 version = "1.0.0"
