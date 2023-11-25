@@ -19,8 +19,3 @@ def get_jwt_key():
 def get_mongo_url():
     return os.environ.get('MONGO_URL')
 
-if __name__ == '__main__':
-    print(get_key_amadeus())
-    print(get_secret_amadeus())
-    print(get_jwt_key())
-    print(get_mongo_url())

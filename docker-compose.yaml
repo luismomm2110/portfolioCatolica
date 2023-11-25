@@ -1,25 +1,21 @@
 version: '3.8'
+
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
-      - "8080:8080"
-    volumes:
-      - ./src:/app/src
-      - ./__tests__:/app/__tests__
-      - ./resources:/app/resources
-      - ./settings.py:/app/settings.py
-    environment:
-      - PYTHONPATH=/app
+      - "5001:5001"
     depends_on:
       - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydatabase
 
   mongo:
     image: mongo:latest
-    container_name: mongo-container
     ports:
       - "27017:27017"
     volumes:
-      - ./data/db:/data/db
+      - mongodata:/data/db
+
+volumes:
+  mongodata:

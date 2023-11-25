@@ -1,29 +1,19 @@
-# Dockerfile
-
-# Use an official Python runtime as the base image
+# Use an official Python runtime as a base image
 FROM python:3.9-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-COPY requirements.txt /app
+# Copy the current directory contents into the container at /app
+COPY server /app
 
-COPY server/src/ src/
-COPY server/tests/ tests/
-COPY server/resources/ resources/
-COPY server/settings.py /app
+ENV PYTHONPATH "${PYTHONPATH}:/app/src"
 
-# Copy the iata.csv file into the container
-COPY server/resources/iata.csv resources/iata.csv
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Python dependencies
-RUN pip3 install --no-cache-dir -r requirements.txt
+# Make port 5001 available to the world outside this container
+EXPOSE 5001
 
-ENV PYTHONPATH /app
-
-WORKDIR /app/src/endpoints
-# Run the endpoints.py when the container launches
-
-EXPOSE 5000
-CMD ["python3", "flask_app.py"]
-
+# Define the command to run your app
+CMD ["python", "src/flight_search/app.py"]

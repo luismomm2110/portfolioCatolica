@@ -1,11 +1,8 @@
-import json
 from datetime import datetime, timedelta
-from decimal import Decimal
 
 import pytest
 
-from server.src.Flights.gateways.gateway_amadeus import AmadeusGateway, presenter_raws_flights
-from server.src.Flights.models.model import FoundFlight
+from flight_search.Flights.gateways.gateway_amadeus import AmadeusGateway
 
 
 @pytest.mark.skip(reason='Prevents from making requests to Amadeus API')

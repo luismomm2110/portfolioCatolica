@@ -10,30 +10,35 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  backend:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v3
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v1
+
+    - name: Cache Docker layers
+      uses: actions/cache@v2
       with:
-        python-version: "3.9"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest pytest-cov
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
+    - name: Build and start containers
+      run: docker-compose up -d
+
     - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      run: docker-compose exec -T app flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
     - name: Test with pytest and coverage
-      run: |
-        pytest --cov-report xml --cov=. server/tests/
+      run: docker-compose exec -T app pytest --cov-report xml --cov=.
+
+    # Clean up
+    - name: Stop and remove containers
+      run: docker-compose down
 
   frontend:
     runs-on: ubuntu-latest

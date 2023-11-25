@@ -1,8 +1,8 @@
 import unicodedata
 from dataclasses import asdict
 
-from server.src.Airports.models.model import distance_in_km
-from server.src.Airports.repositories.repository import AbstractAirportRepository
+from flight_search.Airports.models.model import distance_in_km
+from flight_search.Airports.repositories.repository import AbstractAirportRepository
 
 
 def find_nearest_airports_by_city(city: str, limit: int, repository: AbstractAirportRepository):

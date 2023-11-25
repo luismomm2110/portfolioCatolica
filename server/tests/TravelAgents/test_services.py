@@ -3,12 +3,12 @@ from unittest.mock import patch
 
 import pytest
 
-from server.src.TravelAgents.gateways.gateways import FakeTravelAgentGateway
-from server.src.TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
+from flight_search.TravelAgents.gateways.gateways import FakeTravelAgentGateway
+from flight_search.TravelAgents.services.services import create_travel_agent, login_as_travel_agent, \
     TravelAgentAlreadyExistsException
 
 
-@patch('server.src.TravelAgents.services.services.datetime')
+@patch('flight_search.TravelAgents.services.services.datetime')
 def test_when_create_user_then_it_is_saved(mock_datetime):
     date_joined = datetime(2020, 1, 1)
     mock_datetime.now.return_value = date_joined
@@ -106,7 +106,3 @@ def test_when_try_to_create_with_email_already_registered_then_it_raises_an_exce
         create_travel_agent(fake_travel_agent_gateway, travel_agent_information)
 
     assert 'Email already in use' in str(excinfo.value)
-
-
-if __name__ == '__main__':
-    pytest.main()

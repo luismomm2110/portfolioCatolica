@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 from decimal import Decimal
 
-from server.src.CurrencyRate.models.models import BRLCurrencyRateMapping, CurrencyRate
+from flight_search.CurrencyRate.models.models import BRLCurrencyRateMapping, CurrencyRate
 
 
 class AbstractCurrencyRateGateway(ABC):

@@ -5,9 +5,9 @@ from typing import List, Optional
 
 from amadeus import Client, Response
 
-from server.settings import get_key_amadeus, get_secret_amadeus
-from server.src.Flights.models.model import FoundFlight
-from server.src.Airports.models.model import Airport
+from settings import get_key_amadeus, get_secret_amadeus
+from flight_search.Flights.models.model import FoundFlight
+from flight_search.Airports.models.model import Airport
 
 
 class AbstractGateway(abc.ABC):

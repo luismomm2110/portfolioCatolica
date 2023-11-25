@@ -1,13 +1,14 @@
 from flask import Flask
 from flask_cors import CORS
 
-from server.src.Airports.endpoints.endpoints import search_city, search_airports
-from server.src.Flights.endpoints.endpoints import search_flights
-from server.src.TravelAgents.endpoints.endpoints import create_flight_agent, login
+from flight_search.Airports.endpoints.endpoints import search_city, search_airports
+from flight_search.Flights.endpoints.endpoints import search_flights
+from flight_search.TravelAgents.endpoints.endpoints import create_flight_agent, login
 
 app = Flask(__name__)
 CORS(app)
 
+print('Starting server...')
 
 @app.route('/flights', methods=['GET'])
 def flights_endpoint():
@@ -33,7 +34,11 @@ def travel_agent_endpoint():
 def login_endpoint():
     return login()
 
+@app.route('/', methods=['GET'])
+def home():
+    return 'Hello, World!'
+
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0', port=5003)
+    app.run(host='0.0.0.0', port=5001)

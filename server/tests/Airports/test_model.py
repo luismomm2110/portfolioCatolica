@@ -1,4 +1,4 @@
-from server.src.Airports.models.model import get_possible_airports
+from flight_search.Airports.models.model import get_possible_airports
 
 source = {'iata_code': 'GRU', 'coordinates': '-23.4355556, -46.4730556'}
 original_destination = {'iata_code': 'LAX', 'coordinates': '33.9425361, -118.4080751'}
