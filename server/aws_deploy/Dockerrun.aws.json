@@ -1,0 +1,13 @@
+{
+  "AWSEBDockerrunVersion": "1",
+    "Image": {
+        "Name": "public.ecr.aws/n6v5q4p6/search-flight:latest",
+        "Update": "true"
+    },
+    "Ports": [
+        {
+            "ContainerPort": "5001",
+            "HostPort": "5001"
+        }
+    ]
+}
