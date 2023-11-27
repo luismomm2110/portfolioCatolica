@@ -6,6 +6,6 @@ root = tree.getroot()
 
 # Replace the Docker path with the repository path
 for source in root.findall('.//source'):
-    source.text = source.text.replace('/app', './server')
+    source.text = source.text.replace('/app', './server/src')
 
 tree.write(coverage_file)
