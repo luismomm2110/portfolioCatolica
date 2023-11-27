@@ -42,8 +42,11 @@ jobs:
     - name: Copy coverage to root
       run: docker cp portfoliocatolica_app_1:/app/coverage.xml .
 
-    - name: Sanitity check coverage
-      run: ls -la
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: coverage.xml
 
     # Clean up
     - name: Stop and remove containers
@@ -89,8 +92,11 @@ jobs:
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         - name: Launch Tox
           run: tox -e py
-        - name: Sanitity check coverage
-          run: ls -la
+        - name: Download coverage report
+          uses: actions/download-artifact@v2
+          with:
+            name: coverage-report
+            path: .
         - name: SonarCloud Scan
           uses: SonarSource/sonarcloud-github-action@master
           env:
