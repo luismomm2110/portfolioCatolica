@@ -87,7 +87,7 @@ jobs:
         - name: Launch Tox
           run: tox -e py
         - name: Sanitity check coverage
-          run: ls
+          run: ls -la
         - name: SonarCloud Scan
           uses: SonarSource/sonarcloud-github-action@master
           env:
