@@ -8,10 +8,10 @@ WORKDIR /app
 COPY server /app/server
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r /server/requirements.txt
+RUN pip install --no-cache-dir -r server/requirements.txt
 
 # Set the PYTHONPATH to recognize your application and tests directories
-ENV PYTHONPATH "${PYTHONPATH}:/app/src:/app/tests"
+ENV PYTHONPATH "${PYTHONPATH}:/app/server/src:/app/server/tests"
 
 # Make port 5001 available to the world outside this container
 EXPOSE 5001
