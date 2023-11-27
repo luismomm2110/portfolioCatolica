@@ -19,3 +19,6 @@ def get_jwt_key():
 def get_mongo_url():
     return os.environ.get('MONGO_URL')
 
+
+def get_currency_api_key():
+    return os.environ.get('CURRENCY_API_KEY')

@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_jwt_extended import jwt_required
 
 from settings import get_jwt_key
 from flight_search.Airports.repositories.repository import IataAirportRepository
@@ -11,6 +12,7 @@ CORS(app)
 app.config['SECRET_KEY'] = get_jwt_key()
 
 
+@jwt_required
 @app.route('/airports', methods=['GET'])
 def search_airports():
     city = request.args.get('city', type=str)
@@ -27,6 +29,7 @@ def search_airports():
                                                repository)}), 200
 
 
+@jwt_required()
 def search_city():
     city = request.args.get('city', type=str)
     repository = IataAirportRepository()
