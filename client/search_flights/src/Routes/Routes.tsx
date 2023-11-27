@@ -13,7 +13,7 @@ export const Routes: React.FC = () => {
     const routesForAuthenticatedUsers = [
         {
             path: '/',
-            element: <ProtectedRoute/>,
+            element: <SearchFlight/>,
             children: [
                 {
                     path: '/searchFlight',
