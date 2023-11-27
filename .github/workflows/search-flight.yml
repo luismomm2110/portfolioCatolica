@@ -42,6 +42,9 @@ jobs:
     - name: Copy coverage to root
       run: docker cp portfoliocatolica_app_1:/app/coverage.xml .
 
+    - name: Adjust coverage report paths
+      run: python adjust_coverage_paths.py
+
     - name: Upload coverage report
       uses: actions/upload-artifact@v2
       with:
