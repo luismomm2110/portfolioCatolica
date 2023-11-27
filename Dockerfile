@@ -5,13 +5,10 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copy the application code
-COPY server/src /app/src
-
-# Copy the tests
-COPY server/tests /app/tests
+COPY server /app/server
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r /server/requirements.txt
 
 # Set the PYTHONPATH to recognize your application and tests directories
 ENV PYTHONPATH "${PYTHONPATH}:/app/src:/app/tests"
@@ -20,9 +17,4 @@ ENV PYTHONPATH "${PYTHONPATH}:/app/src:/app/tests"
 EXPOSE 5001
 
 # Define the default command to run your app
-CMD ["python", "src/flight_search/app.py"]
-# Make port 5001 available to the world outside this container
-EXPOSE 5001
-
-# Define the command to run your app
-CMD ["python", "src/flight_search/app.py"]
+CMD ["python", "server/src/flight_search/app.py"]
