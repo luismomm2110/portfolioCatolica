@@ -40,7 +40,7 @@ jobs:
       run: docker-compose exec -T app pytest --cov-report xml --cov=.
 
     - name: Copy coverage to root
-      run: docker cp portoliocatolica-app-1:/app/coverage.xml .
+      run: docker cp portfoliocatolica-app-1:/app/coverage.xml .
 
     # Clean up
     - name: Stop and remove containers
