@@ -1,5 +1,5 @@
 export const searchAirportGateway = async (airportName: string, limit: string = '30') => {
-    const url =  new URL('http://localhost:5001/airports')
+    const url =  new URL(`${process.env.REACT_APP_API_URL}/airports`)
     url.searchParams.append('city', airportName)
     url.searchParams.append('limit', limit)
 

@@ -1,5 +1,5 @@
 export const cityOfOriginGateway = async (city: string) => {
-    const url =  new URL('http://localhost:5001/cities')
+    const url =  new URL(`${process.env.REACT_APP_API_URL}/cities`)
     url.searchParams.append('city', city)
 
     const response = await fetch(url.toString(), {
