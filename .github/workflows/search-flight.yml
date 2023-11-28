@@ -91,12 +91,12 @@ jobs:
         - uses: actions/checkout@v3
           with:
             fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-        - name: run python coverage
-          run: coverage run -m pytest
         - name: Install Tox and any other tool required
           run: |
             pip install tox
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        - name: run python coverage
+          run: coverage run -m pytest
         - name: SonarCloud Scan
           uses: SonarSource/sonarcloud-github-action@master
           env:
