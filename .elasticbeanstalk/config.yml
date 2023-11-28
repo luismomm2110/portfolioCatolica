@@ -1,0 +1,22 @@
+branch-defaults:
+  infra/deplou:
+    environment: flight-search-env
+    group_suffix: null
+environment-defaults:
+  flight-search-env:
+    branch: null
+    repository: null
+global:
+  application_name: flight-search
+  branch: null
+  default_ec2_keyname: app-key-pair
+  default_platform: ECS running on 64bit Amazon Linux 2023
+  default_region: us-east-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  repository: null
+  sc: git
+  workspace_type: Application
