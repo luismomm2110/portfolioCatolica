@@ -84,6 +84,8 @@ jobs:
   sonarcloud:
       needs: backend
       runs-on: ubuntu-latest
+      env:
+        PYTHONPATH: ${{ github.workspace }}/server/src
 
       steps:
         - uses: actions/checkout@v3
