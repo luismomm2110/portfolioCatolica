@@ -84,8 +84,6 @@ jobs:
   sonarcloud:
       needs: backend
       runs-on: ubuntu-latest
-      env:
-        PYTHONPATH: ${{ github.workspace }}/server/src
 
       steps:
         - uses: actions/checkout@v3
@@ -95,8 +93,8 @@ jobs:
           run: |
             pip install tox
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        - name: run python coverage
-          run: coverage run -m pytest
+        - name: Launch Tox
+          run: tox -e py
         - name: SonarCloud Scan
           uses: SonarSource/sonarcloud-github-action@master
           env:
