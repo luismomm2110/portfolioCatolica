@@ -70,6 +70,7 @@ jobs:
           npm test  # This assumes you have a test script in your package.json
 
   sonarcloud:
+      needs: backend
       runs-on: ubuntu-latest
 
       steps:
