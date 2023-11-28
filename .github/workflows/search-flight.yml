@@ -83,6 +83,8 @@ jobs:
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         - name: Launch Tox
           run: tox -e py
+        - name: cat coverage.xml
+          run: cat coverage.xml
         - name: SonarCloud Scan
           uses: SonarSource/sonarcloud-github-action@master
           env:
