@@ -85,7 +85,7 @@ jobs:
       needs: backend
       runs-on: ubuntu-latest
       env:
-        PYTHONPATH: ${{ github.workspace }}/server/src
+        PYTHONPATH: ./server/src
 
       steps:
         - uses: actions/checkout@v3
