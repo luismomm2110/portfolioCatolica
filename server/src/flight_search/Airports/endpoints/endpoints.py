@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required
 
 from settings import get_jwt_key
-from flight_search.Airports.repositories.repository import IataAirportRepository
+from flight_search.Airports.repositories.repositories import IataAirportRepository
 from flight_search.Airports.services.services import find_nearest_airports_by_city, find_city
 
 app = Flask(__name__)

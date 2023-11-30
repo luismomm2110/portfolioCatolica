@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from flight_search.Airports.repositories.repository import FakeAirportRepository
+from flight_search.Airports.repositories.repositories import FakeAirportRepository
 from flight_search.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
-from flight_search.Flights.gateways.gateway_amadeus import FakeGateway
+from flight_search.Flights.gateways.gateways import FakeGateway
 from flight_search.Flights.models.model import FoundFlight
 from flight_search.Flights.services.services import find_all_flights_from_airports
 from utils import all_airports, source
