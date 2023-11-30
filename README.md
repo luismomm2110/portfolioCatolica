@@ -1,9 +1,11 @@
 # Search Flight
 
 
-Esse repositório contém o código fonte do projeto Search Flight, que é um sistema voltado para agências de viagens, que permite a busca de voos através de regiões personalizadas. Isso visa solucionar um problema bastante comum para clientes, que precisam buscar voos de forma manual, aeropor aeroporto, para encontrar o melhor preço.
+Esse repositório contém o código fonte do projeto Search Flight, que é um sistema voltado para agências de viagens, que permite a busca de voos através de regiões personalizadas. Isso visa solucionar um problema bastante comum para clientes, que precisam buscar voos de forma manual, aeroporto por aeroporto, para encontrar o melhor preço.
 
-Usando esse sistema é possível criar regiões personalizadas, que podem ser usadas para buscar voos. Por exemplo, é possível criar uma região chamada "Sudeste", que contém os aeroportos de São Paulo, Rio de Janeiro, Minas Gerais e Espírito Santo. Com isso, é possível buscar voos para essa região, ao invés de buscar por cada aeroporto individualmente.
+Usando esse sistema é possível selecionar aeroportos para buscar voos. Por exemplo, é possível buscar voos para perto de Roma e selecionar os aeroportos de Roma, Milão e Veneza. O sistema irá buscar voos para esses aeroportos e mostrar os resultados em uma única tela.
+
+Para isso, basta o usuário buscar uma cidade de origem, buscar uma cidade de destino e selecionar aeroportos próximos. Após isso, é possível trocar a cidade de destino e selecionar outros aeroportos próximos. Por fim, selecionado data e preço, o sistema irá buscar voos para todos os aeroportos selecionados e mostrar os resultados em uma única tela.
 
 ## Instalação
 
@@ -15,10 +17,21 @@ docker-compose up -d --build
 
 ## Uso
 
-Usando o Docker, o projeto estará disponível na porta 8000. Para acessar, basta abrir o navegador e acessar o endereço [http://localhost:8080](http://localhost:8080).
+O sistema está disponível publicamente. Para acessar, basta abrir o navegador e acessar o endereço [http://d2bet15sdpkqa9.cloudfront.net/](http://d2bet15sdpkqa9.cloudfront.net/).
 
-Com ele você poderá criar um usuário e fazer login. Após isso, você poderá criar regiões e compartilhar com seus clientes através de um link. Seus clientes poderão acessar esse link e buscar voos para a região compartilhada.
+Preste atenção que o link é http.
 
+Usando o Docker, o projeto estará disponível na porta 3000. Para acessar, basta abrir o navegador e acessar o endereço [http://localhost:8080](http://localhost:8080).
+
+Com isso, será possível acessar o sistema e fazer buscas de voos.
+
+## Qualidade de Código
+
+Foi usado o [SonarCloud](https://sonarcloud.io/organizations/luis-antonio-momm-duarte/projects) para avaliar a qualidade de código do projeto. 
+
+## Monitoramento
+
+Foi usado o CloudWatch para monitorar o projeto. O dashboard pode ser acessado [aqui](https://cloudwatch.amazonaws.com/dashboard.html?dashboard=monitoramento-search-flight&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTQ0MTc4NTc2ODI4NiIsIlUiOiJ1cy1lYXN0LTFfZlFDTlQzQUk2IiwiQyI6IjZlMGppZ2hpbjFjYWdkbmhxY29jYTNzZnF0IiwiSSI6InVzLWVhc3QtMTozMGQzMDIwNC1kODcyLTQ2M2YtYWE5Zi0zNzk2NmEyNTAwZmEiLCJNIjoiUHVibGljIn0=).
 
 ## Contribuição
 
@@ -34,14 +47,13 @@ Pull requests são bem-vindos. Para grandes mudanças, por favor abra uma issue 
 
 ## Modelagem de Dados:
 
-![Modelagem de Dados](server/docs/der.png)
+![Modelagem de dados](docs/er.png)
 
 ## Arquitetura do Projeto:
 
 ### Visão geral:
 
-![Visao geral](server/docs/img.png)
-
+![Visao Geral](img_1.png)
 ### Visão dos containers:
 
 ![Visao containers](server/docs/img_1.png)
