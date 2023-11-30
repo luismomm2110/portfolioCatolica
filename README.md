@@ -7,6 +7,8 @@ O repositório da UI pode ser encontrado [aqui](https://github.com/luismomm2110/
 
 Usando esse sistema é possível selecionar aeroportos para buscar voos. Por exemplo, é possível buscar voos para perto de Roma e selecionar os aeroportos de Roma, Milão e Veneza. O sistema irá buscar voos para esses aeroportos e mostrar os resultados em uma única tela.
 
+**Atenção** o nome da cidade deve ser em inglês
+
 Para isso, basta o usuário buscar uma cidade de origem, buscar uma cidade de destino e selecionar aeroportos próximos. Após isso, é possível trocar a cidade de destino e selecionar outros aeroportos próximos. Por fim, selecionado data e preço, o sistema irá buscar voos para todos os aeroportos selecionados e mostrar os resultados em uma única tela.
 
 ## Instalação
