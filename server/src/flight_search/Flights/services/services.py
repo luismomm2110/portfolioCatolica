@@ -3,9 +3,9 @@ from decimal import Decimal
 from typing import List, Optional
 
 from flight_search.Airports.models.model import Airport
-from flight_search.Airports.repositories.repository import AbstractAirportRepository
+from flight_search.Airports.repositories.repositories import AbstractAirportRepository
 from flight_search.CurrencyRate.models.models import BRLCurrencyRateMapping
-from flight_search.Flights.gateways.gateway_amadeus import AbstractGateway
+from flight_search.Flights.gateways.gateways import AbstractGateway
 from flight_search.Flights.models.model import TripGoal, FoundFlight
 
 
