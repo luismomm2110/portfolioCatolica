@@ -10,10 +10,9 @@ from flight_search.Airports.services.services import find_nearest_airports_by_ci
 
 app = Flask(__name__)
 CORS(app)
+app.config['SECRET_KEY'] = get_jwt_key()
 
 mongo_client = MongoClient(get_mongo_url(), 27017)
-
-app.config['SECRET_KEY'] = get_jwt_key()
 airport_client = mongo_client['search_flight_db']['travel_agent']
 repository = MongoAirportRepository(airport_client)
 
