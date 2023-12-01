@@ -3,7 +3,6 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required
 from pymongo import MongoClient
 
-from flight_search.TravelAgents.gateways.gateways import MongoTravelAgentGateway
 from settings import get_jwt_key, get_mongo_url
 from flight_search.Airports.repositories.repositories import IataAirportRepository, MongoAirportRepository
 from flight_search.Airports.services.services import find_nearest_airports_by_city, find_city
