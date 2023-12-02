@@ -32,9 +32,7 @@ Com isso a UI estará disponível na porta 3000.
 
 ## Uso
 
-O sistema está disponível publicamente. Para acessar, basta abrir o navegador e acessar o endereço [http://d2bet15sdpkqa9.cloudfront.net/](http://d2bet15sdpkqa9.cloudfront.net/).
-
-Preste atenção que o link é http. Verifique se o seu navegador não está redirecionando para https.
+O sistema está disponível publicamente. Para acessar, basta abrir o navegador e acessar o endereço https://www.searchflightsinbatch.com
 
 Com isso, será possível acessar o sistema e fazer buscas de voos.
 
