@@ -20,7 +20,6 @@ travel_agent_client = mongo_client['search_flight_db']['travel_agent']
 gateway = MongoTravelAgentGateway(travel_agent_client)
 
 
-@app.route('/travel_agent', methods=['POST'])
 def create_flight_agent():
     data = request.json
     try:
@@ -32,7 +31,6 @@ def create_flight_agent():
         abort(HTTPStatus.UNPROCESSABLE_ENTITY, description=e.args)
 
 
-@app.route('/login', methods=['POST'])
 def login():
     try:
         email, password = request.json['email'], request.json['password']

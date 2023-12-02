@@ -37,7 +37,7 @@ def login_endpoint():
     return login()
 
 
-@app.route('/api/', methods=['GET'])
+@app.route('/api/hello', methods=['GET'])
 def home():
     return 'Hello, World!'
 
@@ -45,7 +45,7 @@ def home():
 # Health check endpoint
 @app.route('/', methods=['GET'])
 def health_check():
-    return 200
+    return "OK"
 
 
 if __name__ == '__main__':
