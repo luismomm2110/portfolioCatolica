@@ -31,7 +31,6 @@ def travel_agent_endpoint():
     return create_flight_agent()
 
 
-
 @app.route('/login', methods=['POST'])
 def login_endpoint():
     return login()
@@ -40,6 +39,12 @@ def login_endpoint():
 @app.route('/api/', methods=['GET'])
 def home():
     return 'Hello, World!'
+
+
+# Health check endpoint
+@app.route('/', methods=['GET'])
+def health_check():
+    return 200
 
 
 if __name__ == '__main__':
