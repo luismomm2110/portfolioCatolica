@@ -42,6 +42,12 @@ def home():
     return 'Hello, World!'
 
 
+# Health check endpoint
+@app.route('/', methods=['GET'])
+def health_check():
+    return 200
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5001)
