@@ -71,3 +71,24 @@ class IataAirportRepository(AbstractAirportRepository):
 
     def fetch_airports_by_iata_code(self, iata_codes: List[str]) -> Tuple[Airport]:
         return tuple(airport for airport in self.airports if airport.code in iata_codes)
+
+
+class MongoAirportRepository(AbstractAirportRepository):
+    def __init__(self, mongo_client_with_collection):
+        self._mongo_client = mongo_client_with_collection
+
+    def fetch_airports(self) -> Tuple[Airport]:
+        airports_data = self._mongo_client.db.collection.find()
+        return tuple(Airport(**airport_data) for airport_data in airports_data)
+
+    def fetch_airport(self, iata_code: str) -> Airport:
+        airport_data = self._mongo_client.db.collection.find_one({"code": iata_code})
+        return Airport(**airport_data)
+
+    def fetch_airports_by_municipality(self, city: str) -> Tuple[Airport]:
+        airports_data = self._mongo_client.db.collection.find({"municipality": city})
+        return tuple(Airport(**airport_data) for airport_data in airports_data)
+
+    def fetch_municipalities(self) -> Tuple[str]:
+        airports_data = self._mongo_client.db.collection.find()
+        return tuple(set(airport_data['municipality'] for airport_data in airports_data))

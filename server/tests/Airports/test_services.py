@@ -1,5 +1,5 @@
 from flight_search.Airports.services.services import find_nearest_airports_by_city, find_city
-from flight_search.Airports.repositories.repository import FakeAirportRepository
+from flight_search.Airports.repositories.repositories import FakeAirportRepository
 from utils import source, destination, all_airports
 
 import pytest

@@ -3,9 +3,9 @@ from decimal import Decimal
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required
 
-from flight_search.Airports.repositories.repository import IataAirportRepository
+from flight_search.Airports.repositories.repositories import IataAirportRepository
 from flight_search.CurrencyRate.gateways.gateways import FakeCurrencyRateGateway
-from flight_search.Flights.gateways.gateway_amadeus import AmadeusGateway
+from flight_search.Flights.gateways.gateways import AmadeusGateway
 from flight_search.Flights.services.services import find_all_flights_from_airports
 
 
