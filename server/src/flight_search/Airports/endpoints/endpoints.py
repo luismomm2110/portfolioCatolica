@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from flight_search.Airports.repositories.repositories import IataAirportRepository, DynamoAirportRepository
+from flight_search.Airports.repositories.repositories import DynamoAirportRepository
 from flight_search.Airports.services.services import find_nearest_airports_by_city, find_city
 
 app = Flask(__name__)
