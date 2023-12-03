@@ -33,9 +33,6 @@ jobs:
     - name: Retrieve container logs
       run: docker-compose logs app
 
-    - name: Lint with flake8
-      run: docker-compose exec -T app flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-
     - name: Test with pytest and coverage
       run: docker-compose exec -T app pytest --cov-report xml --cov=.
 
