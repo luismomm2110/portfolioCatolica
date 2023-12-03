@@ -31,7 +31,6 @@ def travel_agent_endpoint():
     return create_flight_agent()
 
 
-
 @app.route('/login', methods=['POST'])
 def login_endpoint():
     return login()

@@ -1,5 +1,4 @@
 import abc
-import os
 from typing import List, Tuple
 
 import boto3
@@ -47,22 +46,47 @@ class FakeAirportRepository(AbstractAirportRepository):
 
 class DynamoAirportRepository(AbstractAirportRepository):
     def __init__(self):
-        dynamodb = boto3.resource('dynamodb')
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1', aws_access_key_id='AKIAWNXD33FPDVVHVH5F',
+                                  aws_secret_access_key='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')
         self.table = dynamodb.Table('Airports')
 
     def fetch_airports(self) -> Tuple[Airport]:
         airports_data = self.table.scan()['Items']
-        return tuple(Airport(**airport_data) for airport_data in airports_data)
+        return tuple(Airport(code=airport_data['iata_code'], coordinates=airport_data['coordinates'],
+                             municipality=airport_data['municipality'], name=airport_data['name'])
+                     for airport_data in airports_data)
 
     def fetch_airport(self, iata_code: str) -> Airport:
         airport_data = self.table.get_item(Key={'code': iata_code})['Item']
-        return Airport(**airport_data)
+        return Airport(code=airport_data['iata_code'], coordinates=airport_data['coordinates'],
+                       municipality=airport_data['municipality'], name=airport_data['name'])
 
     def fetch_airports_by_municipality(self, city: str) -> Tuple[Airport]:
         airports_data = self.table.scan(FilterExpression='municipality = :municipality',
                                         ExpressionAttributeValues={':municipality': city})['Items']
-        return tuple(Airport(**airport_data) for airport_data in airports_data)
+        return tuple(Airport(code=airport_data['iata_code'], coordinates=airport_data['coordinates'],
+                             municipality=airport_data['municipality'], name=airport_data['name'])
+                     for airport_data in airports_data)
 
     def fetch_municipalities(self) -> Tuple[set[str]]:
         airports_data = self.table.scan()['Items']
         return tuple(set(airport_data['municipality'] for airport_data in airports_data))
+
+    def fetch_airports_by_iata_code(self, iata_codes: set[str]) -> Tuple[Airport]:
+        expression_attribute_values = {f':val{i}': code for i, code in enumerate(iata_codes)}
+
+        filter_expression = 'iata_code IN (' + ', '.join(expression_attribute_values.keys()) + ')'
+
+        airports_data = self.table.scan(
+            FilterExpression=filter_expression,
+            ExpressionAttributeValues=expression_attribute_values
+        )['Items']
+
+        return tuple(
+            Airport(
+                code=airport_data['iata_code'],
+                coordinates=airport_data['coordinates'],
+                municipality=airport_data['municipality'],
+                name=airport_data['name']
+            ) for airport_data in airports_data
+        )

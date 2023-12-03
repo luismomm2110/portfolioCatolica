@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 
+
 load_dotenv()
 
 
@@ -22,3 +23,11 @@ def get_mongo_url():
 
 def get_currency_api_key():
     return os.environ.get('CURRENCY_API_KEY')
+
+
+def get_aws_access_key_id():
+    return os.environ.get('AWS_ACCESS_KEY_ID')
+
+
+def get_aws_secret_access_key():
+    return os.environ.get('AWS_SECRET_ACCESS_KEY')
