@@ -46,8 +46,7 @@ class FakeAirportRepository(AbstractAirportRepository):
 
 class DynamoAirportRepository(AbstractAirportRepository):
     def __init__(self):
-        dynamodb = boto3.resource('dynamodb', region_name='us-east-1', aws_access_key_id='AKIAWNXD33FPDVVHVH5F',
-                                  aws_secret_access_key='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')
+        dynamodb = boto3.resource('dynamodb')
         self.table = dynamodb.Table('Airports')
 
     def fetch_airports(self) -> Tuple[Airport]:
@@ -60,6 +59,10 @@ class DynamoAirportRepository(AbstractAirportRepository):
         airport_data = self.table.get_item(Key={'code': iata_code})['Item']
         return Airport(code=airport_data['iata_code'], coordinates=airport_data['coordinates'],
                        municipality=airport_data['municipality'], name=airport_data['name'])
+
+    def fetch_airport(self, iata_code: str) -> Airport:
+        airport_data = self.table.get_item(Key={'code': iata_code})['Item']
+        return Airport(**airport_data)
 
     def fetch_airports_by_municipality(self, city: str) -> Tuple[Airport]:
         airports_data = self.table.scan(FilterExpression='municipality = :municipality',
