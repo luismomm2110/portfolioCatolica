@@ -31,7 +31,7 @@ class ProductionCurrencyRateGateway(AbstractCurrencyRateGateway):
         response = requests.get(url)
         data = response.json()
         mapping = {
-            currency: Decimal(str(rate))
+            currency: 1/Decimal(str(rate))
             for currency, rate in data['conversion_rates'].items()
         }
 
