@@ -15,7 +15,7 @@ def search_flights():
     city_origin = request.args['city_origin']
     destinations = set(request.args.getlist('destination'))
     departure = request.args['departure']
-    raw_max_price = request.args.get('price', None)
+    raw_max_price = request.args.get('max_price', None)
     max_price = Decimal(raw_max_price) if raw_max_price else None
     currency_rate_mapping = ProductionCurrencyRateGateway().get_currency_rate_mapping()
 
