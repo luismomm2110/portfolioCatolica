@@ -1,8 +1,7 @@
 import abc
-import os
 from typing import List, Tuple
 
-import pandas as pd
+import boto3
 
 from flight_search.Airports.models.model import Airport
 
@@ -45,50 +44,48 @@ class FakeAirportRepository(AbstractAirportRepository):
         return tuple(airport for airport in self.airports if airport.code in iata_codes)
 
 
-class IataAirportRepository(AbstractAirportRepository):
+class DynamoAirportRepository(AbstractAirportRepository):
     def __init__(self):
-        csv_path = os.path.join(os.path.dirname(__file__), '../../../resources/iata.csv')
-        with open(csv_path) as csv_file:
-            df = pd.read_csv(csv_file)
-            df = df.dropna(subset=['iata_code'])
-            self.airports = [Airport(code=row['iata_code'],
-                                     coordinates=row['coordinates'],
-                                     municipality=row['municipality'],
-                                     name=row['name']) for _, row in df.iterrows()]
-
-    def fetch_airports(self) -> Tuple[Airport, ...]:
-        return tuple(self.airports)
-
-    def fetch_airport(self, iata_code: str):
-        return next(airport for airport in self.airports if
-                    airport.code == iata_code)
-
-    def fetch_airports_by_municipality(self, city: str):
-        return tuple(airport for airport in self.airports if airport.municipality == city)
-
-    def fetch_municipalities(self) -> Tuple[str]:
-        return tuple(set(airport.municipality for airport in self.airports if airport.municipality))
-
-    def fetch_airports_by_iata_code(self, iata_codes: List[str]) -> Tuple[Airport]:
-        return tuple(airport for airport in self.airports if airport.code in iata_codes)
-
-
-class MongoAirportRepository(AbstractAirportRepository):
-    def __init__(self, mongo_client_with_collection):
-        self._mongo_client = mongo_client_with_collection
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        self.table = dynamodb.Table('Airports')
 
     def fetch_airports(self) -> Tuple[Airport]:
-        airports_data = self._mongo_client.db.collection.find()
-        return tuple(Airport(**airport_data) for airport_data in airports_data)
+        airports_data = self.table.scan()['Items']
+        return tuple(Airport(code=airport_data['iata_code'], coordinates=airport_data['coordinates'],
+                             municipality=airport_data['municipality'], name=airport_data['name'])
+                     for airport_data in airports_data)
 
     def fetch_airport(self, iata_code: str) -> Airport:
-        airport_data = self._mongo_client.db.collection.find_one({"code": iata_code})
-        return Airport(**airport_data)
+        airport_data = self.table.get_item(Key={'code': iata_code})['Item']
+        return Airport(code=airport_data['iata_code'], coordinates=airport_data['coordinates'],
+                       municipality=airport_data['municipality'], name=airport_data['name'])
 
     def fetch_airports_by_municipality(self, city: str) -> Tuple[Airport]:
-        airports_data = self._mongo_client.db.collection.find({"municipality": city})
-        return tuple(Airport(**airport_data) for airport_data in airports_data)
+        airports_data = self.table.scan(FilterExpression='municipality = :municipality',
+                                        ExpressionAttributeValues={':municipality': city})['Items']
+        return tuple(Airport(code=airport_data['iata_code'], coordinates=airport_data['coordinates'],
+                             municipality=airport_data['municipality'], name=airport_data['name'])
+                     for airport_data in airports_data)
 
-    def fetch_municipalities(self) -> Tuple[str]:
-        airports_data = self._mongo_client.db.collection.find()
+    def fetch_municipalities(self) -> Tuple[set[str]]:
+        airports_data = self.table.scan()['Items']
         return tuple(set(airport_data['municipality'] for airport_data in airports_data))
+
+    def fetch_airports_by_iata_code(self, iata_codes: set[str]) -> Tuple[Airport]:
+        expression_attribute_values = {f':val{i}': code for i, code in enumerate(iata_codes)}
+
+        filter_expression = 'iata_code IN (' + ', '.join(expression_attribute_values.keys()) + ')'
+
+        airports_data = self.table.scan(
+            FilterExpression=filter_expression,
+            ExpressionAttributeValues=expression_attribute_values
+        )['Items']
+
+        return tuple(
+            Airport(
+                code=airport_data['iata_code'],
+                coordinates=airport_data['coordinates'],
+                municipality=airport_data['municipality'],
+                name=airport_data['name']
+            ) for airport_data in airports_data
+        )

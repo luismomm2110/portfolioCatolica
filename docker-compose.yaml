@@ -4,18 +4,4 @@ services:
   app:
     build: .
     ports:
-      - "5001:5001"
-    depends_on:
-      - mongo
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/mydatabase
-
-  mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodata:/data/db
-
-volumes:
-  mongodata:
+      - "80:5001"
