@@ -1,20 +1,22 @@
 import redis
 import functools
-import json
+import pickle
 
-r = redis.Redis(host='localhost', port=6379, db=0)
+from settings import get_redis_url
+
+r = redis.Redis(host=get_redis_url(), port=6379, db=0)
 
 
-def cache_results(func):
-    @functools.wraps(func)
-    def wrapper_cache(*args, **kwargs):
-        key = f"{func.__name__}:{json.dumps(args)}:{json.dumps(kwargs)}"
+def cached(key: str, expire=None):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper_cache(*args, **kwargs):
+            cached_result = r.get(key)
+            if cached_result is None:
+                result = func(*args, **kwargs)
+                r.set(key, pickle.dumps(result), ex=expire)
+                return result
 
-        cached_result = r.get(key)
-        if cached_result is None:
-            result = func(*args, **kwargs)
-            r.set(key, result)
-            return result
-
-        return cached_result
-    return wrapper_cache
+            return pickle.loads(cached_result)
+        return wrapper_cache
+    return decorator
