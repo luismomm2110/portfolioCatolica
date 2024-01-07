@@ -70,6 +70,10 @@ Pull requests são bem-vindos. Para grandes mudanças, por favor abra uma issue 
 
 ![Visao_Container](docs/c4_container.png)
 
+### Visao de Arquitetura do Nuvem
+
+![Visao_cloud](docs/arquitetura_nuvem.png)
+
 ## Requisitos do projeto 
 
 ### Requisitos Funcionais: 
