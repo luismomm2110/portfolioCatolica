@@ -8,8 +8,6 @@ from flight_search.TravelAgents.endpoints.endpoints import create_flight_agent, 
 app = Flask(__name__)
 CORS(app)
 
-print('Starting server...')
-
 
 @app.route('/api/flights', methods=['GET'])
 def flights_endpoint():
